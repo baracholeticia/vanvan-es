@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,6 +10,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
+  private authService = inject(AuthService);
+  
   isExpanded = signal(false);
   activePage = signal('reports');
 
@@ -19,6 +22,7 @@ export class Sidebar {
   User = "assets/icons/user.svg";
   Verify = "assets/icons/verify.svg";
   Setting = "assets/icons/setting.svg";
+  Logout = "assets/icons/logout.svg";
   SidebarRight = "assets/icons/sidebar-right.svg";
 
   toggleSidebar() {
@@ -27,5 +31,8 @@ export class Sidebar {
 
   setActivePage(page: string) {
     this.activePage.set(page);
+    if (page === 'logout') {
+      this.authService.logout();
+    }
   }
 }

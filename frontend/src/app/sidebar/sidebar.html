@@ -7,11 +7,11 @@
       </div>
     </div>
     
-    <div class="content-stretch flex flex-col gap-[14px] items-start relative shrink-0 w-full animate-fade-in">
+    <div class="content-stretch flex flex-col gap-[14px] items-start relative shrink-0 w-full animate-fade-in flex-1">
       
       <!-- Relatórios -->
       <div class="content-stretch flex flex-col items-start relative shrink-0 w-full" (click)="setActivePage('reports')">
-        <div [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-[10px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'reports' ? 'bg-accent' : 'bg-white hover:bg-dark/10')">
+        <div [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-[10px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'reports' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
           <div class="relative shrink-0 size-[34px]">
             <div class="absolute contents inset-0">
                <div [class]="'size-full ' + (activePage() === 'reports' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + ChartSquare + ')'" [style.webkit-mask-image]="'url(' + ChartSquare + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
@@ -37,7 +37,7 @@
         </div>
         
         <!-- Motoristas -->
-        <div (click)="setActivePage('drivers')" [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-bl-[4px] rounded-br-[4px] rounded-tl-[10px] rounded-tr-[10px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'drivers' ? 'bg-accent' : 'bg-white hover:bg-dark/10')">
+        <div (click)="setActivePage('drivers')" [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-bl-[4px] rounded-br-[4px] rounded-tl-[10px] rounded-tr-[10px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'drivers' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
           <div class="relative shrink-0 size-[34px]">
             <div class="absolute contents inset-0">
                <div [class]="'size-full ' + (activePage() === 'drivers' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Personalcard + ')'" [style.webkit-mask-image]="'url(' + Personalcard + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
@@ -54,7 +54,7 @@
         </div>
         
         <!-- Clientes -->
-        <div (click)="setActivePage('clients')" [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-bl-[10px] rounded-br-[10px] rounded-tl-[4px] rounded-tr-[4px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'clients' ? 'bg-accent' : 'bg-white hover:bg-dark/10')">
+        <div (click)="setActivePage('clients')" [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-bl-[10px] rounded-br-[10px] rounded-tl-[4px] rounded-tr-[4px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'clients' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
           <div class="relative shrink-0 size-[34px]">
             <div class="absolute contents inset-0">
                <div [class]="'size-full ' + (activePage() === 'clients' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + User + ')'" [style.webkit-mask-image]="'url(' + User + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
@@ -73,7 +73,7 @@
       
       <!-- Aprovar Motoristas -->
       <div class="content-stretch flex flex-col items-start relative shrink-0 w-full" (click)="setActivePage('verification')">
-        <div [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-[10px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'verification' ? 'bg-accent' : 'bg-white hover:bg-dark/10')">
+        <div [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-[10px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'verification' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
           <div class="relative shrink-0 size-[34px]">
             <div class="absolute contents inset-0">
               <div [class]="'size-full ' + (activePage() === 'verification' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Verify + ')'" [style.webkit-mask-image]="'url(' + Verify + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
@@ -92,7 +92,7 @@
       
       <!-- Administração Geral -->
       <div class="content-stretch flex flex-col items-start relative shrink-0 w-full" (click)="setActivePage('admin')">
-        <div [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-[10px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'admin' ? 'bg-accent' : 'bg-white hover:bg-dark/10')">
+        <div [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-[10px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'admin' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
           <div class="relative shrink-0 size-[34px]">
             <div class="absolute contents inset-0">
               <div [class]="'size-full ' + (activePage() === 'admin' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Setting + ')'" [style.webkit-mask-image]="'url(' + Setting + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
@@ -100,7 +100,7 @@
           </div>
           <div [class]="'content-stretch flex flex-col font-medium items-start justify-center not-italic relative shrink-0 ' + (activePage() === 'admin' ? 'text-dark' : 'text-subtle-text')">
             <div class="flex flex-col justify-center leading-[0] relative shrink-0 text-medium w-full">
-              <p class="leading-[1.2] whitespace-pre-wrap m-0">Administração Geral</p>
+              <p class="leading-[1.2] whitespace-pre-wrap m-0">Administração</p>
             </div>
             <p class="leading-[normal] relative shrink-0 text-small w-full whitespace-pre-wrap m-0">
               Ajuste os parâmetros
@@ -110,6 +110,23 @@
       </div>
       
     </div>
+
+    <!-- Footer / Logout -->
+    <div class="content-stretch flex flex-col items-start relative shrink-0 w-full mt-auto" (click)="setActivePage('logout')">
+      <div [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-[60px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'logout' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
+        <div class="relative shrink-0 size-[34px]">
+          <div class="absolute contents inset-0">
+            <div [class]="'size-full ' + (activePage() === 'logout' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Logout + ')'" [style.webkit-mask-image]="'url(' + Logout + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
+          </div>
+        </div>
+        <div [class]="'content-stretch flex flex-col font-medium items-start justify-center not-italic relative shrink-0 ' + (activePage() === 'logout' ? 'text-dark' : 'text-subtle-text')">
+          <div class="flex flex-col justify-center leading-[0] relative shrink-0 text-medium w-full">
+            <p class="leading-[1.2] whitespace-pre-wrap m-0">Sair</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
   } @else {
     <!-- Contracted -->
     <div (click)="toggleSidebar()" class="relative shrink-0 size-[34px] cursor-pointer">
@@ -118,9 +135,9 @@
       </div>
     </div>
     
-    <div class="content-stretch flex flex-col gap-[14px] items-center relative shrink-0 w-full animate-fade-in">
+    <div class="content-stretch flex flex-col gap-[14px] items-center relative shrink-0 w-full animate-fade-in flex-1">
       <!-- Relatórios -->
-      <div (click)="setActivePage('reports')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'reports' ? 'bg-accent' : 'bg-white hover:bg-dark/10')">
+      <div (click)="setActivePage('reports')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'reports' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
         <div class="relative shrink-0 size-[34px]">
            <div [class]="'size-full ' + (activePage() === 'reports' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + ChartSquare + ')'" [style.webkit-mask-image]="'url(' + ChartSquare + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
         </div>
@@ -128,17 +145,17 @@
 
       <div class="content-stretch flex flex-col gap-[2px] items-center relative shrink-0 w-full">
           <p class="font-medium text-small text-center text-text w-full overflow-hidden text-ellipsis whitespace-nowrap">
-            Geren...
+            Ger.
           </p>
           
           <!-- Motoristas -->
-          <div (click)="setActivePage('drivers')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-t-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'drivers' ? 'bg-accent' : 'bg-white hover:bg-dark/10')">
+          <div (click)="setActivePage('drivers')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-t-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'drivers' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
             <div class="relative shrink-0 size-[34px]">
                <div [class]="'size-full ' + (activePage() === 'drivers' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Personalcard + ')'" [style.webkit-mask-image]="'url(' + Personalcard + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
             </div>
           </div>
           <!-- Clientes -->
-          <div (click)="setActivePage('clients')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-b-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'clients' ? 'bg-accent' : 'bg-white hover:bg-dark/10')">
+          <div (click)="setActivePage('clients')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-b-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'clients' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
              <div class="relative shrink-0 size-[34px]">
                <div [class]="'size-full ' + (activePage() === 'clients' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + User + ')'" [style.webkit-mask-image]="'url(' + User + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
              </div>
@@ -146,16 +163,25 @@
       </div>
       
       <!-- Aprovar -->
-      <div (click)="setActivePage('verification')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'verification' ? 'bg-accent' : 'bg-white hover:bg-dark/10')">
+      <div (click)="setActivePage('verification')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'verification' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
          <div class="relative shrink-0 size-[34px]">
            <div [class]="'size-full ' + (activePage() === 'verification' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Verify + ')'" [style.webkit-mask-image]="'url(' + Verify + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
          </div>
       </div>
       
       <!-- Administração -->
-      <div (click)="setActivePage('admin')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'admin' ? 'bg-accent' : 'bg-white hover:bg-dark/10')">
+      <div (click)="setActivePage('admin')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'admin' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
          <div class="relative shrink-0 size-[34px]">
            <div [class]="'size-full ' + (activePage() === 'admin' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Setting + ')'" [style.webkit-mask-image]="'url(' + Setting + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
+         </div>
+      </div>
+    </div>
+
+    <!-- Footer / Logout Contracted -->
+    <div class="content-stretch flex flex-col items-center relative shrink-0 w-full mt-auto">
+      <div (click)="setActivePage('logout')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[60px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'logout' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
+         <div class="relative shrink-0 size-[34px]">
+           <div [class]="'size-full ' + (activePage() === 'logout' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Logout + ')'" [style.webkit-mask-image]="'url(' + Logout + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
          </div>
       </div>
     </div>

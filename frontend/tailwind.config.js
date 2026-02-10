@@ -77,8 +77,7 @@ module.exports = {
         'link-text': ['1rem', {
           lineHeight: 'normal',
           fontWeight: '700',
-          letterSpacing: '0.4rem',
-          textDecoration: 'underline',
+          letterSpacing: '0.04rem',
         }],
       },
       letterSpacing: {
