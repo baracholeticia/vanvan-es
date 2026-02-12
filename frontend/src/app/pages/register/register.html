@@ -5,9 +5,9 @@
     <div class="flex flex-col w-full h-full bg-white rounded-[1.5rem] p-4 md:p-8 lg:p-14 overflow-hidden">
   
       <!-- Header -->
-      <div class="flex items-end justify-between w-full px-4 md:px-8 lg:px-16 pb-4 shrink-0">
-        <h1 class="text-text text-header-1 lg:text-title whitespace-nowrap">VanVan</h1>
-        <h2 class="text-subtle-text text-header-3 lg:text-header-2 whitespace-nowrap">Cadastrar</h2>
+      <div class="flex items-end justify-between w-full px-4 md:px-8 lg:px-16 pb-2 shrink-0">
+        <h1 class="text-text text-header-1 lg:text-title short:text-header-1 whitespace-nowrap leading-[0.8]">VanVan</h1>
+        <h2 class="text-subtle-text text-header-3 lg:text-header-2 short:text-header-3 whitespace-nowrap leading-[0.8]">Cadastro</h2>
       </div>
   
       <!-- Register Card -->
@@ -23,7 +23,7 @@
         </div>
   
         <!-- Form Section -->
-      <div class="flex flex-col flex-1 gap-[25px] items-start w-full px-6 py-[40px] sm:px-10 lg:px-[50px] justify-center overflow-hidden">
+      <div class="flex flex-col flex-1 gap-[32px] short:gap-6 items-start w-full px-6 py-[70px] short:py-8 sm:px-10 lg:px-[50px] justify-start overflow-y-auto">
 
         <!-- Title -->
         <div class="flex flex-col gap-1">
@@ -32,9 +32,9 @@
           </div>
   
           <!-- Form -->
-          <form class="flex flex-col gap-[2rem] w-full" (ngSubmit)="onRegister()">
+          <form class="flex flex-col gap-[2rem] short:gap-5 w-full" (ngSubmit)="onRegister()">
   
-            <div class="flex flex-col gap-4 w-full">
+            <div class="flex flex-col gap-4 short:gap-3 w-full">
                 
                <!-- Name Field -->
                <div class="flex flex-col gap-[3px] w-full">
@@ -45,7 +45,7 @@
                   placeholder="Digite seu nome"
                   [(ngModel)]="name"
                   name="name"
-                  class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
+                  class="w-full bg-white rounded-lg px-4 py-3 short:py-2 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
 
@@ -58,11 +58,11 @@
                   placeholder="exemplo&#64;email.com"
                   [(ngModel)]="email"
                   name="email"
-                  class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
+                  class="w-full bg-white rounded-lg px-4 py-3 short:py-2 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
 
-              <div class="flex flex-col md:flex-row gap-4 w-full">
+              <div class="flex flex-col md:flex-row gap-4 short:gap-3 w-full">
                 <!-- CPF Field -->
                 <div class="flex flex-col gap-[3px] w-full">
                   <label for="cpf" class="text-text text-small">CPF</label>
@@ -75,7 +75,7 @@
                     name="cpf"
                     inputmode="numeric"
                     maxlength="11"
-                    class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
+                    class="w-full bg-white rounded-lg px-4 py-3 short:py-2 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
 
@@ -90,7 +90,7 @@
                     (input)="onPhoneInput($event)"
                     name="telephone"
                     maxlength="15"
-                    class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
+                    class="w-full bg-white rounded-lg px-4 py-3 short:py-2 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
               </div>
@@ -105,7 +105,7 @@
                     placeholder="Crie uma senha"
                     [(ngModel)]="password"
                     name="password"
-                    class="w-full bg-white rounded-lg px-4 py-3 pr-12 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
+                    class="w-full bg-white rounded-lg px-4 py-3 short:py-2 pr-12 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <button
                     type="button"
@@ -128,7 +128,7 @@
               </div>
             </div>
   
-            <div class="flex flex-col w-full gap-[1rem]">
+            <div class="flex flex-col w-full gap-[20px]">
               <!-- Register Button -->
               <button
                 type="submit"
@@ -138,7 +138,7 @@
               </button>
 
               <div style="display: flex; justify-content: space-between;">
-                <div routerLink="/registerDriver" class="text-link-text text-subtle-text underline decoration-solid text-[#F66B0E] cursor-pointer">
+                <div routerLink="/register-driver-1" class="text-link-text text-primary underline decoration-solid cursor-pointer">
                   É motorista? Cadastre-se aqui
                 </div>
                 <div routerLink="/login" class="text-link-text text-subtle-text underline decoration-solid cursor-pointer">

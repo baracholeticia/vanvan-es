@@ -21,24 +21,27 @@ module.exports = {
         "google-sans-flex": "Google Sans Flex",
         sans: ['"Google Sans Flex"', 'sans-serif'],
       },
+      screens: {
+        'short': { 'raw': '(max-height: 800px)' },
+      },
       fontSize: {
         'title': ['8rem', {
-          lineHeight: '100%',
+          lineHeight: '0.8',
           letterSpacing: '-0.08rem',
           fontWeight: '700',
         }],        
         'header-1': ['4rem', {
-          lineHeight: 'normal',
+          lineHeight: '0.85',
           letterSpacing: '-0.08rem',
           fontWeight: '700',
         }],
         'header-2': ['2.5rem', {
-          lineHeight: 'normal',
+          lineHeight: '0.9',
           letterSpacing: '-0.05rem',
           fontWeight: '700',
         }],
         'header-3': ['1.5rem', {
-          lineHeight: 'normal',
+          lineHeight: '0.9',
           letterSpacing: '-0.03rem',
           fontWeight: '700',
         }],

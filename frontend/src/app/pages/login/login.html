@@ -5,9 +5,9 @@
   <div class="flex flex-col w-full h-full bg-white rounded-[1.5rem] overflow-hidden p-4 md:p-8 lg:p-14">
 
     <!-- Header -->
-    <div class="flex items-end justify-between w-full px-4 md:px-8 lg:px-16 pb-4 shrink-0">
-      <h1 class="text-text text-header-1 lg:text-title whitespace-nowrap">VanVan</h1>
-      <h2 class="text-subtle-text text-header-3 lg:text-header-2 whitespace-nowrap">Login</h2>
+    <div class="flex items-end justify-between w-full px-4 md:px-8 lg:px-16 pb-2 shrink-0">
+      <h1 class="text-text text-header-1 lg:text-title short:text-header-1 whitespace-nowrap leading-[0.8]">VanVan</h1>
+      <h2 class="text-subtle-text text-header-3 lg:text-header-2 short:text-header-3 whitespace-nowrap leading-[0.8]">Login</h2>
     </div>
 
     <!-- Login Card Content -->
@@ -23,8 +23,7 @@
       </div>
 
       <!-- Form Section -->
-      <div class="flex flex-col flex-1 gap-10 lg:gap-[70px] items-start w-full px-6 py-[4.38rem] sm:px-10 lg:px-[50px] justify-start">
-
+      <div class="flex flex-col flex-1 gap-[25px] short:gap-6 items-start w-full px-6 py-[70px] short:py-8 sm:px-10 lg:px-[50px] justify-start overflow-y-auto">
         <!-- Title -->
         <div class="flex flex-col gap-1">
           <h2 class="text-text text-header-2 font-bold">Bem-Vindo de volta!</h2>
@@ -32,9 +31,9 @@
         </div>
 
         <!-- Form -->
-        <form class="flex flex-col gap-8 lg:gap-[46px] w-full" (ngSubmit)="onLogin()">
+        <form class="flex flex-col gap-8 lg:gap-[46px] short:gap-5 w-full" (ngSubmit)="onLogin()">
 
-          <div class="flex flex-col gap-5 lg:gap-[22px] w-full">
+          <div class="flex flex-col gap-5 lg:gap-[22px] short:gap-3 w-full">
             <!-- Email Field -->
             <div class="flex flex-col gap-[3px] w-full">
               <label for="email" class="text-text text-small">E-mail</label>
@@ -44,7 +43,7 @@
                 placeholder="exemplo&#64;email.com"
                 [(ngModel)]="email"
                 name="email"
-                class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
+                class="w-full bg-white rounded-lg px-4 py-3 short:py-2 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -58,7 +57,7 @@
                   placeholder="Digite sua senha"
                   [(ngModel)]="password"
                   name="password"
-                  class="w-full bg-white rounded-lg px-4 py-3 pr-12 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
+                  class="w-full bg-white rounded-lg px-4 py-3 short:py-2 pr-12 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <button
                   type="button"

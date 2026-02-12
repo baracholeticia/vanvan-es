@@ -1,0 +1,43 @@
+<button
+  type="button"
+  (click)="toggle()"
+  [disabled]="disabled"
+  [class]="'relative inline-flex h-8 w-[52px] items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ' + containerClasses + (disabled ? ' opacity-50 cursor-not-allowed' : ' cursor-pointer')"
+  role="switch"
+  [attr.aria-checked]="checked">
+  
+  <!-- Handle (botão que desliza) -->
+  <span
+    [class]="'absolute inline-flex h-7 w-7 transform items-center justify-center rounded-full transition-all duration-200 ' + handleClasses">
+    
+    <!-- Ícone quando OFF (X) -->
+    <svg
+      *ngIf="!checked"
+      class="h-3 w-3 text-dark"
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M13 1L1 13M1 1L13 13"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+    </svg>
+    
+    <!-- Ícone quando ON (check) -->
+    <svg
+      *ngIf="checked"
+      class="h-4 w-4 text-primary"
+      viewBox="0 0 16 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M1 6L6 11L15 1"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+    </svg>
+  </span>
+</button>

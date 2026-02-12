@@ -3,11 +3,11 @@
   @if (isExpanded()) {
     <div (click)="toggleSidebar()" class="relative shrink-0 size-[34px] cursor-pointer">
       <div class="absolute contents inset-0">
-         <div class="size-full bg-dark" [style.mask-image]="'url(' + SidebarLeft + ')'" [style.webkit-mask-image]="'url(' + SidebarLeft + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
+         <div class="size-full bg-subtle-text" [style.mask-image]="'url(' + SidebarLeft + ')'" [style.webkit-mask-image]="'url(' + SidebarLeft + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
       </div>
     </div>
     
-    <div class="content-stretch flex flex-col gap-[14px] items-start relative shrink-0 w-full animate-fade-in flex-1">
+    <div class="content-stretch flex flex-col gap-[14px] items-start relative shrink-0 w-full animate-slide-in flex-1">
       
       <!-- Relatórios -->
       <div class="content-stretch flex flex-col items-start relative shrink-0 w-full" (click)="setActivePage('reports')">
@@ -131,11 +131,11 @@
     <!-- Contracted -->
     <div (click)="toggleSidebar()" class="relative shrink-0 size-[34px] cursor-pointer">
       <div class="absolute contents inset-0">
-        <div class="size-full bg-dark" [style.mask-image]="'url(' + SidebarRight + ')'" [style.webkit-mask-image]="'url(' + SidebarRight + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
+        <div class="size-full bg-subtle-text" [style.mask-image]="'url(' + SidebarRight + ')'" [style.webkit-mask-image]="'url(' + SidebarRight + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
       </div>
     </div>
     
-    <div class="content-stretch flex flex-col gap-[14px] items-center relative shrink-0 w-full animate-fade-in flex-1">
+    <div class="content-stretch flex flex-col gap-[14px] items-center relative shrink-0 w-full animate-slide-in flex-1">
       <!-- Relatórios -->
       <div (click)="setActivePage('reports')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'reports' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
         <div class="relative shrink-0 size-[34px]">

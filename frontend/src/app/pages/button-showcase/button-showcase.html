@@ -1,0 +1,85 @@
+<div class="bg-white min-h-screen p-8">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-header-1 font-bold text-dark mb-12">Design System Components</h1>
+    
+    <!-- Toggles Section -->
+    <section class="mb-16">
+      <h2 class="text-header-2 font-bold text-dark mb-6 pb-2 border-b-2 border-light">Toggles</h2>
+      
+      <div class="mb-8">
+        <h3 class="text-header-3 font-bold text-subtle-text mb-4">Toggle/Off</h3>
+        <div class="flex gap-4 items-center">
+          <app-toggle [checked]="false"></app-toggle>
+          <span class="text-body text-subtle-text">Estado: OFF</span>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-header-3 font-bold text-subtle-text mb-4">Toggle/On</h3>
+        <div class="flex gap-4 items-center">
+          <app-toggle [checked]="true"></app-toggle>
+          <span class="text-body text-subtle-text">Estado: ON</span>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-header-3 font-bold text-subtle-text mb-4">Interactive</h3>
+        <div class="space-y-4">
+          <div class="flex items-center gap-4">
+            <app-toggle [(checked)]="toggleState1"></app-toggle>
+            <span class="text-body text-dark">Notificações: {{ toggleState1 ? 'Ativadas' : 'Desativadas' }}</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <app-toggle [(checked)]="toggleState2"></app-toggle>
+            <span class="text-body text-dark">Modo escuro: {{ toggleState2 ? 'Ativado' : 'Desativado' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-header-3 font-bold text-subtle-text mb-4">Disabled</h3>
+        <div class="flex gap-4 items-center">
+          <app-toggle [checked]="false" [disabled]="true"></app-toggle>
+          <app-toggle [checked]="true" [disabled]="true"></app-toggle>
+          <span class="text-body text-subtle-text">Desabilitados</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buttons Section -->
+    <section class="mb-16">
+      <h2 class="text-header-2 font-bold text-dark mb-6 pb-2 border-b-2 border-light">Buttons</h2>
+      
+      <div class="mb-8">
+        <h3 class="text-header-3 font-bold text-subtle-text mb-4">Primary</h3>
+        <app-buttons variant="primary">Button</app-buttons>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-header-3 font-bold text-subtle-text mb-4">Secondary</h3>
+        <app-buttons variant="secondary">Button</app-buttons>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-header-3 font-bold text-subtle-text mb-4">Tertiary</h3>
+        <app-buttons variant="tertiary">Button</app-buttons>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-header-3 font-bold text-subtle-text mb-4">Disabled</h3>
+        <div class="flex gap-4">
+          <app-buttons variant="primary" [disabled]="true">Disabled</app-buttons>
+          <app-buttons variant="secondary" [disabled]="true">Disabled</app-buttons>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-header-3 font-bold text-subtle-text mb-4">Full Width</h3>
+        <div class="max-w-md space-y-4">
+          <app-buttons variant="primary" [fullWidth]="true">Full Width Primary</app-buttons>
+          <app-buttons variant="secondary" [fullWidth]="true">Full Width Secondary</app-buttons>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
