@@ -4,9 +4,16 @@ import com.vanvan.enums.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "drivers")
+@Getter
+@Setter
+@NoArgsConstructor//construtor sem argumentos
 public class Driver extends User {
     
     @Column(name = "pix_key")
@@ -15,27 +22,10 @@ public class Driver extends User {
     @Column(unique = true)
     private String cnh;
 
-    public Driver() {
-        super();
-    }
-
-    public Driver(String name, String cpf, String phone, String email, String password, String pixKey, String cnh) {
+    public Driver(String name, String cpf, String phone, String email, String password,  String cnh, String pixKey) {
         super(name, cpf, phone, email, password, UserRole.DRIVER);
-        this.pixKey = pixKey;
         this.cnh = cnh;
-    }
-
-    public String getPixKey() {
-        return pixKey;
-    }
-    public void setPixKey(String pixKey) {
         this.pixKey = pixKey;
     }
 
-    public String getCnh() {
-        return cnh;
-    }
-    public void setCnh(String cnh) {
-        this.cnh = cnh;
-    }
 }
