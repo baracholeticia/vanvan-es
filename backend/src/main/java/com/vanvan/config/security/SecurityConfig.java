@@ -32,6 +32,7 @@ public class SecurityConfig {
                                 "/api/auth/login",
                                 "/api/auth/register")
                         .permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers(//para swagger
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",

@@ -76,28 +76,36 @@ public class UserService {
    * Transforma DTO em seu respectivo User
    * **/
     private User convertToUser(RegisterDTO dto) {
-        switch (dto.role()) {
+        return switch (dto.role()) {
             case "passenger" -> {
-                RegisterRequestDTO p = (RegisterRequestDTO) dto;
-                new Passenger(p.username(), p.CPF(), p.phone(), p.email(), p.password());
+                if (dto instanceof RegisterRequestDTO p) {
+                    
+                    yield new Passenger(p.name(), p.cpf(), p.phone(), p.email(), p.password());
+                }
+                throw new IllegalArgumentException("Dados inválidos para passageiro.");
             }
-            case "administrator" -> {
-                RegisterRequestDTO a = (RegisterRequestDTO) dto;
-                new Administrator(a.username(), a.CPF(), a.phone(), a.email(), a.password());
+            case "admin" -> {
+                if (dto instanceof RegisterRequestDTO a) {
+                    yield new Administrator(a.name(), a.cpf(), a.phone(), a.email(), a.password());
+                }
+                throw new IllegalArgumentException("Dados inválidos para administrador.");
             }
             case "driver" -> {
-                DriverRegisterRequestDTO d = (DriverRegisterRequestDTO)  dto;
-                return new Driver(
-                    d.passengerDTO().username(),
-                    d.passengerDTO().CPF(),
-                    d.passengerDTO().phone(),
-                    d.passengerDTO().email(),
-                    d.passengerDTO().password(),
-                    d.cnh(), d.pixKey());
+                if (dto instanceof DriverRegisterRequestDTO d) {
+                    yield new Driver(
+                        d.name(),
+                        d.cpf(),
+                        d.phone(),
+                        d.email(),
+                        d.password(),
+                        d.cnh(),
+                        d.pixKey()
+                    );
                 }
-            default -> throw new IllegalArgumentException("Tipo de usuário inválido.");
-        }
-        return null;
+                throw new IllegalArgumentException("Dados inválidos para motorista.");
+            }
+            default -> throw new IllegalArgumentException("Tipo de usuário inválido");
+        };
     }
 
 

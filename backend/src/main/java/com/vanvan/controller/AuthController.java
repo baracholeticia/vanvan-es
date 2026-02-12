@@ -13,13 +13,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @AllArgsConstructor
 public class AuthController {
 
     private AuthenticationManager authenticationManager;
 
     private final UserService userService;
+    private final JwtService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO data) {
@@ -42,7 +43,7 @@ public class AuthController {
 
             var user = (UserDetails) auth.getPrincipal();
 
-            String token = JwtService.generateToken(user.getUsername());
+            String token = jwtService.generateToken(user.getUsername());
 
             return ResponseEntity.ok(new TokenResponseDTO(token));
         } catch (AuthenticationException e) {
