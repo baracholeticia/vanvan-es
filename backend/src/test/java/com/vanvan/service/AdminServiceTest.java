@@ -27,6 +27,7 @@ import com.vanvan.repository.DriverRepository;
 import com.vanvan.repository.UserRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -245,14 +246,16 @@ class AdminServiceTest {
     }
 
     @Test
-    @DisplayName("Deve excluir cliente com sucesso")
+    @DisplayName("Deve realizar soft delete do cliente com sucesso")
     void deleteClientSuccess() {
         UUID id = UUID.randomUUID();
-        when(userRepository.findById(id)).thenReturn(Optional.of(new Passenger()));
-
+        Passenger passenger = new Passenger();
+        passenger.setActive(true); // Garante que ele começa ativo
+        when(userRepository.findById(id)).thenReturn(Optional.of(passenger));
         adminService.deleteClient(id);
-
-        verify(userRepository, times(1)).delete(any(User.class));
+        assertFalse(passenger.isActive(), "O passageiro deveria estar inativo (active = false)");
+        verify(userRepository, times(1)).save(passenger);
+        verify(userRepository, times(0)).delete(any(User.class));
     }
     
 }
