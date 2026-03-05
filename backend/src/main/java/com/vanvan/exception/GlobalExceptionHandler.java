@@ -187,4 +187,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    @ExceptionHandler(InvalidValueException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidValue(InvalidValueException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put(KEYMAP, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
+    }
+
 }
