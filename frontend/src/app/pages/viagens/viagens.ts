@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Tag, TagVariant } from '../../components/tags/tags';
 import { Buttons } from '../../components/buttons/buttons';
+import QRCode from 'qrcode';
 
 @Component({
   selector: 'app-viagens',
@@ -10,7 +11,56 @@ import { Buttons } from '../../components/buttons/buttons';
   templateUrl: './viagens.html',
   styleUrls: ['./viagens.css']
 })
-export class Viagens {
+export class Viagens implements OnInit, OnDestroy {
+  // Countdown timer
+  countdown = {
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  };
+  private countdownInterval: any = null;
+
+  // QR Code
+  qrCodeDataUrl: string = '';
+
+  ngOnInit(): void {
+    this.startCountdown();
+  }
+
+  ngOnDestroy(): void {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+    }
+  }
+
+  private startCountdown(): void {
+    // Data da próxima viagem (exemplo: 2 dias no futuro para demo)
+    const nextTripDate = new Date();
+    nextTripDate.setDate(nextTripDate.getDate() + 2);
+    nextTripDate.setHours(8, 0, 0, 0);
+
+    this.updateCountdown(nextTripDate);
+
+    this.countdownInterval = setInterval(() => {
+      this.updateCountdown(nextTripDate);
+    }, 1000);
+  }
+
+  private updateCountdown(targetDate: Date): void {
+    const now = new Date().getTime();
+    const distance = targetDate.getTime() - now;
+
+    if (distance > 0) {
+      this.countdown.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      this.countdown.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      this.countdown.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      this.countdown.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    } else {
+      this.countdown = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    }
+  }
+
   // Carousel state for scheduled trips
   scheduledScrollIndex = 0;
 
@@ -23,9 +73,32 @@ export class Viagens {
   ticketTripRef: any = null;
   ticketCode = 'ABC123';
 
-  openTicketPopup(trip: any): void {
+  async openTicketPopup(trip: any): Promise<void> {
     this.ticketTripRef = trip;
     this.showTicketPopup = true;
+
+    // Gerar QR Code
+    const ticketData = JSON.stringify({
+      code: this.ticketCode,
+      trip: `${trip.origin} → ${trip.destination}`,
+      date: `${trip.day}/${trip.month}`,
+      time: trip.time,
+      passenger: 'Passageiro VanVan',
+      vehicle: trip.vehicle
+    });
+
+    try {
+      this.qrCodeDataUrl = await QRCode.toDataURL(ticketData, {
+        width: 200,
+        margin: 2,
+        color: {
+          dark: '#1B1B1F',
+          light: '#FFFFFF'
+        }
+      });
+    } catch (err) {
+      console.error('Erro ao gerar QR Code:', err);
+    }
   }
 
   closeTicketPopup(): void {
@@ -103,6 +176,28 @@ export class Viagens {
   nextScheduled(): void {
     if (this.scheduledScrollIndex < this.scheduledTrips.length - 1) {
       this.scheduledScrollIndex++;
+    }
+  }
+
+  // Share trip via Web Share API
+  async shareTrip(trip: any): Promise<void> {
+    const shareData = {
+      title: 'Minha Viagem VanVan',
+      text: `Viagem de ${trip.origin} para ${trip.destination} no dia ${trip.day}/${trip.month} às ${trip.time}. Preço: ${trip.price}`,
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.log('Share cancelled or failed');
+      }
+    } else {
+      // Fallback: copy to clipboard
+      const text = `${shareData.text}\n${shareData.url}`;
+      await navigator.clipboard.writeText(text);
+      alert('Link copiado para a área de transferência!');
     }
   }
 }

@@ -1,0 +1,214 @@
+<!-- Full-viewport gradient background -->
+<div class="fixed inset-0 z-[1] pointer-events-none"
+  style="background: linear-gradient(-68deg, rgba(177,177,177,1) 1%, rgba(233,233,233,1) 100%)">
+</div>
+
+<!-- Background VAN-VIAGEM image -->
+<div class="fixed top-[76px] left-[-166px] w-[1586px] h-[885px] z-[2] pointer-events-none">
+  <img src="assets/VAN-VIAGEM.png" class="w-full h-full object-cover" alt="background van">
+</div>
+
+<!-- Main Container -->
+<div class="flex flex-col items-end relative w-full min-h-[calc(100vh-100px)] py-5 pr-5">
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="relative z-[10] flex flex-col gap-5 w-full max-w-[900px]">
+
+    <!-- ===== HEADER CARD ===== -->
+    <div class="glass-card rounded-[24px] p-5 flex items-center justify-between">
+      <!-- Back Button + Title -->
+      <div class="flex items-center gap-4">
+        <button (click)="goBack()"
+          class="opacity-80 cursor-pointer hover:opacity-60 transition-opacity">
+          <div class="size-12 bg-text"
+            style="-webkit-mask: url(assets/icons/arrow-circle-left.svg) no-repeat center / contain; mask: url(assets/icons/arrow-circle-left.svg) no-repeat center / contain;">
+          </div>
+        </button>
+        <h1 class="text-header-2 text-text tracking-[-0.8px]">Viagens Anteriores</h1>
+      </div>
+
+      <!-- Stats Summary -->
+      <div class="flex gap-6 items-center">
+        <!-- Total Viagens -->
+        <div class="flex flex-col items-center">
+          <span class="text-small text-subtle-text">Total de viagens</span>
+          <span class="text-header-3 text-text">{{ pastTrips.length }}</span>
+        </div>
+        <!-- Viagens Completas -->
+        <div class="flex flex-col items-center">
+          <span class="text-small text-subtle-text">Completas</span>
+          <span class="text-header-3 text-secondary">{{ completedTripsCount }}</span>
+        </div>
+        <!-- Canceladas -->
+        <div class="flex flex-col items-center">
+          <span class="text-small text-subtle-text">Canceladas</span>
+          <span class="text-header-3 text-primary">{{ cancelledTripsCount }}</span>
+        </div>
+        <!-- Faturamento -->
+        <div class="flex flex-col items-center">
+          <span class="text-small text-subtle-text">Faturamento</span>
+          <span class="text-header-3 text-text">{{ totalEarnings }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FILTER TABS ===== -->
+    <div class="flex gap-2">
+      <button
+        (click)="setFilter('all')"
+        class="px-5 py-2 rounded-full transition-all cursor-pointer"
+        [class]="selectedFilter === 'all' ? 'bg-text text-white' : 'glass-card text-text hover:opacity-80'">
+        <span class="text-button-text">Todas ({{ pastTrips.length }})</span>
+      </button>
+      <button
+        (click)="setFilter('completed')"
+        class="px-5 py-2 rounded-full transition-all cursor-pointer"
+        [class]="selectedFilter === 'completed' ? 'bg-secondary text-white' : 'glass-card text-text hover:opacity-80'">
+        <span class="text-button-text">Completas ({{ completedTripsCount }})</span>
+      </button>
+      <button
+        (click)="setFilter('cancelled')"
+        class="px-5 py-2 rounded-full transition-all cursor-pointer"
+        [class]="selectedFilter === 'cancelled' ? 'bg-primary text-white' : 'glass-card text-text hover:opacity-80'">
+        <span class="text-button-text">Canceladas ({{ cancelledTripsCount }})</span>
+      </button>
+    </div>
+
+    <!-- ===== LOADING STATE ===== -->
+    <div *ngIf="isLoading" class="glass-card rounded-[24px] p-10 flex items-center justify-center">
+      <span class="text-body text-subtle-text">Carregando viagens...</span>
+    </div>
+
+    <!-- ===== ERROR STATE ===== -->
+    <div *ngIf="errorMessage && !isLoading" class="glass-card rounded-[24px] p-10 flex items-center justify-center">
+      <span class="text-body text-primary">{{ errorMessage }}</span>
+    </div>
+
+    <!-- ===== EMPTY STATE ===== -->
+    <div *ngIf="!isLoading && !errorMessage && filteredTrips.length === 0"
+      class="glass-card rounded-[24px] p-10 flex flex-col items-center justify-center gap-4">
+      <div class="size-16 bg-subtle-text opacity-50"
+        style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+      </div>
+      <span class="text-body text-subtle-text text-center">
+        {{ selectedFilter === 'all' ? 'Nenhuma viagem encontrada.' :
+           selectedFilter === 'completed' ? 'Nenhuma viagem completa encontrada.' :
+           'Nenhuma viagem cancelada encontrada.' }}
+      </span>
+    </div>
+
+    <!-- ===== TRIPS LIST ===== -->
+    <div *ngIf="!isLoading && filteredTrips.length > 0" class="flex flex-col gap-4">
+
+      <div *ngFor="let trip of filteredTrips"
+        class="glass-card rounded-[24px] p-5 flex gap-4 items-stretch transition-all hover:shadow-lg hover-lift">
+
+        <!-- Date Badge -->
+        <div class="flex flex-col items-center justify-center shrink-0 rounded-[16px] px-4 py-3 min-w-[80px]"
+          [class]="trip.status === 'completed' ? 'bg-secondary/20' : 'bg-primary/20'">
+          <span class="text-small uppercase tracking-wider"
+            [class]="trip.status === 'completed' ? 'text-secondary' : 'text-primary'">
+            {{ formatDate(trip.date).month }}
+          </span>
+          <span class="text-header-1 font-bold leading-none"
+            [class]="trip.status === 'completed' ? 'text-secondary' : 'text-primary'">
+            {{ formatDate(trip.date).day }}
+          </span>
+          <span class="text-small mt-1"
+            [class]="trip.status === 'completed' ? 'text-secondary' : 'text-primary'">
+            {{ trip.time }}
+          </span>
+        </div>
+
+        <!-- Trip Info -->
+        <div class="flex-1 flex flex-col gap-3">
+          <!-- Route -->
+          <div class="flex items-center gap-2">
+            <span class="text-header-3 text-text">{{ trip.origin }}</span>
+            <div class="size-6 shrink-0 bg-text"
+              style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
+            </div>
+            <span class="text-header-3 text-text">{{ trip.destination }}</span>
+            <!-- Status Badge -->
+            <span class="ml-auto px-3 py-1 rounded-full text-small"
+              [class]="trip.status === 'completed' ? 'bg-secondary/20 text-secondary' : 'bg-primary/20 text-primary'">
+              {{ trip.status === 'completed' ? 'Completa' : 'Cancelada' }}
+            </span>
+          </div>
+
+          <!-- Details Row -->
+          <div class="flex gap-6 items-center flex-wrap">
+            <!-- Price -->
+            <div class="flex gap-2 items-center">
+              <div class="size-5 bg-subtle-text shrink-0"
+                style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-body text-subtle-text">{{ trip.price }}/pessoa</span>
+            </div>
+            <!-- Distance -->
+            <div class="flex gap-2 items-center">
+              <div class="size-5 bg-subtle-text shrink-0"
+                style="-webkit-mask: url(assets/icons/routing.svg) no-repeat center / contain; mask: url(assets/icons/routing.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-body text-subtle-text">{{ trip.distance }}</span>
+            </div>
+            <!-- Passengers -->
+            <div class="flex gap-2 items-center">
+              <div class="size-5 bg-subtle-text shrink-0"
+                style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-body text-subtle-text">{{ trip.passengers }} passageiros</span>
+            </div>
+            <!-- Vehicle -->
+            <div class="flex gap-2 items-center">
+              <div class="size-5 bg-subtle-text shrink-0"
+                style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-body text-subtle-text">{{ trip.vehiclePlate }}</span>
+            </div>
+          </div>
+
+          <!-- Locations -->
+          <div class="flex gap-6">
+            <!-- Departure -->
+            <div class="flex flex-col gap-1 flex-1">
+              <span class="text-small text-text font-medium">Partida:</span>
+              <div class="flex gap-1 items-start">
+                <div class="size-4 bg-subtle-text shrink-0 mt-0.5"
+                  style="-webkit-mask: url(assets/icons/location.svg) no-repeat center / contain; mask: url(assets/icons/location.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ trip.originLocation }}</span>
+              </div>
+            </div>
+            <!-- Arrival -->
+            <div class="flex flex-col gap-1 flex-1">
+              <span class="text-small text-text font-medium">Chegada:</span>
+              <div class="flex gap-1 items-start">
+                <div class="size-4 bg-subtle-text shrink-0 mt-0.5"
+                  style="-webkit-mask: url(assets/icons/location.svg) no-repeat center / contain; mask: url(assets/icons/location.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ trip.destinationLocation }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Repeat Button -->
+        <div class="flex items-center shrink-0">
+          <button (click)="repeatTrip(trip)"
+            class="glass-inner rounded-[12px] border border-light px-5 py-4 flex flex-col gap-1 items-center justify-center cursor-pointer hover:opacity-80 transition-opacity h-full">
+            <div class="size-8 bg-secondary shrink-0"
+              style="-webkit-mask: url(assets/icons/refresh-left-square.svg) no-repeat center / contain; mask: url(assets/icons/refresh-left-square.svg) no-repeat center / contain;">
+            </div>
+            <span class="text-button-text text-secondary">Repetir</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+

@@ -4,7 +4,7 @@
   <!-- Background Image (Hero) - fixed, starts ~100px below the top to clear the navbar -->
   <div class="fixed top-[-50px] left-0 right-0 h-[40vh] z-0 overflow-hidden pointer-events-none">
     <img src="assets/Viagens-HeaderImage.jpg"
-         class="w-full h-full object-cover object-bottom" alt="background">
+         class="w-full h-full object-cover object-bottom transition-transform duration-700" alt="background">
     <div class="absolute inset-0 bg-black/25"></div>
   </div>
 
@@ -19,7 +19,7 @@
     </div>
 
     <!-- ===== PRÓXIMA VIAGEM (Next Trip Card) ===== -->
-    <div class="next-trip-card w-full rounded-[24px] py-6 px-5 flex flex-row gap-5 items-stretch">
+    <div class="next-trip-card w-full rounded-[24px] py-6 px-5 flex flex-row gap-5 items-stretch hover-lift">
 
       <!-- Left: Date Badge -->
       <div class="w-[110px] h-auto rounded-[20px] flex flex-col items-center justify-center shrink-0 bg-secondary text-white font-sans font-bold self-start my-auto min-h-[110px]">
@@ -83,6 +83,14 @@
 
           <!-- Vertical Divider (optional, but good for separation if needed, otherwise gap handles it) -->
           <!-- <div class="w-[1px] h-8 bg-accent/30"></div> -->
+
+          <!-- Share Button -->
+          <button (click)="shareTrip(nextTrip)"
+            class="size-10 rounded-full  flex items-center justify-center cursor-pointer hover:bg-white/60 transition-all hover:scale-110"
+            title="Compartilhar viagem">
+            <div class="size-6 bg-text"
+              style="-webkit-mask: url(assets/icons/share.svg) no-repeat center / contain; mask: url(assets/icons/share.svg) no-repeat center / contain;"></div>
+          </button>
 
           <!-- Button -->
           <app-buttons variant="primary" (click)="openTicketPopup(nextTrip)">
@@ -282,9 +290,14 @@
         <span class="font-sans text-header-2 text-primary">{{ ticketCode }}</span>
       </div>
 
-      <!-- QR Code Placeholder -->
+      <!-- QR Code -->
       <div class="flex justify-center">
-        <div class="w-[160px] h-[160px] rounded-[8px] bg-dark/80"></div>
+        <div class="p-4 bg-white rounded-[16px] shadow-md border border-light">
+          <img *ngIf="qrCodeDataUrl" [src]="qrCodeDataUrl" alt="QR Code do Bilhete" class="w-[180px] h-[180px]">
+          <div *ngIf="!qrCodeDataUrl" class="w-[180px] h-[180px] bg-light rounded-[8px] flex items-center justify-center">
+            <span class="text-subtle-text text-small">Gerando QR Code...</span>
+          </div>
+        </div>
       </div>
 
       <!-- Info Row -->

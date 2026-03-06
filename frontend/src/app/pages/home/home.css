@@ -27,8 +27,8 @@ input[type="text"]::placeholder {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(238, 238, 239, 0.7);
-  backdrop-filter: blur(40px);
+  background: rgba(238, 238, 239, 0.3);
+  backdrop-filter: blur(50px);
   -webkit-backdrop-filter: blur(40px);
   border-radius: 24px;
   z-index: -1;

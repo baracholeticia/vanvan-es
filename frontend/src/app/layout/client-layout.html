@@ -1,8 +1,13 @@
-<div class="flex flex-col h-screen w-screen overflow-hidden relative bg-white p-[20px] gap-[20px]">
-  <div class="w-full shrink-0 z-50">
-    <app-client-sidebar class="w-full block"></app-client-sidebar>
+<div class="flex flex-col h-screen w-screen overflow-hidden relative bg-white">
+  <!-- Navbar overlay -->
+  <div class="absolute top-0 left-0 right-0 z-50 p-[20px] pb-0 pointer-events-none">
+    <app-client-sidebar class="w-full block pointer-events-auto"></app-client-sidebar>
   </div>
-  <div class="flex-1 w-full overflow-auto scrollbar-hide">
+  <!-- Content (full screen, scrolls behind navbar) -->
+  <div class="flex-1 w-full h-full overflow-auto scrollbar-hide p-[20px] pt-[96px]">
     <router-outlet></router-outlet>
   </div>
+
+  <!-- Toast -->
+  <app-toast></app-toast>
 </div>

@@ -1,5 +1,5 @@
 <!-- Full-viewport gradient background -->
-<div class="fixed inset-0 z-[1] pointer-events-none" style="background: linear-gradient(-68deg, rgba(177,177,177,0.3) 1%, rgba(233,233,233,1) 100%)"></div>
+<div class="fixed inset-0 z-[1] pointer-events-none" style="background: linear-gradient(-68deg, rgba(177,177,177,1) 1%, rgba(233,233,233,1) 100%)"></div>
 
 <!-- Main Container -->
 <div class="flex flex-col items-center relative w-full min-h-full gap-10 mt-[100px]">
@@ -16,12 +16,64 @@
     <div class="flex flex-col gap-6 w-full lg:w-[43%]">
 
       <!-- ===== VIAGEM ATUAL (Current Trip Card) ===== -->
-      <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 flex-1">
-        <h2 class="text-header-3 text-text text-center w-full">Viagem atual</h2>
+      <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 transition-all h-[320px] overflow-hidden hover-lift">
 
-        <div class="flex flex-col md:flex-row gap-3 items-stretch w-full">
+        <!-- Header com status dinâmico -->
+        <div class="flex items-center justify-between w-full shrink-0">
+          <h2 class="text-header-3 text-text">
+            {{ tripStatus === 'none' ? 'Viagem atual' :
+               tripStatus === 'scheduled' ? 'Viagem atual' :
+               tripStatus === 'in_progress' ? 'Viagem em andamento' :
+               tripStatus === 'arriving' ? 'Chegando ao destino!' :
+               'Viagem finalizada!' }}
+          </h2>
+
+          <!-- Status badge -->
+          <div *ngIf="tripStatus !== 'scheduled' && tripStatus !== 'none'"
+            class="glass-inner px-3 py-1 rounded-full flex items-center gap-2"
+            [class.animate-pulse]="tripStatus !== 'completed'">
+            <div class="size-2 rounded-full"
+              [class]="tripStatus === 'completed' ? 'bg-secondary' :
+                       tripStatus === 'arriving' ? 'bg-primary' : 'bg-green-500'">
+            </div>
+            <span class="text-small font-medium"
+              [class]="tripStatus === 'completed' ? 'text-secondary' :
+                       tripStatus === 'arriving' ? 'text-primary' : 'text-green-600'">
+              {{ tripStatus === 'completed' ? 'Concluída' :
+                 tripStatus === 'arriving' ? 'Quase lá!' : 'Ao vivo' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- ==================== ESTADO: SEM VIAGEM ==================== -->
+        <div *ngIf="tripStatus === 'none'" class="flex flex-col items-center justify-center gap-4 flex-1">
+          <!-- Ilustração -->
+          <div class="glass-inner size-20 rounded-full flex items-center justify-center">
+            <div class="size-10 bg-subtle-text opacity-50"
+              style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+            </div>
+          </div>
+
+          <!-- Mensagem -->
+          <div class="flex flex-col items-center gap-1">
+            <span class="text-body text-text font-medium">Nenhuma viagem agendada</span>
+            <span class="text-small text-subtle-text text-center">Oferte uma nova viagem para<br>começar a receber passageiros</span>
+          </div>
+
+          <!-- Botão de ofertar -->
+          <button (click)="ofertarViagem()"
+            class="glass-inner-strong rounded-[12px] border border-light px-6 py-3 flex gap-2 items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+            <div class="size-5 bg-secondary shrink-0"
+              style="-webkit-mask: url(assets/icons/add.svg) no-repeat center / contain; mask: url(assets/icons/add.svg) no-repeat center / contain;">
+            </div>
+            <span class="text-button-text text-secondary">OFERTAR VIAGEM</span>
+          </button>
+        </div>
+
+        <!-- ==================== ESTADO: AGENDADO ==================== -->
+        <div *ngIf="tripStatus === 'scheduled' && currentTrip" class="flex flex-col md:flex-row gap-3 items-stretch w-full">
           <!-- Sub-card 1: Assentos disponíveis -->
-          <div class="glass-inner rounded-[12px] p-5 flex flex-col items-center justify-center gap-2 flex-1">
+          <div class="glass-inner rounded-[12px] p-5 flex flex-col items-center justify-center gap-2 ">
             <div class="flex flex-col items-center">
               <span class="text-body text-subtle-text leading-[1.2] text-center">
                 Assentos<br>disponíveis:
@@ -40,7 +92,6 @@
                 <div class="size-6 bg-secondary"
                   style="-webkit-mask: url(assets/icons/add.svg) no-repeat center / 60%; mask: url(assets/icons/add.svg) no-repeat center / 60%;">
                 </div>
-                <span class="sr-only">+</span>
               </button>
             </div>
             <button (click)="saveSeats()"
@@ -50,8 +101,7 @@
           </div>
 
           <!-- Sub-card 2: Route info -->
-          <div class="glass-inner rounded-[12px] p-5 flex flex-col gap-[10px] justify-center">
-            <!-- Origin → Destination -->
+          <div class="glass-inner rounded-[12px] p-5 flex flex-col gap-[10px] justify-center flex-1">
             <div class="flex gap-[5px] items-center">
               <span class="text-body text-text leading-[1.2]">{{ currentTrip.origin }}</span>
               <div class="size-6 shrink-0 bg-text"
@@ -59,14 +109,12 @@
               </div>
               <span class="text-body text-text leading-[1.2]">{{ currentTrip.destination }}</span>
             </div>
-            <!-- Distance -->
             <div class="flex gap-[5px] items-center">
               <div class="size-6 shrink-0 bg-subtle-text"
                 style="-webkit-mask: url(assets/icons/routing.svg) no-repeat center / contain; mask: url(assets/icons/routing.svg) no-repeat center / contain;">
               </div>
               <span class="text-body text-subtle-text leading-[1.2]">{{ currentTrip.distance }}</span>
             </div>
-            <!-- Departure -->
             <div class="flex flex-col">
               <span class="text-small text-text">Saída:</span>
               <div class="flex gap-[5px] items-center">
@@ -76,7 +124,6 @@
                 <span class="text-small text-subtle-text">{{ currentTrip.departureLocation }}</span>
               </div>
             </div>
-            <!-- Arrival -->
             <div class="flex flex-col">
               <span class="text-small text-text">Chegada</span>
               <div class="flex gap-[5px] items-center">
@@ -90,7 +137,6 @@
 
           <!-- Sub-card 3: Date/time + actions -->
           <div class="flex flex-col gap-[10px] items-stretch">
-            <!-- Date & time pill -->
             <div class="glass-inner-subtle rounded-[12px] px-5 py-3 flex flex-col gap-1 items-center justify-center flex-1">
               <span class="text-body text-text leading-[1.2]">Data e horário</span>
               <div class="flex gap-[10px] items-center justify-center w-full">
@@ -108,7 +154,6 @@
                 </div>
               </div>
             </div>
-            <!-- Cancel button -->
             <button (click)="cancelCurrentTrip()"
               class="glass-inner rounded-[12px] border border-light px-5 py-4 flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
               <div class="size-6 shrink-0 bg-subtle-text"
@@ -116,7 +161,6 @@
               </div>
               <span class="text-button-text text-subtle-text">CANCELAR</span>
             </button>
-            <!-- Start trip button -->
             <button (click)="startTrip()"
               class="glass-inner-strong rounded-[12px] border border-light px-5 py-4 flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
               <div class="size-6 shrink-0 bg-primary"
@@ -126,13 +170,213 @@
             </button>
           </div>
         </div>
+
+        <!-- ==================== ESTADO: EM ANDAMENTO / CHEGANDO ==================== -->
+        <div *ngIf="(tripStatus === 'in_progress' || tripStatus === 'arriving') && currentTrip" class="flex flex-col gap-3 w-full flex-1">
+
+          <!-- Row 1: Tempo, Progresso, Chegada -->
+          <div class="flex gap-2 items-stretch">
+            <!-- Tempo decorrido -->
+            <div class="glass-inner rounded-[12px] p-3 flex flex-col items-center justify-center flex-1">
+              <span class="text-[10px] text-subtle-text uppercase tracking-wide">Tempo</span>
+              <span class="text-header-3 text-text leading-none">{{ formattedElapsedTime }}</span>
+            </div>
+
+            <!-- Progresso circular -->
+            <div class="glass-inner rounded-[12px] p-3 flex items-center justify-center">
+              <div class="relative size-12">
+                <svg class="size-12 -rotate-90" viewBox="0 0 48 48">
+                  <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="4"/>
+                  <circle cx="24" cy="24" r="20" fill="none"
+                    [attr.stroke]="tripStatus === 'arriving' ? '#F66B0E' : '#1E88E5'"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    [attr.stroke-dasharray]="126"
+                    [attr.stroke-dashoffset]="126 - (126 * tripProgress / 100)"
+                    class="transition-all duration-500"/>
+                </svg>
+                <span class="absolute inset-0 flex items-center justify-center text-small font-bold text-text">
+                  {{ tripProgress | number:'1.0-0' }}%
+                </span>
+              </div>
+            </div>
+
+            <!-- Chegada estimada -->
+            <div class="glass-inner rounded-[12px] p-3 flex flex-col items-center justify-center flex-1">
+              <span class="text-[10px] text-subtle-text uppercase tracking-wide">Chegada</span>
+              <span class="text-header-3 text-text leading-none">{{ estimatedArrival }}</span>
+              <span class="text-[10px] text-subtle-text">{{ distanceRemaining }}</span>
+            </div>
+          </div>
+
+          <!-- Row 2: Rota visual compacta -->
+          <div class="glass-inner rounded-[12px] px-4 py-2">
+            <div class="flex items-center gap-2">
+              <span class="text-small text-text font-medium">{{ currentTrip.origin }}</span>
+              <div class="flex-1 relative h-1.5 bg-white/50 rounded-full overflow-hidden">
+                <div class="absolute inset-y-0 left-0 rounded-full transition-all duration-500"
+                  [class]="tripStatus === 'arriving' ? 'bg-primary' : 'bg-secondary'"
+                  [style.width.%]="tripProgress">
+                </div>
+                <div class="absolute top-1/2 -translate-y-1/2 transition-all duration-500"
+                  [style.left]="'calc(' + tripProgress + '% - 6px)'">
+                  <div class="size-3 bg-text"
+                    style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+                  </div>
+                </div>
+              </div>
+              <span class="text-small font-medium" [class]="tripStatus === 'arriving' ? 'text-primary' : 'text-text'">{{ currentTrip.destination }}</span>
+            </div>
+          </div>
+
+          <!-- Row 3: Info rápida -->
+          <div class="flex gap-2">
+            <button (click)="togglePassengersPopup()"
+              class="glass-inner rounded-[12px] px-3 py-2 flex items-center gap-2 flex-1 cursor-pointer hover:bg-white/60 transition-all">
+              <div class="size-6 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">
+                <div class="size-3 bg-secondary"
+                  style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;">
+                </div>
+              </div>
+              <span class="text-small text-text">{{ currentTrip.confirmedPassengers }} passageiros</span>
+            </button>
+
+            <div class="glass-inner rounded-[12px] px-3 py-2 flex items-center gap-2 flex-1">
+              <div class="size-6 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
+                <div class="size-3 bg-green-600"
+                  style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;">
+                </div>
+              </div>
+              <span class="text-small text-green-600 font-medium">{{ totalEarnings }}</span>
+            </div>
+
+            <button (click)="toggleEmergencyPopup()"
+              class="glass-inner rounded-[12px] px-3 py-2 flex items-center justify-center cursor-pointer hover:bg-red-50 transition-all">
+              <div class="size-6 rounded-full bg-red-500/20 flex items-center justify-center">
+                <div class="size-3 bg-red-500"
+                  style="-webkit-mask: url(assets/icons/warning-2.svg) no-repeat center / contain; mask: url(assets/icons/warning-2.svg) no-repeat center / contain;">
+                </div>
+              </div>
+            </button>
+          </div>
+
+          <!-- Row 4: Botões de ação -->
+          <div class="flex gap-2">
+            <button (click)="cancelCurrentTrip()"
+              class="glass-inner rounded-[12px] px-4 py-3 flex gap-2 items-center justify-center cursor-pointer hover:bg-white/60 transition-all">
+              <div class="size-4 bg-subtle-text"
+                style="-webkit-mask: url(assets/icons/close.svg) no-repeat center / contain; mask: url(assets/icons/close.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-button-text text-subtle-text">CANCELAR</span>
+            </button>
+
+            <button (click)="finishTrip()"
+              class="glass-inner-strong rounded-[12px] px-4 py-3 flex gap-2 items-center justify-center cursor-pointer hover:opacity-90 transition-all flex-1"
+              [class.bg-primary/20]="tripStatus === 'arriving'">
+              <div class="size-4"
+                [class]="tripStatus === 'arriving' ? 'bg-primary' : 'bg-secondary'"
+                style="-webkit-mask: url(assets/icons/tick-circle.svg) no-repeat center / contain; mask: url(assets/icons/tick-circle.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-button-text" [class]="tripStatus === 'arriving' ? 'text-primary' : 'text-secondary'">FINALIZAR VIAGEM</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ==================== ESTADO: CONCLUÍDO ==================== -->
+        <div *ngIf="tripStatus === 'completed'" class="flex flex-col items-center justify-center gap-3 flex-1">
+          <!-- Ícone de sucesso -->
+          <div class="size-14 rounded-full glass-inner flex items-center justify-center animate-bounce-in">
+            <div class="size-7 bg-secondary"
+              style="-webkit-mask: url(assets/icons/tick-circle.svg) no-repeat center / contain; mask: url(assets/icons/tick-circle.svg) no-repeat center / contain;">
+            </div>
+          </div>
+
+          <h3 class="text-header-3 text-text">Viagem concluída!</h3>
+
+          <!-- Resumo compacto -->
+          <div class="flex gap-4 items-center glass-inner rounded-[12px] px-5 py-3">
+            <div class="flex flex-col items-center">
+              <span class="text-[10px] text-subtle-text uppercase">Duração</span>
+              <span class="text-body text-text font-medium">{{ formattedElapsedTime }}</span>
+            </div>
+            <div class="w-px h-8 bg-subtle-text/30"></div>
+            <div class="flex flex-col items-center">
+              <span class="text-[10px] text-subtle-text uppercase">Distância</span>
+              <span class="text-body text-text font-medium">{{ currentTrip.distance }}</span>
+            </div>
+            <div class="w-px h-8 bg-subtle-text/30"></div>
+            <div class="flex flex-col items-center">
+              <span class="text-[10px] text-subtle-text uppercase">Faturamento</span>
+              <span class="text-body text-secondary font-medium">{{ totalEarnings }}</span>
+            </div>
+          </div>
+
+          <span class="text-small text-subtle-text">Carregando próxima viagem...</span>
+        </div>
+
+      </div>
+
+      <!-- ===== Popup de Passageiros ===== -->
+      <div *ngIf="showPassengersPopup"
+        class="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center"
+        (click)="togglePassengersPopup()">
+        <div class="glass-card rounded-[24px] p-5 w-[320px] max-h-[60vh] overflow-y-auto"
+          (click)="$event.stopPropagation()">
+          <h3 class="text-header-3 text-text mb-3">Passageiros ({{ currentTrip.confirmedPassengers }})</h3>
+          <div class="flex flex-col gap-2">
+            <div *ngFor="let passenger of passengers; let i = index"
+              class="flex items-center gap-3 p-2 glass-inner rounded-[10px]">
+              <div class="size-7 rounded-full bg-secondary/20 flex items-center justify-center text-small text-secondary font-medium">
+                {{ i + 1 }}
+              </div>
+              <span class="text-small text-text flex-1">{{ passenger.name }}</span>
+              <div class="size-4 bg-green-500"
+                style="-webkit-mask: url(assets/icons/tick-circle.svg) no-repeat center / contain; mask: url(assets/icons/tick-circle.svg) no-repeat center / contain;">
+              </div>
+            </div>
+          </div>
+          <button (click)="togglePassengersPopup()"
+            class="w-full mt-3 py-2 rounded-[10px] glass-inner-strong text-secondary text-button-text cursor-pointer hover:opacity-90">
+            FECHAR
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== Popup de Emergência ===== -->
+      <div *ngIf="showEmergencyPopup"
+        class="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center"
+        (click)="toggleEmergencyPopup()">
+        <div class="glass-card rounded-[24px] p-5 w-[280px]"
+          (click)="$event.stopPropagation()">
+          <h3 class="text-header-3 text-primary mb-3 text-center">Emergência</h3>
+          <div class="flex flex-col gap-2">
+            <button (click)="callEmergency()"
+              class="w-full py-3 rounded-[10px] glass-inner-strong text-primary text-button-text cursor-pointer hover:opacity-90 flex items-center justify-center gap-2">
+              <div class="size-4 bg-primary"
+                style="-webkit-mask: url(assets/icons/call.svg) no-repeat center / contain; mask: url(assets/icons/call.svg) no-repeat center / contain;">
+              </div>
+              LIGAR 192 (SAMU)
+            </button>
+            <button (click)="reportProblem()"
+              class="w-full py-3 rounded-[10px] glass-inner text-subtle-text text-button-text cursor-pointer hover:opacity-90 flex items-center justify-center gap-2">
+              <div class="size-4 bg-subtle-text"
+                style="-webkit-mask: url(assets/icons/warning-2.svg) no-repeat center / contain; mask: url(assets/icons/warning-2.svg) no-repeat center / contain;">
+              </div>
+              REPORTAR PROBLEMA
+            </button>
+            <button (click)="toggleEmergencyPopup()"
+              class="w-full py-2 rounded-[10px] glass-inner text-subtle-text text-button-text cursor-pointer hover:opacity-90">
+              CANCELAR
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- ===== BOTTOM ROW: Ofertar Viagem + Viagens Anteriores ===== -->
       <div class="grid grid-cols-2 gap-[24px]">
 
         <!-- Ofertar Viagem Card -->
-        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3">
+        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3 hover-lift">
           <h2 class="text-header-3 text-text">Ofertar viagem</h2>
           <!-- Map preview -->
           <div class="w-full flex-1 rounded-[12px] overflow-hidden relative">
@@ -156,7 +400,7 @@
         </div>
 
         <!-- Viagens Anteriores Card -->
-        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3">
+        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3 hover-lift">
           <h2 class="text-header-3 text-text">Viagens anteriores</h2>
 
           <!-- Past trip details -->
@@ -219,13 +463,17 @@
     <div class="flex flex-col gap-6 w-full lg:w-[43%]">
 
       <!-- ===== RELATÓRIO (Report Card) ===== -->
-      <div class="glass-card rounded-[24px] p-5 flex flex-col md:flex-row gap-[10px] items-stretch flex-1">
+      <div class="glass-card rounded-[24px] p-5 flex flex-col md:flex-row gap-[10px] items-stretch flex-1 hover-lift">
 
         <!-- Left: Chart area -->
         <div class="flex flex-col gap-[10px] flex-1">
           <!-- Title bar -->
-          <div class="glass-inner-subtle rounded-[24px] p-5 flex items-center justify-center">
+          <div class="glass-inner-subtle rounded-[24px] p-5 flex items-center justify-between">
             <span class="text-header-3 text-text">Relatório</span>
+            <button (click)="verFaturamento()"
+              class="text-small text-primary underline cursor-pointer hover:opacity-70 transition-opacity">
+              Ver completo
+            </button>
           </div>
 
           <!-- Chart card -->
@@ -255,7 +503,7 @@
         <!-- Right: Stats cards -->
         <div class="flex flex-col gap-[10px] w-full md:w-[245px] shrink-0">
           <!-- Trips completed stat -->
-          <div class="glass-inner-subtle rounded-[24px] flex flex-col flex-1 overflow-hidden">
+          <div class="glass-inner-subtle rounded-[24px] flex flex-col flex-1 overflow-hidden ">
             <div class="flex gap-1 items-center pl-[6px] pt-[6px]">
               <div class="bg-white/80 size-[40px] rounded-full flex items-center justify-center shrink-0">
                 <span class="text-medium text-text leading-[1.2]">{{ report.days }}</span>
@@ -287,7 +535,7 @@
       <div class="grid grid-cols-2 gap-[24px]">
 
         <!-- Ajustar Valores Card -->
-        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center gap-3">
+        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center gap-3 hover-lift">
           <h2 class="text-header-3 text-text">Ajustar valores</h2>
 
           <div class="glass-inner rounded-[12px] px-5 py-[10px] flex flex-col gap-[10px] w-full flex-1 justify-center">
@@ -323,7 +571,7 @@
 
         <!-- Seu Veículo Card -->
         <div
-          class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3 overflow-hidden relative">
+          class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3 overflow-hidden relative hover-lift">
           <h2 class="text-header-3 text-text self-start z-10">Seu veículo</h2>
 
           <!-- Van side-view image -->
@@ -346,55 +594,4 @@
   </div>
 </div>
 
-<!-- ===== EDIT VEHICLE POPUP ===== -->
-<div *ngIf="showEditVehiclePopup" class="fixed inset-0 z-[50] flex items-center justify-center p-4">
-  <!-- Backdrop -->
-  <div class="absolute inset-0 bg-black/20 backdrop-blur-[25px]" (click)="closeEditVehiclePopup()"></div>
 
-  <!-- Modal Content -->
-  <div class="relative z-10 w-full max-w-[1250px] bg-white/60 backdrop-blur-[40px] border border-light rounded-[24px] p-8 flex flex-col gap-6 items-end">
-    
-    <!-- Title -->
-    <h1 class="text-header-1 text-text w-full text-center ">Seu veículo</h1>
-
-    <!-- Form Fields -->
-    <div class="flex flex-col gap-4 w-full">
-      <!-- Modelo -->
-      <div class="flex flex-col gap-1 w-full">
-        <label class="text-small text-text font-medium">Modelo</label>
-        <input type="text" placeholder="Modelo do seu veículo" class="bg-light rounded-[8px] px-4 py-3 w-full text-body text-subtle-text outline-none focus:ring-2 focus:ring-secondary transition-all">
-      </div>
-
-      <!-- Placa -->
-      <div class="flex flex-col gap-1 w-full">
-        <label class="text-small text-text font-medium">Placa</label>
-        <input type="text" placeholder="ABC-123" class="bg-light rounded-[8px] px-4 py-3 w-full text-body text-subtle-text outline-none focus:ring-2 focus:ring-secondary transition-all">
-      </div>
-
-      <!-- Documento -->
-      <div class="flex flex-col gap-1 w-full">
-        <label class="text-small text-text font-medium">Documento</label>
-        <input type="text" placeholder="Documento do seu veículo" class="bg-light rounded-[8px] px-4 py-3 w-full text-body text-subtle-text outline-none focus:ring-2 focus:ring-secondary transition-all">
-      </div>
-
-      <!-- Foto do veículo -->
-      <div class="flex flex-col gap-1 w-full">
-        <label class="text-small text-text font-medium">Foto do veículo</label>
-        <button class="bg-secondary/20 text-secondary rounded-[8px] px-6 py-4 w-fit font-medium hover:bg-secondary/30 transition-colors">
-          Escolher foto
-        </button>
-      </div>
-    </div>
-
-    <!-- Actions -->
-    <div class="flex gap-6 items-center mt-4">
-      <app-buttons variant="secondary" (click)="closeEditVehiclePopup()">
-        Cancelar
-      </app-buttons>
-      <app-buttons variant="primary" (click)="closeEditVehiclePopup()">
-        Salvar
-      </app-buttons>
-    </div>
-
-  </div>
-</div>

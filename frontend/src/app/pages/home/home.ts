@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, HostListener, ElementRef, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, HostListener, ElementRef, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tag, TagVariant } from '../../components/tags/tags';
@@ -14,10 +14,18 @@ import { debounceTime, switchMap } from 'rxjs/operators';
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home implements OnInit {
+export class Home implements OnInit, OnDestroy {
   private cityService = inject(CityService);
   private elementRef = inject(ElementRef);
   private platformId = inject(PLATFORM_ID);
+
+  // Typed text effect
+  typedDestinations = ['Recife', 'Garanhuns', 'Caruaru', 'Petrolina', 'João Pessoa'];
+  currentDestination = '';
+  private typedIndex = 0;
+  private charIndex = 0;
+  private isDeleting = false;
+  private typingInterval: any = null;
 
   // City autocomplete
   partidaQuery = '';
@@ -32,6 +40,9 @@ export class Home implements OnInit {
 
   ngOnInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;
+
+    // Start typing effect
+    this.startTypingEffect();
 
     // Preload cities on init
     this.cityService.getAllCities().subscribe();
@@ -51,6 +62,47 @@ export class Home implements OnInit {
       this.destinoSuggestions = cities;
       this.showDestinoDropdown = cities.length > 0;
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.typingInterval) {
+      clearInterval(this.typingInterval);
+    }
+  }
+
+  private startTypingEffect(): void {
+    const typeSpeed = 100;
+    const deleteSpeed = 50;
+    const pauseTime = 2000;
+
+    const type = () => {
+      const currentWord = this.typedDestinations[this.typedIndex];
+
+      if (this.isDeleting) {
+        this.currentDestination = currentWord.substring(0, this.charIndex - 1);
+        this.charIndex--;
+
+        if (this.charIndex === 0) {
+          this.isDeleting = false;
+          this.typedIndex = (this.typedIndex + 1) % this.typedDestinations.length;
+          setTimeout(type, 500);
+          return;
+        }
+        setTimeout(type, deleteSpeed);
+      } else {
+        this.currentDestination = currentWord.substring(0, this.charIndex + 1);
+        this.charIndex++;
+
+        if (this.charIndex === currentWord.length) {
+          this.isDeleting = true;
+          setTimeout(type, pauseTime);
+          return;
+        }
+        setTimeout(type, typeSpeed);
+      }
+    };
+
+    type();
   }
 
   onPartidaInput(): void {
@@ -78,6 +130,7 @@ export class Home implements OnInit {
       this.showDestinoDropdown = false;
     }
   }
+
   scheduledTrips = [
     { month: 'FEV', day: '10', origin: 'Garanhuns', destination: 'Recife', price: 'R$40,00', time: '08:00', vehicle: 'Sprinter 2025 XXXX-XXX', variant: 'success' as TagVariant, statusLabel: 'Confirmado', isFirst: true },
     { month: 'FEV', day: '10', origin: 'Garanhuns', destination: 'Recife', price: 'R$40,00', time: '08:00', vehicle: 'Sprinter 2025 XXXX-XXX', variant: 'warning' as TagVariant, statusLabel: 'Aguardando', isFirst: false },

@@ -32,6 +32,11 @@ export const routes: Routes = [
       { path: 'home', loadComponent: () => import('./pages/home/home').then(m => m.Home) },
       { path: 'viagens', loadComponent: () => import('./pages/viagens/viagens').then(m => m.Viagens), canActivate: [authGuard] },
       { path: 'motorista', loadComponent: () => import('./pages/motorista-page/motorista-page').then(m => m.MotoristaPage), canActivate: [authGuard, driverApprovedGuard] },
+      { path: 'ofertar-viagem', loadComponent: () => import('./pages/ofertar-viagem/ofertar-viagem').then(m => m.OfertarViagem), canActivate: [authGuard, driverApprovedGuard] },
+      { path: 'seu-veiculo', loadComponent: () => import('./pages/seu-veiculo/seu-veiculo').then(m => m.SeuVeiculo), canActivate: [authGuard, driverApprovedGuard] },
+      { path: 'viagens-motorista', loadComponent: () => import('./pages/viagens-motorista/viagens-motorista').then(m => m.ViagensMotorista), canActivate: [authGuard, driverApprovedGuard] },
+      { path: 'ajustar-valores', loadComponent: () => import('./pages/ajustar-valores/ajustar-valores').then(m => m.AjustarValores), canActivate: [authGuard, driverApprovedGuard] },
+      { path: 'faturamento', loadComponent: () => import('./pages/faturamento/faturamento').then(m => m.Faturamento), canActivate: [authGuard, driverApprovedGuard] },
     ]
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },

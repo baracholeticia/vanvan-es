@@ -7,7 +7,7 @@ import { ToastService } from '../../components/toast/toast.service';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, RouterLink], 
+  imports: [FormsModule, RouterLink],
   templateUrl: './register.html',
 })
 export class Register {
@@ -22,9 +22,9 @@ export class Register {
   errorMessage = signal('');
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private authService: AuthService,
-    private toastService: ToastService 
+    private toastService: ToastService
   ) {}
 
   onCpfInput(event: any) {
@@ -38,7 +38,7 @@ export class Register {
   onPhoneInput(event: any) {
     const input = event.target as HTMLInputElement;
     let value = input.value.replace(/\D/g, '');
-    
+
     if (value.length > 11) value = value.slice(0, 11);
 
     if (value.length > 10) {
@@ -58,9 +58,9 @@ export class Register {
   onBirthdateInput(event: any) {
     const input = event.target as HTMLInputElement;
     let value = input.value.replace(/\D/g, '');
-    
+
     if (value.length > 8) value = value.slice(0, 8);
-    
+
     if (value.length > 4) {
       value = value.replace(/^(\d{2})(\d{2})(\d{0,4}).*/, '$1/$2/$3');
     } else if (value.length > 2) {
@@ -80,22 +80,22 @@ export class Register {
         this.toastService.error('Preencha todos os campos obrigatórios.');
         return;
     }
-    
+
     const dateParts = this.birthdate.split('/');
     if (dateParts.length !== 3) {
         this.toastService.error('Data de nascimento inválida. Use o formato dd/mm/aaaa.');
         return;
     }
-    
+
     const day = parseInt(dateParts[0], 10);
     const month = parseInt(dateParts[1], 10);
     const year = parseInt(dateParts[2], 10);
-    
+
     if (year < 1920 || year > 2020) {
         this.toastService.error('O ano de nascimento deve ser entre 1920 e 2020.');
         return;
     }
-    
+
     if (month < 1 || month > 12 || day < 1 || day > 31) {
         this.toastService.error('Data de nascimento inválida.');
         return;
@@ -103,14 +103,14 @@ export class Register {
 
     this.isLoading.set(true);
     this.errorMessage.set('');
-    
+
     const data = {
       name: this.name,
       email: this.email,
       cpf: this.cpf,
       telephone: this.telephone,
       password: this.password,
-      birthDate: this.birthdate, 
+      birthDate: this.birthdate,
     };
 
     this.authService.register(data).subscribe({
@@ -122,14 +122,14 @@ export class Register {
       error: (err) => {
         console.error('Registration failed', err);
         let msgErro = 'Falha ao realizar cadastro. Verifique os dados e tente novamente.';
-        
+
         if (err.error && typeof err.error === 'object' && err.error.message) {
           msgErro = err.error.message;
         } else if (typeof err.error === 'string') {
           msgErro = err.error;
         }
-        
-        this.errorMessage.set(msgErro); 
+
+        this.errorMessage.set(msgErro);
         this.toastService.error(msgErro); // Dispara o Toast com a mensagem do Back-end
         this.isLoading.set(false);
       }

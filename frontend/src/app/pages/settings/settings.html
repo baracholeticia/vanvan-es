@@ -37,7 +37,7 @@
               <span class="text-[#112B3C] text-body">{{ distance }}km</span>
             </div>
           </div>
-          <div (click)="addJourney()" class="cursor-pointer w-[280px] p-3.5 bg-[#F66B0E] shadow-md rounded-lg text-[#EEEEEF] text-[16px] font-google-sans-flex font-bold uppercase text-center tracking-wide">
+          <div (click)="addJourney()" class="cursor-pointer w-[280px] p-3.5 bg-[#F66B0E] shadow-primary rounded-lg text-[#EEEEEF] text-[16px] font-google-sans-flex font-bold uppercase text-center tracking-wide">
             adicionar
           </div>
         </div>
@@ -88,7 +88,7 @@
           <img src="assets/icons/dollar-circle.svg" class="w-4 h-4 opacity-70 inline ml-1" alt="Valor">
           <strong class="text-[#112B3C]">R${{ currentRate * 100 | number:'1.2-2' }}</strong>
         </div>
-        <div (click)="saveRate()" class="cursor-pointer w-[280px] p-3.5 bg-[#F66B0E] shadow-md rounded-lg text-[#EEEEEF] text-[16px] font-google-sans-flex font-bold uppercase text-center">
+        <div (click)="saveRate()" class="cursor-pointer w-[280px] p-3.5 bg-[#F66B0E] shadow-primary rounded-lg text-[#EEEEEF] text-[16px] font-google-sans-flex font-bold uppercase text-center">
           Salvar
         </div>
       </div>

@@ -1,0 +1,242 @@
+<!-- Full-viewport gradient background -->
+<div class="fixed inset-0 z-[1] pointer-events-none"
+  style="background: linear-gradient(-68deg, rgba(177,177,177,1) 1%, rgba(233,233,233,1) 100%)">
+</div>
+
+<!-- Background VAN-VIAGEM image -->
+<div class="fixed top-[76px] left-[-166px] w-[1586px] h-[885px] z-[2] pointer-events-none">
+  <img src="assets/VAN-VIAGEM.png" class="w-full h-full object-cover" alt="background van">
+</div>
+
+<!-- Main Container -->
+<div class="flex flex-col items-end relative w-full min-h-[calc(100vh-100px)] py-5 pr-5">
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="relative z-[10] flex flex-col gap-5 w-full max-w-[700px]">
+
+    <!-- ===== HEADER CARD ===== -->
+    <div class="glass-card rounded-[24px] p-5 flex items-center gap-4">
+      <button (click)="goBack()"
+        class="opacity-80 cursor-pointer hover:opacity-60 transition-opacity">
+        <div class="size-12 bg-text"
+          style="-webkit-mask: url(assets/icons/arrow-circle-left.svg) no-repeat center / contain; mask: url(assets/icons/arrow-circle-left.svg) no-repeat center / contain;">
+        </div>
+      </button>
+      <div class="flex flex-col gap-1">
+        <h1 class="text-header-2 text-text tracking-[-0.8px]">Ajustar Valores</h1>
+        <p class="text-small text-subtle-text">Personalize o valor cobrado por quilômetro</p>
+      </div>
+    </div>
+
+    <!-- ===== LOADING STATE ===== -->
+    <div *ngIf="isLoading" class="glass-card rounded-[24px] p-10 flex items-center justify-center">
+      <span class="text-body text-subtle-text">Carregando configurações...</span>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div *ngIf="!isLoading" class="flex flex-col gap-5">
+
+      <!-- ===== VALOR PADRÃO DO ADMIN ===== -->
+      <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4 hover-lift">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col gap-1">
+            <span class="text-body text-subtle-text">Valor padrão (definido pelo administrador)</span>
+            <span class="text-header-2 text-text">{{ formatCurrency(pricingConfig.defaultRatePerKm) }}/km</span>
+          </div>
+          <div class="flex flex-col items-end gap-1">
+            <span class="text-small text-subtle-text">Variação permitida</span>
+            <span class="text-body text-text">{{ pricingConfig.minVariation }}% a +{{ pricingConfig.maxVariation }}%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== AJUSTE DE VALOR ===== -->
+      <div class="glass-card rounded-[24px] p-5 flex flex-col gap-6 hover-lift">
+        <h2 class="text-header-3 text-text text-center">Seu valor por km</h2>
+
+        <!-- Valor Atual -->
+        <div class="flex flex-col items-center gap-2">
+          <div class="flex items-center gap-4">
+            <!-- Botão diminuir -->
+            <button (click)="adjustRate(-0.05)"
+              [disabled]="editingRate <= minAllowedRate"
+              class="size-12 rounded-full bg-white flex items-center justify-center cursor-pointer hover:bg-light transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
+              <div class="size-6 bg-text"
+                style="-webkit-mask: url(assets/icons/check_indeterminate_small.svg) no-repeat center / contain; mask: url(assets/icons/check_indeterminate_small.svg) no-repeat center / contain;">
+              </div>
+            </button>
+
+            <!-- Valor -->
+            <div class="flex flex-col items-center">
+              <span class="text-[48px] font-bold text-text leading-none">{{ formatCurrency(editingRate) }}</span>
+              <span class="text-body text-subtle-text">por quilômetro</span>
+            </div>
+
+            <!-- Botão aumentar -->
+            <button (click)="adjustRate(0.05)"
+              [disabled]="editingRate >= maxAllowedRate"
+              class="size-12 rounded-full bg-white flex items-center justify-center cursor-pointer hover:bg-light transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
+              <div class="size-6 bg-text"
+                style="-webkit-mask: url(assets/icons/add.svg) no-repeat center / 60%; mask: url(assets/icons/add.svg) no-repeat center / 60%;">
+              </div>
+            </button>
+          </div>
+
+          <!-- Variação em relação ao padrão -->
+          <div class="px-4 py-1 rounded-full"
+            [class]="currentVariationPercent === 0 ? 'bg-subtle-text/20 text-subtle-text' :
+                     currentVariationPercent > 0 ? 'bg-secondary/20 text-secondary' : 'bg-primary/20 text-primary'">
+            <span class="text-small font-medium">
+              {{ currentVariationPercent === 0 ? 'Valor padrão' : formatVariation(currentVariationPercent) + ' do padrão' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Slider Visual -->
+        <div class="flex flex-col gap-2 px-4">
+          <!-- Labels -->
+          <div class="flex justify-between text-small text-subtle-text">
+            <span>Mínimo: {{ formatCurrency(minAllowedRate) }}</span>
+            <span>Máximo: {{ formatCurrency(maxAllowedRate) }}</span>
+          </div>
+
+          <!-- Interactive Slider -->
+          <div class="relative h-8 flex items-center slider-container">
+            <!-- Track Background -->
+            <div class="absolute inset-x-0 h-3 bg-light rounded-full"></div>
+
+            <!-- Filled portion -->
+            <div class="absolute left-0 h-3 bg-secondary rounded-full pointer-events-none transition-all"
+              [style.width.%]="sliderPercent">
+            </div>
+
+            <!-- Default marker -->
+            <div class="absolute h-5 w-1 bg-text/40 rounded-full pointer-events-none z-10"
+              [style.left]="'calc(' + defaultMarkerPercent + '% - 2px)'">
+            </div>
+            <div class="absolute text-[10px] text-subtle-text pointer-events-none z-10 -top-4"
+              [style.left]="'calc(' + defaultMarkerPercent + '% - 20px)'">
+              Padrão
+            </div>
+
+            <!-- Range Input -->
+            <input
+              type="range"
+              [min]="minAllowedRate"
+              [max]="maxAllowedRate"
+              [step]="0.01"
+              [(ngModel)]="editingRate"
+              (ngModelChange)="onSliderChange()"
+              class="slider-input absolute inset-0 w-full h-full cursor-pointer opacity-0 z-20">
+
+            <!-- Custom Thumb -->
+            <div class="absolute h-6 w-6 bg-secondary rounded-full shadow-lg pointer-events-none z-10 flex items-center justify-center transition-all"
+              [style.left]="'calc(' + sliderPercent + '% - 12px)'">
+              <div class="h-2 w-0.5 bg-white rounded-full"></div>
+              <div class="h-2 w-0.5 bg-white rounded-full ml-0.5"></div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="flex justify-center gap-2 mt-2">
+            <button (click)="setToMin()"
+              class="px-3 py-1 rounded-full text-small transition-all cursor-pointer"
+              [class]="editingRate === minAllowedRate ? 'bg-primary text-white' : 'bg-white text-subtle-text hover:bg-light'">
+              Mínimo
+            </button>
+            <button (click)="setToDefault()"
+              class="px-3 py-1 rounded-full text-small transition-all cursor-pointer"
+              [class]="editingRate === pricingConfig.defaultRatePerKm ? 'bg-text text-white' : 'bg-white text-subtle-text hover:bg-light'">
+              Padrão
+            </button>
+            <button (click)="setToMax()"
+              class="px-3 py-1 rounded-full text-small transition-all cursor-pointer"
+              [class]="editingRate === maxAllowedRate ? 'bg-secondary text-white' : 'bg-white text-subtle-text hover:bg-light'">
+              Máximo
+            </button>
+          </div>
+        </div>
+
+        <!-- Input Direto -->
+        <div class="flex flex-col gap-2">
+          <label class="text-body text-text font-medium text-center">Ou digite o valor desejado:</label>
+          <div class="flex items-center justify-center gap-2">
+            <span class="text-body text-subtle-text">R$</span>
+            <input
+              type="number"
+              [(ngModel)]="editingRate"
+              (ngModelChange)="onRateChange()"
+              [min]="minAllowedRate"
+              [max]="maxAllowedRate"
+              step="0.01"
+              class="w-24 px-3 py-2 rounded-[12px] bg-white border border-light text-center text-body text-text focus:outline-none focus:border-secondary">
+            <span class="text-body text-subtle-text">/km</span>
+          </div>
+          <p *ngIf="!isRateValid" class="text-small text-primary text-center">
+            O valor deve estar entre {{ formatCurrency(minAllowedRate) }} e {{ formatCurrency(maxAllowedRate) }}
+          </p>
+        </div>
+      </div>
+
+      <!-- ===== PREVIEW DE ROTAS ===== -->
+      <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4 hover-lift">
+        <h2 class="text-header-3 text-text text-center">Simulação de preços</h2>
+        <p class="text-small text-subtle-text text-center">Veja quanto você cobraria em rotas populares</p>
+
+        <div class="flex flex-col gap-2">
+          <div *ngFor="let route of routePreviews"
+            class="glass-inner rounded-[12px] px-4 py-3 flex items-center justify-between">
+            <!-- Route -->
+            <div class="flex items-center gap-2">
+              <span class="text-body text-text">{{ route.origin }}</span>
+              <div class="size-4 bg-subtle-text shrink-0"
+                style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-body text-text">{{ route.destination }}</span>
+            </div>
+            <!-- Distance + Price -->
+            <div class="flex items-center gap-4">
+              <span class="text-small text-subtle-text">{{ route.distance }}km</span>
+              <span class="text-body text-secondary font-medium">{{ formatCurrency(route.estimatedPrice) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== MENSAGENS ===== -->
+      <div *ngIf="errorMessage" class="glass-card rounded-[24px] p-4 bg-primary/10 border border-primary/30">
+        <p class="text-body text-primary text-center">{{ errorMessage }}</p>
+      </div>
+
+      <div *ngIf="successMessage" class="glass-card rounded-[24px] p-4 bg-secondary/10 border border-secondary/30">
+        <p class="text-body text-secondary text-center">{{ successMessage }}</p>
+      </div>
+
+      <!-- ===== ACTION BUTTONS ===== -->
+      <div class="flex gap-4">
+        <button (click)="cancelChanges()"
+          *ngIf="hasChanges"
+          class="flex-1 glass-inner rounded-[12px] border border-light px-5 py-4 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+          <span class="text-button-text text-subtle-text">CANCELAR</span>
+        </button>
+
+        <button (click)="saveRate()"
+          [disabled]="!hasChanges || !isRateValid || isSaving"
+          class="flex-1 glass-inner rounded-[12px] border border-light px-5 py-4 flex gap-2 items-center justify-center cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+          [class]="hasChanges && isRateValid ? 'bg-secondary/20' : ''">
+          <div *ngIf="!isSaving" class="size-6 shrink-0"
+            [class]="hasChanges && isRateValid ? 'bg-secondary' : 'bg-subtle-text'"
+            style="-webkit-mask: url(assets/icons/tick-circle.svg) no-repeat center / contain; mask: url(assets/icons/tick-circle.svg) no-repeat center / contain;">
+          </div>
+          <span class="text-button-text" [class]="hasChanges && isRateValid ? 'text-secondary' : 'text-subtle-text'">
+            {{ isSaving ? 'SALVANDO...' : 'SALVAR ALTERAÇÕES' }}
+          </span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+

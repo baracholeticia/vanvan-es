@@ -1,0 +1,525 @@
+<!-- Full-viewport gradient background -->
+<div class="fixed inset-0 z-[1] pointer-events-none" style="background: linear-gradient(-68deg, rgba(177,177,177,1) 1%, rgba(233,233,233,1) 100%)"></div>
+
+<!-- Background van side-view image - fixed position -->
+<div class="fixed top-[76px] left-[-166px] w-[1586px] h-[885px] z-[2] pointer-events-none">
+  <img src="assets/VAN-VIAGEM.png" class="w-full h-full object-cover" alt="background van">
+</div>
+
+<!-- Main Container -->
+<div class="flex flex-col items-end justify-start relative w-full h-[calc(100vh-100px)] py-5 pr-5">
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="relative z-[10] flex gap-3 items-start cards-container max-h-full">
+
+    <!-- ===== REPEAT DAYS CARD (leftmost) ===== -->
+    <div
+      *ngIf="showRepeatCard && selectedTripForRepeat"
+      class="rounded-[24px] p-5 w-[298px] flex flex-col gap-6 items-center animate-slide-in border border-white"
+      style="background: rgba(238, 238, 239, 0.4); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);">
+
+      <div class="flex flex-col gap-6 w-full">
+        <!-- Title and Trip Info -->
+        <div class="flex flex-col gap-3 w-full">
+          <h2 class="text-header-3 text-text text-center w-full">Dias a repetir viagem</h2>
+
+          <!-- Trip Summary Card -->
+          <div class="rounded-[12px] px-5 py-[10px] flex flex-col gap-[10px] w-full border border-white"
+            style="background: rgba(238, 238, 239, 0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+            <!-- Route -->
+            <div class="flex items-center justify-between w-full">
+              <span class="text-medium text-text">{{ selectedTripForRepeat.origin }}</span>
+              <div class="size-5 shrink-0 bg-text"
+                style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-medium text-text">{{ selectedTripForRepeat.destination }}</span>
+            </div>
+            <!-- Price + Distance -->
+            <div class="flex items-center justify-between w-full">
+              <div class="flex gap-[5px] items-center">
+                <div class="size-[18px] shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ selectedTripForRepeat.price }}</span>
+              </div>
+              <div class="flex gap-[5px] items-center">
+                <div class="size-[18px] shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/routing.svg) no-repeat center / contain; mask: url(assets/icons/routing.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ selectedTripForRepeat.distance }}</span>
+              </div>
+            </div>
+            <!-- Obs -->
+            <p class="text-small text-subtle-text">obs: as viagens serão no mesmo horário que a viagem anterior</p>
+          </div>
+        </div>
+
+        <!-- Days Toggle List -->
+        <div class="flex flex-col gap-[2px] w-full">
+          <!-- Segunda-feira -->
+          <div class="bg-light/40 rounded-t-[24px] rounded-b-[4px] px-[14px] py-1 flex items-center justify-between w-full">
+            <span class="text-body text-text" [class.text-subtle-text]="!repeatDays.monday">Segunda-feira</span>
+            <app-toggle [(checked)]="repeatDays.monday"></app-toggle>
+          </div>
+          <!-- Terça-feira -->
+          <div class="bg-light/40 rounded-[4px] px-[14px] py-1 flex items-center justify-between w-full">
+            <span class="text-body text-text" [class.text-subtle-text]="!repeatDays.tuesday">Terça-feira</span>
+            <app-toggle [(checked)]="repeatDays.tuesday"></app-toggle>
+          </div>
+          <!-- Quarta-feira -->
+          <div class="bg-light/40 rounded-[4px] px-[14px] py-1 flex items-center justify-between w-full">
+            <span class="text-body text-text" [class.text-subtle-text]="!repeatDays.wednesday">Quarta-feira</span>
+            <app-toggle [(checked)]="repeatDays.wednesday"></app-toggle>
+          </div>
+          <!-- Quinta-feira -->
+          <div class="bg-light/40 rounded-[4px] px-[14px] py-1 flex items-center justify-between w-full">
+            <span class="text-body text-text" [class.text-subtle-text]="!repeatDays.thursday">Quinta-feira</span>
+            <app-toggle [(checked)]="repeatDays.thursday"></app-toggle>
+          </div>
+          <!-- Sexta-feira -->
+          <div class="bg-light/40 rounded-[4px] px-[14px] py-1 flex items-center justify-between w-full">
+            <span class="text-body text-text" [class.text-subtle-text]="!repeatDays.friday">Sexta-feira</span>
+            <app-toggle [(checked)]="repeatDays.friday"></app-toggle>
+          </div>
+          <!-- Sábado -->
+          <div class="bg-light/40 rounded-t-[4px] rounded-b-[24px] px-[14px] py-1 flex items-center justify-between w-full">
+            <span class="text-body" [class.text-text]="repeatDays.saturday" [class.text-subtle-text]="!repeatDays.saturday">Sábado</span>
+            <app-toggle [(checked)]="repeatDays.saturday"></app-toggle>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <button
+        (click)="saveRepeatTrip()"
+        class="rounded-[12px] border border-white px-5 py-4 h-[69px] w-full flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
+        style="background: rgba(238, 238, 239, 0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+        <span class="text-header-3 text-primary">Salvar</span>
+      </button>
+    </div>
+
+    <!-- ===== HISTORY CARD ===== -->
+    <div
+      *ngIf="showHistoryCard"
+      class="rounded-[24px] p-5 w-[298px] max-h-[calc(100vh-140px)] overflow-y-auto scrollbar-hide flex flex-col gap-6 items-center animate-slide-in border border-white"
+      style="background: rgba(238, 238, 239, 0.4); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);">
+
+      <h2 class="text-header-3 text-text text-center w-full">Viagens anteriores</h2>
+
+      <div class="flex flex-col flex-1 justify-between gap-6 w-full">
+        <!-- Past Trips List -->
+        <div class="flex flex-col gap-6 w-full">
+          <div *ngFor="let trip of pastTrips" class="flex flex-col gap-[10px] w-full">
+            <!-- Trip Info Card -->
+            <div class="rounded-[12px] px-5 py-[10px] flex flex-col gap-[10px] w-full border border-white"
+              style="background: rgba(238, 238, 239, 0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+              <!-- Route -->
+              <div class="flex items-center justify-between w-full">
+                <span class="text-medium text-text">{{ trip.origin }}</span>
+                <div class="size-5 shrink-0 bg-text"
+                  style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-medium text-text">{{ trip.destination }}</span>
+              </div>
+              <!-- Price + Distance -->
+              <div class="flex items-center justify-between w-full">
+                <div class="flex gap-[5px] items-center">
+                  <div class="size-[18px] shrink-0 bg-subtle-text"
+                    style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;">
+                  </div>
+                  <span class="text-small text-subtle-text">{{ trip.price }}</span>
+                </div>
+                <div class="flex gap-[5px] items-center">
+                  <div class="size-[18px] shrink-0 bg-subtle-text"
+                    style="-webkit-mask: url(assets/icons/routing.svg) no-repeat center / contain; mask: url(assets/icons/routing.svg) no-repeat center / contain;">
+                  </div>
+                  <span class="text-small text-subtle-text">{{ trip.distance }}</span>
+                </div>
+              </div>
+              <!-- Date + Time -->
+              <div class="flex items-center justify-between w-full">
+                <div class="flex gap-[5px] items-center">
+                  <div class="size-[18px] shrink-0 bg-subtle-text"
+                    style="-webkit-mask: url(assets/icons/calendar.svg) no-repeat center / contain; mask: url(assets/icons/calendar.svg) no-repeat center / contain;">
+                  </div>
+                  <span class="text-small text-subtle-text">{{ trip.date }}</span>
+                </div>
+                <div class="flex gap-[5px] items-center">
+                  <div class="size-[18px] shrink-0 bg-subtle-text"
+                    style="-webkit-mask: url(assets/icons/clock.svg) no-repeat center / contain; mask: url(assets/icons/clock.svg) no-repeat center / contain;">
+                  </div>
+                  <span class="text-small text-subtle-text">{{ trip.time }}</span>
+                </div>
+              </div>
+            </div>
+            <!-- Repeat Button -->
+            <button
+              (click)="openRepeatCard(trip)"
+              class="repeat-button rounded-[12px] border border-light px-5 py-4 h-[69px] w-full flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
+              style="background: rgba(238, 238, 239, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+              <div class="size-6 shrink-0 bg-secondary"
+                style="-webkit-mask: url(assets/icons/refresh-left-square.svg) no-repeat center / contain; mask: url(assets/icons/refresh-left-square.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-header-3 text-secondary">Repetir</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Ver Mais Button -->
+        <button
+          (click)="verMaisViagens()"
+          class="rounded-[12px] border border-white px-5 py-4 h-[69px] w-full flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
+          style="background: rgba(238, 238, 239, 0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+          <div class="size-6 shrink-0 bg-subtle-text"
+            style="-webkit-mask: url(assets/icons/refresh-left-square.svg) no-repeat center / contain; mask: url(assets/icons/refresh-left-square.svg) no-repeat center / contain;">
+          </div>
+          <span class="text-header-3 text-subtle-text">Ver mais</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- History Button (hidden when history card is open) -->
+    <button
+      *ngIf="!showHistoryCard"
+      (click)="goToHistory()"
+      class="history-button rounded-[24px] p-5 size-[70px] flex flex-col items-center justify-center cursor-pointer hover:opacity-80 transition-opacity border border-white"
+      style="background: rgba(238, 238, 239, 0.4); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);">
+      <div class="size-6 bg-text"
+        style="-webkit-mask: url(assets/icons/history-rounded.svg) no-repeat center / contain; mask: url(assets/icons/history-rounded.svg) no-repeat center / contain;">
+      </div>
+    </button>
+
+    <!-- ===== FORM CARD (Step 1) ===== -->
+    <div
+      *ngIf="currentStep === 'form'"
+      class="rounded-[24px] p-5 w-[511px] flex flex-col gap-4 items-center border border-white"
+      style="background: rgba(238, 238, 239, 0.4); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);">
+
+      <!-- Title -->
+      <div class="flex flex-col gap-3 items-center w-full">
+        <h1 class="text-header-2 text-text text-center w-full tracking-[-0.8px]">Ofertar viagem</h1>
+
+        <!-- ===== FORM FIELDS ===== -->
+        <div class="flex flex-col gap-4 w-full">
+
+          <!-- ===== PARTIDA (Departure) ===== -->
+          <div class="flex flex-col gap-2 w-full">
+
+            <!-- Partida - Cidade -->
+            <div class="flex flex-col gap-[3px] w-full">
+              <label class="text-body text-text font-medium leading-[1.2]">Partida</label>
+              <div class="textfield-ofertar">
+                <input
+                  type="text"
+                  [(ngModel)]="tripOffer.departureCity"
+                  placeholder="Cidade de partida"
+                  class="textfield-input"
+                />
+              </div>
+            </div>
+
+            <!-- Local da partida -->
+            <div class="flex flex-col gap-[3px] w-full">
+              <label class="text-body text-text font-medium leading-[1.2]">Local da partida</label>
+              <div class="textfield-ofertar">
+                <input
+                  type="text"
+                  [(ngModel)]="tripOffer.departureLocation"
+                  placeholder="Nome da rua / avenida"
+                  class="textfield-input"
+                />
+              </div>
+            </div>
+
+            <!-- Ponto de referência (Partida) -->
+            <div class="flex flex-col gap-[3px] w-full">
+              <label class="text-body text-text font-medium leading-[1.2]">Ponto de referência</label>
+              <div class="textfield-ofertar">
+                <input
+                  type="text"
+                  [(ngModel)]="tripOffer.departureReference"
+                  placeholder="Ex: em frente ao relógio das flores"
+                  class="textfield-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== DESTINO (Destination) ===== -->
+          <div class="flex flex-col gap-2 w-full">
+
+            <!-- Destino - Cidade -->
+            <div class="flex flex-col gap-[3px] w-full">
+              <label class="text-body text-text font-medium leading-[1.2]">Destino</label>
+              <div class="textfield-ofertar">
+                <input
+                  type="text"
+                  [(ngModel)]="tripOffer.destinationCity"
+                  placeholder="Cidade de destino"
+                  class="textfield-input"
+                />
+              </div>
+            </div>
+
+            <!-- Local do destino -->
+            <div class="flex flex-col gap-[3px] w-full">
+              <label class="text-body text-text font-medium leading-[1.2]">Local do destino</label>
+              <div class="textfield-ofertar">
+                <input
+                  type="text"
+                  [(ngModel)]="tripOffer.destinationLocation"
+                  placeholder="Nome da rua / avenida"
+                  class="textfield-input"
+                />
+              </div>
+            </div>
+
+            <!-- Ponto de referência (Destino) -->
+            <div class="flex flex-col gap-[3px] w-full">
+              <label class="text-body text-text font-medium leading-[1.2]">Ponto de referência</label>
+              <div class="textfield-ofertar">
+                <input
+                  type="text"
+                  [(ngModel)]="tripOffer.destinationReference"
+                  placeholder="Ex: Terminal rodoviário"
+                  class="textfield-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== DATA E HORÁRIO ===== -->
+          <div class="flex flex-col gap-2 w-full">
+
+            <!-- Data -->
+            <div class="flex flex-col gap-[3px] w-full">
+              <label class="text-body text-text font-medium leading-[1.2]">Data</label>
+              <div class="textfield-ofertar">
+                <input
+                  type="text"
+                  [(ngModel)]="tripOffer.date"
+                  (input)="formatDate($event)"
+                  placeholder="dd/mm/aaaa"
+                  maxlength="10"
+                  class="textfield-input"
+                />
+                <div class="size-6 shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/calendar.svg) no-repeat center / contain; mask: url(assets/icons/calendar.svg) no-repeat center / contain;">
+                </div>
+              </div>
+            </div>
+
+            <!-- Horário -->
+            <div class="flex flex-col gap-[3px] w-full">
+              <label class="text-body text-text font-medium leading-[1.2]">Horário</label>
+              <div class="textfield-ofertar">
+                <input
+                  type="text"
+                  [(ngModel)]="tripOffer.time"
+                  (input)="formatTime($event)"
+                  placeholder="hh:mm"
+                  maxlength="5"
+                  class="textfield-input"
+                />
+                <div class="size-6 shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/clock.svg) no-repeat center / contain; mask: url(assets/icons/clock.svg) no-repeat center / contain;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <p *ngIf="errorMessage" class="text-primary text-small text-center w-full">{{ errorMessage }}</p>
+
+      <!-- ===== PRÓXIMO BUTTON ===== -->
+      <button
+        (click)="onNext()"
+        [disabled]="isLoading"
+        class="w-full rounded-[12px] border border-light px-5 py-4 flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+        style="background: rgba(250, 250, 250, 0.4); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);">
+        <span class="text-button-text text-secondary tracking-[0.48px]">PRÓXIMO</span>
+        <div class="size-6 shrink-0 bg-secondary"
+          style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
+        </div>
+      </button>
+
+    </div>
+
+    <!-- ===== VEHICLES CARD (Step 2) ===== -->
+    <div
+      *ngIf="currentStep === 'vehicles'"
+      class="rounded-[24px] p-5 w-[511px] max-h-[calc(100vh-140px)] overflow-y-auto scrollbar-hide flex flex-col justify-between gap-6 items-center border border-white"
+      style="background: rgba(238, 238, 239, 0.4); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);">
+
+      <!-- Header -->
+      <div class="flex flex-col gap-4 items-center w-full">
+        <div class="flex gap-[44px] items-center w-full">
+          <button
+            (click)="goBack()"
+            class="opacity-80 cursor-pointer hover:opacity-60 transition-opacity">
+            <div class="size-12 bg-text"
+              style="-webkit-mask: url(assets/icons/arrow-circle-left.svg) no-repeat center / contain; mask: url(assets/icons/arrow-circle-left.svg) no-repeat center / contain;">
+            </div>
+          </button>
+          <h1 class="text-header-2 text-text text-center tracking-[-0.8px]">Ofertar viagem</h1>
+        </div>
+
+        <!-- Vehicles Selection -->
+        <div class="rounded-[24px] p-5 w-full flex flex-col gap-[10px] border border-white"
+          style="background: rgba(238, 238, 239, 0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+          <div class="flex items-center text-center justify-between w-full">
+            <span class="text-subtitle text-text">Escolha sua Van</span>
+          </div>
+
+          <!-- Loading State -->
+          <div *ngIf="isLoadingVehicles" class="flex items-center justify-center w-full py-8">
+            <span class="text-body text-subtle-text">Carregando veículos...</span>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!isLoadingVehicles && vehicles.length === 0" class="flex flex-col items-center justify-center w-full py-8 gap-2">
+            <span class="text-body text-subtle-text text-center">Nenhum veículo cadastrado.</span>
+            <span class="text-small text-subtle-text text-center">Cadastre um veículo em "Seu Veículo" para ofertar viagens.</span>
+          </div>
+
+          <div *ngIf="!isLoadingVehicles && vehicles.length > 0" class="flex flex-col gap-4 items-center w-full">
+            <div
+              *ngFor="let vehicle of vehicles"
+              (click)="selectVehicle(vehicle.id)"
+              class="vehicle-card rounded-[24px] p-5 w-full flex flex-col gap-[10px] items-center justify-end overflow-hidden cursor-pointer transition-all"
+              [class.selected]="tripOffer.selectedVehicleId === vehicle.id">
+              <img [src]="vehicle.image" [alt]="vehicle.name" class="w-[367px] h-[205px] object-cover">
+              <div class="flex flex-col gap-1 items-center justify-center">
+                <span class="text-bold text-text">{{ vehicle.name }}</span>
+                <span class="text-small text-subtle-text">{{ vehicle.plate }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <p *ngIf="errorMessage" class="text-primary text-small text-center w-full">{{ errorMessage }}</p>
+
+      <!-- ===== PRÓXIMO BUTTON ===== -->
+      <button
+        (click)="onNext()"
+        [disabled]="isLoading"
+        class="w-full rounded-[12px] border border-light px-5 py-4 flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+        style="background: rgba(250, 250, 250, 0.4); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);">
+        <span class="text-button-text text-secondary tracking-[0.48px]">PRÓXIMO</span>
+        <div class="size-6 shrink-0 bg-secondary"
+          style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
+        </div>
+      </button>
+
+    </div>
+
+    <!-- ===== PRICING CARD (Step 3) ===== -->
+    <div
+      *ngIf="currentStep === 'pricing'"
+      class="rounded-[24px] p-5 w-[511px] max-h-[calc(100vh-140px)] overflow-y-auto scrollbar-hide flex flex-col justify-between gap-6 items-center border border-white"
+      style="background: rgba(238, 238, 239, 0.4); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);">
+
+      <!-- Header -->
+      <div class="flex flex-col gap-4 items-center w-full">
+        <div class="flex gap-[44px] items-center w-full">
+          <button
+            (click)="goBack()"
+            class="opacity-80 cursor-pointer hover:opacity-60 transition-opacity">
+            <div class="size-12 bg-text"
+              style="-webkit-mask: url(assets/icons/arrow-circle-left.svg) no-repeat center / contain; mask: url(assets/icons/arrow-circle-left.svg) no-repeat center / contain;">
+            </div>
+          </button>
+          <h1 class="text-header-2 text-text text-center tracking-[-0.8px]">Ofertar viagem</h1>
+        </div>
+
+        <!-- Pricing Fields -->
+        <div class="flex flex-col gap-8 w-full">
+
+          <!-- Quantidade de assentos -->
+          <div class="flex flex-col gap-[3px] w-full">
+            <label class="text-body text-text font-medium leading-[1.2]">Quantidade de assentos disponíveis</label>
+            <div class="textfield-ofertar">
+              <input
+                type="number"
+                [(ngModel)]="tripOffer.availableSeats"
+                placeholder="0"
+                min="1"
+                class="textfield-input"
+              />
+            </div>
+          </div>
+
+          <!-- Separator -->
+          <div class="w-full h-px bg-subtle-text/30"></div>
+
+          <!-- Pricing Section -->
+          <div class="flex flex-col gap-4 w-full">
+
+            <!-- Suggested Price Label -->
+            <div class="flex flex-col gap-[3px] w-full">
+              <label class="text-body text-text font-medium leading-[1.2]">Valor da passagem sugerido:</label>
+
+              <!-- Price + Distance Row -->
+              <div class="flex items-center justify-between w-full">
+                <div class="flex gap-[3px] items-center">
+                  <div class="size-6 shrink-0 bg-text"
+                    style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;">
+                  </div>
+                  <span class="text-body text-text font-medium">{{ suggestedPrice }}</span>
+                </div>
+
+                <!-- Dashed line separator -->
+                <div class="flex-1 mx-3 border-t border-dashed border-subtle-text/40"></div>
+
+                <div class="flex gap-[5px] items-center">
+                  <div class="size-[18px] shrink-0 bg-text"
+                    style="-webkit-mask: url(assets/icons/routing.svg) no-repeat center / contain; mask: url(assets/icons/routing.svg) no-repeat center / contain;">
+                  </div>
+                  <span class="text-body text-text font-medium">{{ suggestedDistance }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Change Price Toggle -->
+            <div class="flex items-center justify-between w-full">
+              <span class="text-subtitle text-text">Alterar valor da passagem?</span>
+              <app-toggle [(checked)]="changePrice"></app-toggle>
+            </div>
+
+            <!-- Custom Price Input (only when toggle is on) -->
+            <div *ngIf="changePrice" class="flex flex-col gap-[3px] w-full">
+              <label class="text-body text-text font-medium leading-[1.2]">Insira o valor desejado</label>
+              <div class="textfield-ofertar">
+                <input
+                  type="text"
+                  [(ngModel)]="tripOffer.customPrice"
+                  placeholder="R$40,00"
+                  class="textfield-input"
+                />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <p *ngIf="errorMessage" class="text-primary text-small text-center w-full">{{ errorMessage }}</p>
+
+      <!-- ===== OFERTAR BUTTON ===== -->
+      <button
+        (click)="onNext()"
+        [disabled]="isLoading"
+        class="w-full rounded-[12px] border border-light px-5 py-4 flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+        style="background: rgba(250, 250, 250, 0.8); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);">
+        <span class="text-button-text text-primary tracking-[0.48px]">OFERTAR</span>
+      </button>
+
+    </div>
+  </div>
+</div>

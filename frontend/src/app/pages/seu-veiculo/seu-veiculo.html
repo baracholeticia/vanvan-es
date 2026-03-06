@@ -1,0 +1,380 @@
+<!-- Full-viewport gradient background -->
+<div class="fixed inset-0 z-[1] pointer-events-none"
+  style="background: linear-gradient(-68deg, rgba(177,177,177,1) 1%, rgba(233,233,233,1) 100%)">
+</div>
+
+<!-- Background VAN-TRASEIRA image - centered -->
+<div class="fixed top-[76px] left-1/2 -translate-x-1/2 w-[1425px] h-[795px] z-[2] pointer-events-none">
+  <img src="assets/VAN-TRASEIRA.png" class="w-full h-full object-cover" alt="background van traseira">
+</div>
+
+<!-- Main Container -->
+<div class="flex flex-col items-stretch relative w-full h-full gap-6 pb-5">
+
+  <!-- ===== MAIN CONTENT: 2-column layout ===== -->
+  <div class="relative z-[10] w-full flex flex-row gap-6 items-start flex-1 min-h-0">
+
+    <!-- =============== LEFT COLUMN =============== -->
+    <div class="flex flex-col justify-between h-full flex-1 min-w-0">
+
+      <!-- Top Stats Cards -->
+      <div class="flex flex-col gap-4 w-[234px]">
+
+        <!-- ===== SUA NOTA (Rating Card) ===== -->
+        <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4 items-center h-[176px] hover-lift">
+          <h2 class="text-header-2 text-text text-center">Sua nota</h2>
+          <div class="glass-inner rounded-[24px] py-[10px] w-full flex gap-4 items-center justify-center">
+            <!-- User icon -->
+            <div class="backdrop-blur-[12px] bg-white/60 size-[56px] rounded-full flex items-center justify-center shrink-0">
+              <div class="size-[34px] bg-subtle-text"
+                style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;">
+              </div>
+            </div>
+            <!-- Star + Rating -->
+            <div class="flex gap-2 items-center">
+              <img src="assets/icons/star.svg" class="h-full" alt="star">
+              <span class="text-subtitle text-subtle-text">{{ rating }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== VIAGENS FEITAS (Trips Made Card) ===== -->
+        <div class="glass-card-subtle rounded-[24px] px-3 py-5 flex flex-col gap-[10px] items-center h-[176px] hover-lift">
+          <h3 class="text-header-3 text-text text-center">Viagens feitas</h3>
+          <div class="flex gap-1 items-end justify-center flex-1 w-full">
+            <!-- Y-axis labels -->
+            <div class="flex flex-col justify-between h-full text-pre-title text-subtle-text">
+              <span>{{ tripsCurrentMonth }}</span>
+              <span>{{ tripsPreviousMonth }}</span>
+            </div>
+            <!-- Bars -->
+            <div class="flex flex-col gap-1 justify-end h-full flex-1">
+              <!-- Current month bar -->
+              <div class="flex gap-1 items-center">
+                <div class="bg-secondary h-[40px] rounded-[24px] transition-all"
+                  [style.width.%]="currentMonthBarWidth">
+                </div>
+                <span class="text-pre-title text-subtle-text whitespace-nowrap">mês atual</span>
+              </div>
+              <!-- Previous month bar -->
+              <div class="flex gap-1 items-center">
+                <div class="bg-white h-[40px] rounded-[24px] transition-all"
+                  [style.width.%]="previousMonthBarWidth">
+                </div>
+                <span class="text-pre-title text-subtle-text whitespace-nowrap">mês passado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== DISTÂNCIA MÉDIA PERCORRIDA (Average Distance Card) ===== -->
+        <div class="glass-card-subtle rounded-[24px] px-3 py-5 flex flex-col gap-[10px] items-center h-[176px]">
+          <h3 class="text-header-3 text-text text-start leading-tight">
+            Distância média<br>percorrida
+          </h3>
+          <div class="flex gap-1 items-center justify-center flex-1 w-full">
+            <!-- Routing icon in dark circle -->
+            <div class="bg-text rounded-[50px] p-2 flex items-center justify-center">
+              <div class="size-[26px] bg-white"
+                style="-webkit-mask: url(assets/icons/routing.svg) no-repeat center / contain; mask: url(assets/icons/routing.svg) no-repeat center / contain;">
+              </div>
+            </div>
+            <span class="text-subtitle text-text">{{ averageDistance }}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===== BOTTOM PREFERENCES BAR ===== -->
+      <div class="glass-card-subtle rounded-[24px] px-6 py-5 flex gap-6 items-center justify-center w-full">
+
+        <!-- Ar-Condicionado -->
+        <div class="flex gap-3 items-center justify-center">
+          <div class="size-6 bg-text shrink-0"
+            style="-webkit-mask: url(assets/icons/wind.svg) no-repeat center / contain; mask: url(assets/icons/wind.svg) no-repeat center / contain;">
+          </div>
+          <div class="flex flex-col">
+            <span class="text-body text-text leading-[1.2]">Ar-Condicionado</span>
+            <span class="text-small text-subtle-text">{{ airConditioningEnabled ? 'Ativado' : 'Desativado' }}</span>
+          </div>
+          <app-toggle [(checked)]="airConditioningEnabled"></app-toggle>
+        </div>
+
+        <!-- Divider -->
+        <div class="w-[1px] h-[40px] bg-accent/40 rotate-0"></div>
+
+        <!-- Aceita pets -->
+        <div class="flex gap-3 items-center justify-center">
+          <div class="size-6 bg-text shrink-0"
+            style="-webkit-mask: url(assets/icons/pet.svg) no-repeat center / contain; mask: url(assets/icons/pet.svg) no-repeat center / contain;">
+          </div>
+          <div class="flex flex-col">
+            <span class="text-body text-text leading-[1.2]">Aceita pets</span>
+            <span class="text-small text-subtle-text">{{ acceptsPets ? 'Ativado' : 'Desativado' }}</span>
+          </div>
+          <app-toggle [(checked)]="acceptsPets"></app-toggle>
+        </div>
+
+        <!-- Divider -->
+        <div class="w-[1px] h-[40px] bg-accent/40 rotate-0"></div>
+
+        <!-- Mala grande -->
+        <div class="flex gap-3 items-center justify-center">
+          <div class="size-6 bg-text shrink-0"
+            style="-webkit-mask: url(assets/icons/bag-2.svg) no-repeat center / contain; mask: url(assets/icons/bag-2.svg) no-repeat center / contain;">
+          </div>
+          <div class="flex flex-col">
+            <span class="text-body text-text leading-[1.2]">Mala grande</span>
+            <span class="text-small text-subtle-text">{{ largeLuggageEnabled ? 'Ativado' : 'Desativado' }}</span>
+          </div>
+          <app-toggle [(checked)]="largeLuggageEnabled"></app-toggle>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =============== RIGHT COLUMN: Seus Veículos =============== -->
+    <div #vehiclesCard class="glass-card rounded-[24px] pt-5 px-5 pb-0 flex flex-col gap-4 items-center w-[444px] h-full overflow-hidden shrink-0">
+
+        <!-- Title -->
+        <h2 class="text-header-2 text-text text-center">Seus veículos</h2>
+
+        <!-- Vehicle List Container with blur gradient -->
+        <div class="relative flex-1 w-full min-h-0">
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="flex items-center justify-center w-full h-full">
+            <span class="text-body text-subtle-text">Carregando veículos...</span>
+          </div>
+
+          <!-- Error State -->
+          <div *ngIf="errorMessage && !isLoading" class="flex items-center justify-center w-full p-4">
+            <span class="text-body text-primary text-center">{{ errorMessage }}</span>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!isLoading && !errorMessage && vehicles.length === 0" class="flex items-center justify-center w-full h-[200px]">
+            <span class="text-body text-subtle-text text-center">Nenhum veículo cadastrado.<br>Clique no botão abaixo para adicionar.</span>
+          </div>
+
+          <!-- Scrollable Vehicle List -->
+          <div *ngIf="!isLoading && vehicles.length > 0" class="flex flex-col gap-4 items-center w-full h-full overflow-y-auto scrollbar-hide pb-[80px]">
+
+            <ng-container *ngFor="let vehicle of vehicles; let first = first">
+              <!-- Vehicle Card -->
+              <div class="rounded-[24px] p-5 flex flex-col gap-[10px] items-center w-full shrink-0 vehicle-card"
+                [class.vehicle-card-selected]="vehicle.isSelected"
+                [class.vehicle-card-default]="!vehicle.isSelected"
+                (click)="selectVehicle(vehicle)">
+
+              <!-- Info + Actions Row -->
+              <div class="flex items-start justify-between w-full">
+                <!-- Vehicle Info -->
+                <div class="flex flex-col w-[274px]">
+                  <span class="text-header-3 text-text leading-normal tracking-[-0.03rem]">
+                    {{ vehicle.model }}
+                  </span>
+                  <span class="text-body text-subtle-text leading-[1]">
+                    {{ vehicle.plate }}
+                  </span>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col gap-[10px] items-center shrink-0">
+                  <!-- Delete -->
+                  <button (click)="deleteVehicle(vehicle); $event.stopPropagation()"
+                    class="bg-[#f2d8c7] p-2 rounded-[24px] flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+                    <div class="size-6 bg-primary"
+                      style="-webkit-mask: url(assets/icons/trash.svg) no-repeat center / contain; mask: url(assets/icons/trash.svg) no-repeat center / contain;">
+                    </div>
+                  </button>
+                  <!-- Edit -->
+                  <button (click)="editVehicle(vehicle); $event.stopPropagation()"
+                    class="bg-[#c1daea] p-2 rounded-[24px] flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+                    <div class="size-6 bg-secondary"
+                      style="-webkit-mask: url(assets/icons/edit-2.svg) no-repeat center / contain; mask: url(assets/icons/edit-2.svg) no-repeat center / contain;">
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Vehicle Image -->
+              <div class="w-full flex items-center justify-center overflow-hidden h-[185px]">
+                <img [src]="vehicle.imageUrl" class="w-full h-auto object-contain" [alt]="vehicle.model">
+              </div>
+
+            </div>
+          </ng-container>
+
+          </div>
+
+
+
+          <!-- Add New Vehicle Button (sits above blur) -->
+          <div class="absolute bottom-[20px] left-0 right-0 z-[2] px-[2px]">
+            <button (click)="addVehicle()"
+              class="glass-inner rounded-[12px] border border-light px-5 py-4 w-full flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+              <span class="text-button-text text-secondary">ADICIONAR NOVO VEÍCULO</span>
+              <div class="size-6 bg-secondary"
+                style="-webkit-mask: url(assets/icons/add.svg) no-repeat center / 60%; mask: url(assets/icons/add.svg) no-repeat center / 60%;">
+              </div>
+            </button>
+          </div>
+        </div>
+        <!-- Stacked blur layers for gradient effect -->
+        <div class="absolute bottom-0 left-0 right-0 h-[350px] pointer-events-none backdrop-blur-[4px] blur-layer-1 z-[1]"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-[280px] pointer-events-none backdrop-blur-[10px] blur-layer-2 z-[1]"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-[210px] pointer-events-none backdrop-blur-[20px] blur-layer-3 z-[1]"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-[140px] pointer-events-none backdrop-blur-[60px] blur-layer-4 z-[1]"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-[70px] pointer-events-none backdrop-blur-[70px] blur-layer-5 z-[1]"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ===== Backdrop to close ANY popup on outside click ===== -->
+<div *ngIf="popupMode || showDeletePopup" class="fixed inset-0 z-[20]" (click)="closeAllPopups()"></div>
+
+<!-- ===== Add / Edit Vehicle Popup (floating, completely outside all layout) ===== -->
+<div *ngIf="popupMode"
+  class="fixed z-[21] glass-card rounded-[24px] p-5 flex flex-col gap-6 items-center w-[400px] add-vehicle-popup"
+  [style.top.px]="popupTop"
+  [style.right.px]="popupRight"
+  (click)="$event.stopPropagation()">
+
+  <!-- Title -->
+  <div class="flex flex-col gap-4 items-center w-full">
+    <h2 class="text-header-2 text-text text-center">
+      {{ popupMode === 'edit' ? 'Editar veículo' : 'Adicionar veículo' }}
+    </h2>
+
+    <!-- Form Fields -->
+    <div class="flex flex-col gap-6 items-start w-full">
+
+      <!-- Text Inputs -->
+      <div class="flex flex-col gap-[10px] items-start w-full">
+        <!-- Modelo -->
+        <div class="flex flex-col gap-[3px] w-full">
+          <label class="text-body text-text font-medium">Modelo</label>
+          <app-textfield
+            placeholder="Modelo do veículo"
+            [(ngModel)]="newVehicleModel"
+            class="w-full">
+          </app-textfield>
+        </div>
+        <!-- Placa -->
+        <div class="flex flex-col gap-[3px] w-full">
+          <label class="text-body text-text font-medium">Placa do veículo</label>
+          <app-textfield
+            placeholder="ABC1D23"
+            [(ngModel)]="newVehiclePlate"
+            class="w-full">
+          </app-textfield>
+        </div>
+      </div>
+
+      <!-- Upload Buttons -->
+      <div class="flex flex-col gap-[10px] items-start w-full">
+
+        <!-- Documento existente (apenas no modo edição) -->
+        <div *ngIf="popupMode === 'edit' && existingDocumentUrl && !vehicleDocument"
+          class="w-full rounded-[8px] border border-secondary/50 bg-secondary/10 flex items-center justify-between gap-2 px-4 py-3">
+          <div class="flex items-center gap-2">
+            <div class="size-5 bg-secondary shrink-0"
+              style="-webkit-mask: url(assets/icons/document-text.svg) no-repeat center / contain; mask: url(assets/icons/document-text.svg) no-repeat center / contain;">
+            </div>
+            <span class="text-small text-secondary">Documento atual</span>
+          </div>
+          <a [href]="existingDocumentUrl" target="_blank" class="text-small text-secondary underline hover:opacity-70">
+            Visualizar
+          </a>
+        </div>
+
+        <!-- Documento do veículo -->
+        <button (click)="selectDocument()"
+          class="upload-btn w-full rounded-[8px] border-[1.5px] border-dashed border-subtle-text flex items-center justify-center gap-2 px-[30px] py-[14px] cursor-pointer hover:border-secondary transition-colors">
+          <div class="size-6 bg-subtle-text shrink-0"
+            style="-webkit-mask: url(assets/icons/document-upload.svg) no-repeat center / contain; mask: url(assets/icons/document-upload.svg) no-repeat center / contain;">
+          </div>
+          <span class="text-button-text text-subtle-text">
+            {{ popupMode === 'edit' ? 'SUBSTITUIR DOCUMENTO' : 'DOCUMENTO DO VEÍCULO' }}
+          </span>
+        </button>
+
+        <!-- Foto existente (apenas no modo edição) -->
+        <div *ngIf="popupMode === 'edit' && existingPhotoUrl && !vehiclePhoto"
+          class="w-full rounded-[8px] border border-secondary/50 bg-secondary/10 flex items-center justify-between gap-2 px-4 py-3">
+          <div class="flex items-center gap-2">
+            <img [src]="existingPhotoUrl" class="size-8 rounded object-cover" alt="Foto atual">
+            <span class="text-small text-secondary">Foto atual</span>
+          </div>
+        </div>
+
+        <!-- Foto do veículo -->
+        <button (click)="selectPhoto()"
+          class="upload-btn w-full rounded-[8px] border-[1.5px] border-dashed border-subtle-text flex items-center justify-center gap-2 px-[30px] py-[14px] cursor-pointer hover:border-secondary transition-colors">
+          <div class="size-6 bg-subtle-text shrink-0"
+            style="-webkit-mask: url(assets/icons/document-upload.svg) no-repeat center / contain; mask: url(assets/icons/document-upload.svg) no-repeat center / contain;">
+          </div>
+          <span class="text-button-text text-subtle-text">
+            {{ popupMode === 'edit' ? 'SUBSTITUIR FOTO' : 'FOTO DO VEÍCULO' }}
+          </span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <p *ngIf="errorMessage" class="text-primary text-small text-center w-full">{{ errorMessage }}</p>
+
+  <!-- File selected indicators (novos arquivos selecionados) -->
+  <div class="flex flex-col gap-1 w-full">
+    <p *ngIf="vehicleDocument" class="text-small text-secondary text-center">📄 Novo documento: {{ vehicleDocument.name }}</p>
+    <p *ngIf="vehiclePhoto" class="text-small text-secondary text-center">📷 Nova foto: {{ vehiclePhoto.name }}</p>
+  </div>
+
+  <!-- Submit Button -->
+  <button (click)="submitVehicle()"
+    [disabled]="isSubmitting"
+    class="glass-inner rounded-[12px] border border-light px-5 py-4 w-full flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+    <span class="text-button-text text-secondary">
+      {{ isSubmitting ? 'SALVANDO...' : (popupMode === 'edit' ? 'SALVAR' : 'CADASTRAR') }}
+    </span>
+  </button>
+
+</div>
+
+<!-- ===== Delete Vehicle Popup (floating, completely outside all layout) ===== -->
+<div *ngIf="showDeletePopup"
+  class="fixed z-[21] glass-card rounded-[24px] p-5 flex flex-col gap-6 items-center w-[400px] delete-vehicle-popup"
+  [style.top.px]="popupTop"
+  [style.right.px]="popupRight"
+  (click)="$event.stopPropagation()">
+
+  <!-- Title + Message -->
+  <div class="flex flex-col gap-4 items-center w-full">
+    <h2 class="text-header-2 text-text text-center">Deletar veículo</h2>
+    <div class="glass-inner rounded-[12px] p-2 w-full">
+      <p class="text-body text-text text-center leading-[1.2]">
+        Esta ação irá deletar permanentemente o veículo, tem certeza que deseja fazer isso?
+      </p>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex gap-6 items-start w-full">
+    <button (click)="closeDeletePopup()"
+      [disabled]="isSubmitting"
+      class="glass-inner rounded-[12px] border border-light px-5 py-4 flex-1 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+      <span class="text-button-text text-secondary">CANCELAR</span>
+    </button>
+    <button (click)="confirmDelete()"
+      [disabled]="isSubmitting"
+      class="glass-inner rounded-[12px] border border-light px-5 py-4 flex-1 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+      <span class="text-button-text text-primary">{{ isSubmitting ? 'DELETANDO...' : 'DELETAR' }}</span>
+    </button>
+  </div>
+
+</div>

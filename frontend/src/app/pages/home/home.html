@@ -1,140 +1,153 @@
 <!-- Main Container -->
-<div class="flex flex-col gap-[50px] items-center relative w-full min-h-full">
+<div class="flex flex-col items-center relative w-full min-h-full">
 
-  <!-- Background Image (Hero) - fixed so it renders behind the navbar -->
-  <div class="fixed top-0 left-0 right-0 h-[40vh] z-0 overflow-hidden pointer-events-none">
-    <img src="assets/c17769e5ef51ec9742a0bfa8c880cbfdc523b0cf.png"
-         class="w-full h-full object-cover" alt="background">
-    <div class="absolute inset-0 bg-black/25"></div>
-  </div>
-
-  <!-- Hero Title -->
-  <div class="relative z-10 flex flex-col gap-[6px] items-center mt-[30px]">
-    <h1 class="font-sans text-header-1 text-white whitespace-nowrap">Para onde vamos hoje?</h1>
-    <p class="font-sans text-subtitle text-light text-center">
-      Explore novos destinos com conforto, segurança e o melhor preço.
-    </p>
-  </div>
-
-  <!-- Search Panel -->
-  <div class="search-panel relative z-10 flex flex-col gap-5 items-start p-5 rounded-[24px] w-full overflow-visible">
-    <!-- Search Header -->
-    <div class="flex gap-[10px] items-center">
-      <div class="size-6 shrink-0 bg-text"
-           style="-webkit-mask: url(assets/icons/search-normal.svg) no-repeat center / contain; mask: url(assets/icons/search-normal.svg) no-repeat center / contain;"></div>
-      <span class="font-sans text-header-3 text-text">Buscar Viagem</span>
+  <!-- Hero Section (full-bleed, scrolls with content) -->
+  <div class="relative w-full -mt-[96px] -mx-[20px]" style="width: calc(100% + 40px);">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+      <img src="assets/c17769e5ef51ec9742a0bfa8c880cbfdc523b0cf.png"
+           class="w-full h-full object-cover absolute -top-[180px] left-0 right-0" alt="background">
+      <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/30"></div>
     </div>
+    <!-- Gradient fade to white at bottom -->
+    <div class="absolute bottom-0 left-0 right-0 h-[380px] bg-gradient-to-t from-white via-white/90 to-transparent z-[1]"></div>
 
-    <!-- Search Fields + Button -->
-    <div class="flex flex-col gap-5 items-end w-full">
-      <!-- Fields Row -->
-      <div class="flex gap-[10px] items-start w-full">
-        <!-- Partida -->
-        <div class="flex-1 flex flex-col gap-[3px] relative">
-          <label class="font-sans text-small text-text">Partida</label>
-          <div class="bg-light rounded-lg px-4 py-3 flex items-center gap-2 overflow-hidden">
-            <div class="size-5 shrink-0 bg-subtle-text"
-                 style="-webkit-mask: url(assets/icons/plane-take-off.svg) no-repeat center / contain; mask: url(assets/icons/plane-take-off.svg) no-repeat center / contain;"></div>
-            <input type="text" placeholder="Cidade de partida"
-                   [(ngModel)]="partidaQuery"
-                   (input)="onPartidaInput()"
-                   (focus)="partidaSuggestions.length > 0 && (showPartidaDropdown = true)"
-                   autocomplete="off"
-                   class="bg-transparent outline-none border-none flex-1 text-body text-dark placeholder:text-subtle-text font-sans min-w-0">
-          </div>
-          <!-- Dropdown -->
-          <div *ngIf="showPartidaDropdown" class="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg z-50 max-h-[200px] overflow-y-auto border border-light">
-            <div *ngFor="let city of partidaSuggestions"
-                 (mousedown)="selectPartida(city)"
-                 class="px-4 py-2 cursor-pointer hover:bg-light transition-colors font-sans text-body text-dark">
-              {{ city.label }}
-            </div>
-          </div>
+    <!-- Hero Content (pt accounts for navbar: 96px layout + 14px extra spacing) -->
+    <div class="relative z-10 flex flex-col gap-[50px] items-center px-[40px] pt-[110px] pb-[80px]">
+      <!-- Hero Title -->
+      <div class="flex flex-col gap-[6px] items-center">
+        <h1 class="font-sans text-header-1 text-white whitespace-nowrap drop-shadow-lg">
+          Vamos para <span class="text-secondary">{{ currentDestination }}</span><span class="animate-blink">|</span>
+        </h1>
+        <p class="font-sans text-subtitle text-light text-center drop-shadow-md">
+          Explore novos destinos com conforto, segurança e o melhor preço.
+        </p>
+      </div>
+
+      <!-- Search Panel -->
+      <div class="search-panel relative flex flex-col gap-5 items-start p-5 rounded-[24px] w-full overflow-visible hover-lift">
+        <!-- Search Header -->
+        <div class="flex gap-[10px] items-center">
+          <div class="size-6 shrink-0 bg-text"
+               style="-webkit-mask: url(assets/icons/search-normal.svg) no-repeat center / contain; mask: url(assets/icons/search-normal.svg) no-repeat center / contain;"></div>
+          <span class="font-sans text-header-3 text-text">Buscar Viagem</span>
         </div>
 
-        <!-- Destino -->
-        <div class="flex-1 flex flex-col gap-[3px] relative">
-          <label class="font-sans text-small text-text">Destino</label>
-          <div class="bg-light rounded-lg px-4 py-3 flex items-center gap-2 overflow-hidden">
-            <div class="size-5 shrink-0 bg-subtle-text"
-                 style="-webkit-mask: url(assets/icons/plane-land.svg) no-repeat center / contain; mask: url(assets/icons/plane-land.svg) no-repeat center / contain;"></div>
-            <input type="text" placeholder="Cidade de destino"
-                   [(ngModel)]="destinoQuery"
-                   (input)="onDestinoInput()"
-                   (focus)="destinoSuggestions.length > 0 && (showDestinoDropdown = true)"
-                   autocomplete="off"
-                   class="bg-transparent outline-none border-none flex-1 text-body text-dark placeholder:text-subtle-text font-sans min-w-0">
-          </div>
-          <!-- Dropdown -->
-          <div *ngIf="showDestinoDropdown" class="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg z-50 max-h-[200px] overflow-y-auto border border-light">
-            <div *ngFor="let city of destinoSuggestions"
-                 (mousedown)="selectDestino(city)"
-                 class="px-4 py-2 cursor-pointer hover:bg-light transition-colors font-sans text-body text-dark">
-              {{ city.label }}
+        <!-- Search Fields + Button -->
+        <div class="flex flex-col gap-5 items-end w-full">
+          <!-- Fields Row -->
+          <div class="flex gap-[10px] items-start w-full">
+            <!-- Partida -->
+            <div class="flex-1 flex flex-col gap-[3px] relative">
+              <label class="font-sans text-small text-text">Partida</label>
+              <div class="bg-light rounded-lg px-4 py-3 flex items-center gap-2 overflow-hidden">
+                <div class="size-5 shrink-0 bg-subtle-text"
+                     style="-webkit-mask: url(assets/icons/plane-take-off.svg) no-repeat center / contain; mask: url(assets/icons/plane-take-off.svg) no-repeat center / contain;"></div>
+                <input type="text" placeholder="Cidade de partida"
+                       [(ngModel)]="partidaQuery"
+                       (input)="onPartidaInput()"
+                       (focus)="partidaSuggestions.length > 0 && (showPartidaDropdown = true)"
+                       autocomplete="off"
+                       class="bg-transparent outline-none border-none flex-1 text-body text-dark placeholder:text-subtle-text font-sans min-w-0">
+              </div>
+              <!-- Dropdown -->
+              <div *ngIf="showPartidaDropdown" class="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg z-50 max-h-[200px] overflow-y-auto border border-light">
+                <div *ngFor="let city of partidaSuggestions"
+                     (mousedown)="selectPartida(city)"
+                     class="px-4 py-2 cursor-pointer hover:bg-light transition-colors font-sans text-body text-dark">
+                  {{ city.label }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Destino -->
+            <div class="flex-1 flex flex-col gap-[3px] relative">
+              <label class="font-sans text-small text-text">Destino</label>
+              <div class="bg-light rounded-lg px-4 py-3 flex items-center gap-2 overflow-hidden">
+                <div class="size-5 shrink-0 bg-subtle-text"
+                     style="-webkit-mask: url(assets/icons/plane-land.svg) no-repeat center / contain; mask: url(assets/icons/plane-land.svg) no-repeat center / contain;"></div>
+                <input type="text" placeholder="Cidade de destino"
+                       [(ngModel)]="destinoQuery"
+                       (input)="onDestinoInput()"
+                       (focus)="destinoSuggestions.length > 0 && (showDestinoDropdown = true)"
+                       autocomplete="off"
+                       class="bg-transparent outline-none border-none flex-1 text-body text-dark placeholder:text-subtle-text font-sans min-w-0">
+              </div>
+              <!-- Dropdown -->
+              <div *ngIf="showDestinoDropdown" class="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg z-50 max-h-[200px] overflow-y-auto border border-light">
+                <div *ngFor="let city of destinoSuggestions"
+                     (mousedown)="selectDestino(city)"
+                     class="px-4 py-2 cursor-pointer hover:bg-light transition-colors font-sans text-body text-dark">
+                  {{ city.label }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Data -->
+            <div class="flex-1 flex flex-col gap-[3px]">
+              <label class="font-sans text-small text-text">Data</label>
+              <div class="bg-light rounded-lg px-4 py-3 flex items-center gap-2 overflow-hidden">
+                <div class="size-5 shrink-0 bg-subtle-text"
+                     style="-webkit-mask: url(assets/icons/calendar.svg) no-repeat center / contain; mask: url(assets/icons/calendar.svg) no-repeat center / contain;"></div>
+                <input type="date"
+                       [(ngModel)]="dataViagem"
+                       class="bg-transparent outline-none border-none flex-1 text-body text-dark font-sans min-w-0 appearance-none">
+              </div>
+            </div>
+
+            <!-- Passageiros -->
+            <div class="flex-1 flex flex-col gap-[3px]">
+              <label class="font-sans text-small text-text">Passageiros</label>
+              <div class="bg-light rounded-lg px-4 py-3 flex items-center gap-2 overflow-hidden">
+                <div class="size-5 shrink-0 bg-subtle-text"
+                     style="-webkit-mask: url(assets/icons/profile-2user.svg) no-repeat center / contain; mask: url(assets/icons/profile-2user.svg) no-repeat center / contain;"></div>
+                <span class="flex-1 text-body font-sans" [class]="passageiros >= 1 ? 'text-dark' : 'text-subtle-text'">{{ passageirosLabel }}</span>
+                <div class="flex items-center gap-1">
+                  <button (click)="decrementPassageiros()"
+                          [disabled]="passageiros <= 1"
+                          class="size-6 rounded-full flex items-center justify-center text-subtle-text hover:bg-white/60 transition-colors disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed font-bold text-[16px] leading-none">
+                    −
+                  </button>
+                  <button (click)="incrementPassageiros()"
+                          [disabled]="passageiros >= 5"
+                          class="size-6 rounded-full flex items-center justify-center text-subtle-text hover:bg-white/60 transition-colors disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed font-bold text-[16px] leading-none">
+                    +
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Data -->
-        <div class="flex-1 flex flex-col gap-[3px]">
-          <label class="font-sans text-small text-text">Data</label>
-          <div class="bg-light rounded-lg px-4 py-3 flex items-center gap-2 overflow-hidden">
-            <div class="size-5 shrink-0 bg-subtle-text"
-                 style="-webkit-mask: url(assets/icons/calendar.svg) no-repeat center / contain; mask: url(assets/icons/calendar.svg) no-repeat center / contain;"></div>
-            <input type="date"
-                   [(ngModel)]="dataViagem"
-                   class="bg-transparent outline-none border-none flex-1 text-body text-dark font-sans min-w-0 appearance-none">
-          </div>
-        </div>
-
-        <!-- Passageiros -->
-        <div class="flex-1 flex flex-col gap-[3px]">
-          <label class="font-sans text-small text-text">Passageiros</label>
-          <div class="bg-light rounded-lg px-4 py-3 flex items-center gap-2 overflow-hidden">
-            <div class="size-5 shrink-0 bg-subtle-text"
-                 style="-webkit-mask: url(assets/icons/profile-2user.svg) no-repeat center / contain; mask: url(assets/icons/profile-2user.svg) no-repeat center / contain;"></div>
-            <span class="flex-1 text-body font-sans" [class]="passageiros >= 1 ? 'text-dark' : 'text-subtle-text'">{{ passageirosLabel }}</span>
-            <div class="flex items-center gap-1">
-              <button (click)="decrementPassageiros()" 
-                      [disabled]="passageiros <= 1"
-                      class="size-6 rounded-full flex items-center justify-center text-subtle-text hover:bg-white/60 transition-colors disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed font-bold text-[16px] leading-none">
-                −
-              </button>
-              <button (click)="incrementPassageiros()" 
-                      [disabled]="passageiros >= 5"
-                      class="size-6 rounded-full flex items-center justify-center text-subtle-text hover:bg-white/60 transition-colors disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed font-bold text-[16px] leading-none">
-                +
-              </button>
-            </div>
+          <!-- Search Button -->
+          <div class="w-[330px] rounded-lg shadow-primary">
+            <app-buttons variant="primary" [fullWidth]="true" class="block">
+              BUSCAR
+              <div class="size-5 bg-light shrink-0"
+                   style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;"></div>
+            </app-buttons>
           </div>
         </div>
       </div>
-
-      <!-- Search Button -->
-      <div class="w-[330px] rounded-lg shadow-primary">
-        <app-buttons variant="primary" [fullWidth]="true" class="block">
-          BUSCAR
-          <div class="size-5 bg-light shrink-0"
-               style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;"></div>
-        </app-buttons>
-      </div>
     </div>
   </div>
+
+  <!-- Content Area (solid white background) -->
+  <div class="w-full bg-white flex flex-col gap-[50px] items-center pt-[30px] pb-[20px]">
 
   <!-- Trips Section -->
-  <div class="relative z-10 flex gap-[50px] items-start justify-center w-full">
+  <div class="flex gap-[50px] items-start justify-center w-full">
 
     <!-- Left: Viagens Agendadas -->
     <div class="flex-1 flex flex-col gap-[10px]">
       <!-- Header -->
       <div class="flex items-end justify-between w-full">
         <span class="font-sans text-header-3 text-text">Viagens Agendadas</span>
-        <a class="font-sans text-[16px] font-normal text-primary underline cursor-pointer">Ver todas</a>
+        <a class="font-sans text-[16px] font-normal text-primary underline cursor-pointer hover:opacity-70 transition-opacity">Ver todas</a>
       </div>
 
       <!-- Trip Cards -->
       <div *ngFor="let trip of scheduledTrips"
-           class="bg-light flex gap-[10px] items-center p-[10px] rounded-[24px] w-full">
+           class="bg-light flex gap-[10px] items-center p-[10px] rounded-[24px] w-full hover-scale cursor-pointer transition-all">
         <!-- Date Badge -->
         <div class="size-[64px] rounded-[18px] flex flex-col items-center justify-center shrink-0 overflow-hidden font-sans font-bold"
              [ngClass]="trip.isFirst ? 'bg-secondary text-white' : 'bg-white text-subtle-text'">
@@ -177,7 +190,7 @@
           <!-- Status + Details -->
           <div class="flex flex-col gap-[5px] items-end shrink-0">
             <app-tag [label]="trip.statusLabel" [variant]="trip.variant"></app-tag>
-            <a class="font-sans text-[16px] font-normal text-subtle-text underline cursor-pointer">Detalhes</a>
+            <a class="font-sans text-[16px] font-normal text-subtle-text underline cursor-pointer hover:text-secondary transition-colors">Detalhes</a>
           </div>
         </div>
       </div>
@@ -189,13 +202,13 @@
       <div class="flex flex-col gap-[5px] w-full">
         <div class="flex items-center justify-between w-full">
           <span class="font-sans text-header-3 text-text">Viagens anteriores</span>
-          <a class="font-sans text-[16px] font-normal text-primary underline cursor-pointer">Ver todas</a>
+          <a class="font-sans text-[16px] font-normal text-primary underline cursor-pointer hover:opacity-70 transition-opacity">Ver todas</a>
         </div>
 
         <!-- Past Trips Container -->
         <div class="bg-light rounded-[24px] p-5 flex flex-col gap-[10px] w-full overflow-hidden">
           <div *ngFor="let trip of pastTrips"
-               class="bg-white flex gap-[10px] items-center p-[10px] rounded-[24px] w-full">
+               class="bg-white flex gap-[10px] items-center p-[10px] rounded-[24px] w-full cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-[2px]">
             <!-- Date Badge -->
             <div class="size-[64px] rounded-[18px] flex flex-col items-center justify-center shrink-0 overflow-hidden font-sans font-bold bg-light text-subtle-text">
               <span class="text-[10px] uppercase tracking-[0.3px]">{{ trip.month }}</span>
@@ -223,16 +236,16 @@
               <!-- Status + Details -->
               <div class="flex flex-col gap-[5px] items-end shrink-0">
                 <app-tag [label]="trip.statusLabel" [variant]="trip.variant"></app-tag>
-                <a class="font-sans text-[16px] font-normal text-subtle-text underline cursor-pointer">Detalhes</a>
+                <a class="font-sans text-[16px] font-normal text-subtle-text underline cursor-pointer hover:text-secondary transition-colors">Detalhes</a>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Placeholder boxes -->
-      <div class="bg-light h-[96px] rounded-[24px] w-full"></div>
-      <div class="bg-light h-[96px] rounded-[24px] w-full"></div>
+      <!-- Placeholder boxes removed -->
     </div>
   </div>
+
+  </div><!-- /Content Area -->
 </div>

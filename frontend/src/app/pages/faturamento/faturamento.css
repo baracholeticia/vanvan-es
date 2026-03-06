@@ -1,0 +1,16 @@
+/* Faturamento page styles */
+
+/* Glass card styles are inherited from global styles */
+
+.glass-card {
+  background: rgba(238, 238, 239, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.glass-inner {
+  background: rgba(238, 238, 239, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}

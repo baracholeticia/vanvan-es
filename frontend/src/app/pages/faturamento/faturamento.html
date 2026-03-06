@@ -1,0 +1,228 @@
+<!-- Full-viewport gradient background -->
+<div class="fixed inset-0 z-[1] pointer-events-none"
+  style="background: linear-gradient(-68deg, rgba(177,177,177,1) 1%, rgba(233,233,233,1) 100%)">
+</div>
+
+<!-- Background van image -->
+<div class="fixed top-0 left-1/2 -translate-x-1/2 w-[1242px] h-[1242px] -mt-8 z-[2] pointer-events-none opacity-80">
+  <img src="assets/van_topview.png" class="w-full h-full object-cover" alt="background van">
+</div>
+
+<!-- Main Container -->
+<div class="relative z-[10] flex flex-col gap-6 w-full min-h-full pb-6">
+
+  <!-- ===== HEADER ===== -->
+  <div class="flex items-center gap-4">
+    <button (click)="goBack()"
+      class="size-12 rounded-full glass-card flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+      <div class="size-6 bg-text"
+        style="-webkit-mask: url(assets/icons/arrow-left.svg) no-repeat center / contain; mask: url(assets/icons/arrow-left.svg) no-repeat center / contain;">
+      </div>
+    </button>
+    <div class="flex flex-col gap-1">
+      <h1 class="text-header-1 text-text">Faturamento</h1>
+      <p class="text-body text-subtle-text">Acompanhe seus ganhos e estatísticas</p>
+    </div>
+  </div>
+
+  <!-- ===== SUMMARY CARDS ===== -->
+  <div class="grid grid-cols-4 gap-4">
+
+    <!-- Total do Mês -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 hover-lift bg-light/80">
+      <div class="flex items-center justify-between">
+        <span class="text-small text-subtle-text">Total do Mês</span>
+        <div class="size-10 rounded-full bg-secondary/20 flex items-center justify-center">
+          <div class="size-5 bg-secondary"
+            style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;">
+          </div>
+        </div>
+      </div>
+      <span class="text-header-1 text-text">{{ formatCurrency(summary.totalMonth) }}</span>
+      <div class="flex items-center gap-1">
+        <div class="size-4 bg-green-500"
+          style="-webkit-mask: url(assets/icons/arrow-up.svg) no-repeat center / contain; mask: url(assets/icons/arrow-up.svg) no-repeat center / contain;">
+        </div>
+        <span class="text-small text-green-600">+{{ summary.percentChange }}% vs mês anterior</span>
+      </div>
+    </div>
+
+    <!-- Total da Semana -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 hover-lift">
+      <div class="flex items-center justify-between">
+        <span class="text-small text-subtle-text">Total da Semana</span>
+        <div class="size-10 rounded-full bg-primary/20 flex items-center justify-center">
+          <div class="size-5 bg-primary"
+            style="-webkit-mask: url(assets/icons/calendar.svg) no-repeat center / contain; mask: url(assets/icons/calendar.svg) no-repeat center / contain;">
+          </div>
+        </div>
+      </div>
+      <span class="text-header-1 text-text">{{ formatCurrency(summary.totalWeek) }}</span>
+      <span class="text-small text-subtle-text">{{ summary.tripsWeek }} viagens realizadas</span>
+    </div>
+
+    <!-- Total de Hoje -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 hover-lift">
+      <div class="flex items-center justify-between">
+        <span class="text-small text-subtle-text">Total de Hoje</span>
+        <div class="size-10 rounded-full bg-green-500/20 flex items-center justify-center">
+          <div class="size-5 bg-green-500"
+            style="-webkit-mask: url(assets/icons/wallet.svg) no-repeat center / contain; mask: url(assets/icons/wallet.svg) no-repeat center / contain;">
+          </div>
+        </div>
+      </div>
+      <span class="text-header-1 text-text">{{ formatCurrency(summary.totalToday) }}</span>
+      <span class="text-small text-subtle-text">Última viagem às 14:30</span>
+    </div>
+
+    <!-- Avaliação Média -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 hover-lift">
+      <div class="flex items-center justify-between">
+        <span class="text-small text-subtle-text">Avaliação Média</span>
+        <div class="size-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
+          <div class="size-5 bg-yellow-500"
+            style="-webkit-mask: url(assets/icons/star.svg) no-repeat center / contain; mask: url(assets/icons/star.svg) no-repeat center / contain;">
+          </div>
+        </div>
+      </div>
+      <div class="flex items-baseline gap-1">
+        <span class="text-header-1 text-text">{{ summary.avgRating }}</span>
+        <span class="text-body text-subtle-text">/ 5.0</span>
+      </div>
+      <span class="text-small text-subtle-text">Baseado em {{ summary.tripsMonth }} avaliações</span>
+    </div>
+  </div>
+
+  <!-- ===== CHARTS SECTION ===== -->
+  <div class="grid grid-cols-3 gap-4">
+
+    <!-- Gráfico de Linha - Faturamento Mensal (Ocupa 2 colunas) -->
+    <div class="col-span-2 glass-card rounded-[24px] p-5 flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-header-3 text-text">Faturamento Mensal</h2>
+
+        <!-- Period Selector -->
+        <div class="flex gap-1 bg-light rounded-full p-1">
+          <button
+            (click)="setPeriod('week')"
+            class="px-4 py-2 rounded-full text-small cursor-pointer transition-all"
+            [class]="selectedPeriod === 'week' ? 'bg-white text-text shadow-sm' : 'text-subtle-text hover:text-text'">
+            Semana
+          </button>
+          <button
+            (click)="setPeriod('month')"
+            class="px-4 py-2 rounded-full text-small cursor-pointer transition-all"
+            [class]="selectedPeriod === 'month' ? 'bg-white text-text shadow-sm' : 'text-subtle-text hover:text-text'">
+            Mês
+          </button>
+          <button
+            (click)="setPeriod('year')"
+            class="px-4 py-2 rounded-full text-small cursor-pointer transition-all"
+            [class]="selectedPeriod === 'year' ? 'bg-white text-text shadow-sm' : 'text-subtle-text hover:text-text'">
+            Ano
+          </button>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="h-[280px]">
+        <canvas *ngIf="isBrowser"
+          baseChart
+          [type]="'line'"
+          [data]="lineChartData"
+          [options]="lineChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Gráfico de Rosca - Destinos Populares -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4">
+      <h2 class="text-header-3 text-text">Destinos Populares</h2>
+
+      <div class="h-[280px] flex items-center justify-center">
+        <canvas *ngIf="isBrowser"
+          baseChart
+          [type]="'doughnut'"
+          [data]="doughnutChartData"
+          [options]="doughnutChartOptions">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BOTTOM ROW ===== -->
+  <div class="grid grid-cols-2 gap-4">
+
+    <!-- Gráfico de Barras - Viagens por Dia da Semana -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4">
+      <h2 class="text-header-3 text-text">Viagens por Dia da Semana</h2>
+
+      <div class="h-[200px]">
+        <canvas *ngIf="isBrowser"
+          baseChart
+          [type]="'bar'"
+          [data]="barChartData"
+          [options]="barChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Últimas Viagens -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-header-3 text-text">Últimas Viagens</h2>
+        <a class="text-small text-primary underline cursor-pointer hover:opacity-70">Ver todas</a>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <!-- Trip Item -->
+        <div class="glass-inner rounded-[12px] p-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-full bg-secondary/20 flex items-center justify-center">
+              <div class="size-5 bg-secondary"
+                style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-body text-text">Garanhuns → Recife</span>
+              <span class="text-small text-subtle-text">Hoje, 14:30</span>
+            </div>
+          </div>
+          <span class="text-body text-green-600 font-medium">+R$ 180,00</span>
+        </div>
+
+        <div class="glass-inner rounded-[12px] p-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-full bg-secondary/20 flex items-center justify-center">
+              <div class="size-5 bg-secondary"
+                style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-body text-text">Recife → Garanhuns</span>
+              <span class="text-small text-subtle-text">Ontem, 16:00</span>
+            </div>
+          </div>
+          <span class="text-body text-green-600 font-medium">+R$ 175,00</span>
+        </div>
+
+        <div class="glass-inner rounded-[12px] p-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-full bg-secondary/20 flex items-center justify-center">
+              <div class="size-5 bg-secondary"
+                style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-body text-text">Garanhuns → Caruaru</span>
+              <span class="text-small text-subtle-text">03/03, 08:00</span>
+            </div>
+          </div>
+          <span class="text-body text-green-600 font-medium">+R$ 95,00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+

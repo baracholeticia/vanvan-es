@@ -1,0 +1,164 @@
+:host {
+  display: block;
+  width: calc(100% + 40px);
+  height: calc(100% + 20px);
+  margin: 0 -20px -20px -20px;
+  padding: 0 20px 0 20px;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Glassmorphism card – main outer cards */
+.glass-card {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgba(250, 250, 250, 0.8);
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(238, 238, 239, 0.6);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* Subtle glassmorphism card */
+.glass-card-subtle {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgba(238, 238, 239, 0.4);
+}
+
+.glass-card-subtle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(238, 238, 239, 0.6);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* Inner sub-cards – lighter glass */
+.glass-inner {
+  background: rgba(250, 250, 250, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Strong inner – whiter, for buttons/actions */
+.glass-inner-strong {
+  background: rgba(250, 250, 250, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ===== Vehicle Cards ===== */
+.vehicle-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+.vehicle-card-selected {
+  background: rgba(250, 250, 250, 0.2);
+  border: 2px dashed #F66B0E;
+}
+
+.vehicle-card-default {
+  background: rgba(250, 250, 250, 0.2);
+  border: 2px solid transparent;
+}
+
+.vehicle-card-default:hover {
+  border-color: rgba(85, 125, 150, 0.3);
+}
+
+/* ===== Scrollbar hide ===== */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== Responsive adjustments ===== */
+@media (max-width: 1024px) {
+  .glass-card,
+  .glass-card-subtle {
+    padding: 12px;
+  }
+}
+
+/* ===== Add Vehicle Popup ===== */
+.add-vehicle-popup {
+  position: fixed !important;
+  animation: popupSlideIn 0.3s ease-out;
+}
+
+.add-vehicle-popup app-textfield {
+  display: block;
+  width: 100%;
+}
+
+.add-vehicle-popup app-textfield ::ng-deep .w-\[320px\] {
+  width: 100% !important;
+}
+
+@keyframes popupSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== Delete Vehicle Popup ===== */
+.delete-vehicle-popup {
+  position: fixed !important;
+  animation: popupSlideIn 0.3s ease-out;
+}
+
+/* ===== Upload button ===== */
+.upload-btn {
+  background: transparent;
+}
+
+/* ===== Stacked blur layers for gradient effect ===== */
+.blur-layer-1 {
+  -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+  mask-image: linear-gradient(to top, black 0%, transparent 100%);
+}
+
+.blur-layer-2 {
+  -webkit-mask-image: linear-gradient(to top, black 10%, transparent 80%);
+  mask-image: linear-gradient(to top, black 10%, transparent 80%);
+}
+
+.blur-layer-3 {
+  -webkit-mask-image: linear-gradient(to top, black 15%, transparent 85%);
+  mask-image: linear-gradient(to top, black 15%, transparent 85%);
+}
+
+.blur-layer-4 {
+  -webkit-mask-image: linear-gradient(to top, black 25%, transparent 100%);
+  mask-image: linear-gradient(to top, black 25%, transparent 100%);
+}
+
+.blur-layer-5 {
+  -webkit-mask-image: linear-gradient(to top, black 40%, transparent 100%);
+  mask-image: linear-gradient(to top, black 40%, transparent 100%);
+}
+

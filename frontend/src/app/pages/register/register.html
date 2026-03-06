@@ -2,40 +2,40 @@
 <div class="flex w-full h-screen bg-dark p-[1.25rem] box-border">
 
     <!-- Main Content Card -->
-    <div class="flex flex-col w-full h-full bg-white rounded-[1.5rem] p-4 md:p-8 lg:p-14 overflow-hidden">
-  
+    <div class="flex flex-col w-full h-full bg-white rounded-[1.5rem] p-4 md:p-8 lg:p-14 overflow-hidden animate-fade-in">
+
       <!-- Header -->
       <div class="flex items-end justify-between w-full px-4 md:px-8 lg:px-16 pb-2 shrink-0">
-        <h1 class="text-text text-header-1 lg:text-title short:text-header-1 whitespace-nowrap leading-[0.8]">VanVan</h1>
-        <h2 class="text-subtle-text text-header-3 lg:text-header-2 short:text-header-3 whitespace-nowrap leading-[0.8]">Cadastro</h2>
+        <h1 class="text-text text-header-1 lg:text-title short:text-header-1 whitespace-nowrap leading-[0.8] animate-slide-in-left">VanVan</h1>
+        <h2 class="text-subtle-text text-header-3 lg:text-header-2 short:text-header-3 whitespace-nowrap leading-[0.8] animate-slide-in-right">Cadastro</h2>
       </div>
-  
+
       <!-- Register Card -->
       <div class="flex flex-col lg:flex-row w-full flex-1 bg-light rounded-3xl lg:rounded-[72px] overflow-hidden">
-  
+
         <!-- Banner Image -->
-        <div class="w-full lg:flex-1 h-[200px] sm:h-[300px] lg:h-full">
+        <div class="w-full lg:flex-1 h-[200px] sm:h-[300px] lg:h-full overflow-hidden">
           <img
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
             alt="Van em estrada"
             src="assets/login-banner-1.jpg"
           />
         </div>
-  
+
         <!-- Form Section -->
-      <div class="flex flex-col flex-1 gap-6 short:gap-6 items-start w-full px-6 py-12 short:py-8 sm:px-10 lg:px-[50px] justify-start overflow-y-auto">
+      <div class="flex flex-col flex-1 gap-6 short:gap-6 items-start w-full px-6 py-12 short:py-8 sm:px-10 lg:px-[50px] justify-start overflow-y-auto animate-fade-in-up">
 
         <!-- Title -->
         <div class="flex flex-col gap-1">
             <h2 class="text-text text-header-2 font-bold">Seja Bem-Vindo!</h2>
             <p class="text-subtle-text text-header-3">Faça seu cadastro para começar a viajar</p>
           </div>
-  
+
           <!-- Form -->
           <form class="flex flex-col gap-4 short:gap-5 w-full" (ngSubmit)="onRegister()">
-  
+
             <div class="flex flex-col gap-3 short:gap-3 w-full">
-                
+
                <!-- Name Field -->
                <div class="flex flex-col gap-[3px] w-full">
                 <label for="name" class="text-text text-small">Nome Completo</label>
@@ -45,7 +45,7 @@
                   placeholder="Digite seu nome"
                   [(ngModel)]="name"
                   name="name"
-                  class="w-full bg-white rounded-lg px-4 py-3 short:py-2 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary"
+                  class="w-full bg-white rounded-lg px-4 py-3 short:py-2 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200"
                 />
               </div>
 
@@ -110,7 +110,7 @@
                   />
                 </div>
               </div>
-  
+
               <!-- Password Field -->
               <div class="flex flex-col gap-[3px] w-full">
                 <label for="password" class="text-text text-small">Senha</label>
@@ -143,7 +143,7 @@
                 </div>
               </div>
             </div>
-  
+
             <div class="flex flex-col w-full gap-[20px]">
               <!-- Register Button -->
               <button

@@ -26,7 +26,8 @@ export class ClientSidebar implements AfterViewInit {
   currentUrl = signal(this.router.url);
 
   isMotoristaPage = computed(() => {
-    return this.currentUrl() === '/motorista';
+    const url = this.currentUrl();
+    return url === '/motorista' || url === '/seu-veiculo' || url === '/ofertar-viagem';
   });
 
   isErrorPage = computed(() => {
@@ -39,7 +40,7 @@ export class ClientSidebar implements AfterViewInit {
   });
 
   private isKnownRoute(url: string): boolean {
-    const knownRoutes = ['/home', '/viagens', '/motorista', '/login', '/register', '/admin'];
+    const knownRoutes = ['/home', '/viagens', '/motorista', '/seu-veiculo', '/login', '/register', '/admin'];
     return knownRoutes.some(route => url.startsWith(route)) || url === '/';
   }
 

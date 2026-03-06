@@ -1,0 +1,76 @@
+/* Ajustar Valores Component Styles */
+
+/* Glass card styles - matching other driver pages */
+.glass-card {
+  background: rgba(238, 238, 239, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.glass-inner {
+  background: rgba(238, 238, 239, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Input number - remove spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Slider styles */
+.slider-container {
+  touch-action: none;
+}
+
+.slider-input {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.slider-input::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  cursor: pointer;
+  border: none;
+}
+
+.slider-input::-webkit-slider-runnable-track {
+  height: 100%;
+  cursor: pointer;
+}
+
+.slider-input::-moz-range-track {
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Focus state */
+.slider-input:focus {
+  outline: none;
+}
+
+.slider-input:focus + div {
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.3);
+}
+
