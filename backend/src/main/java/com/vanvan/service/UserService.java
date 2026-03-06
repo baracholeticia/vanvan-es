@@ -67,7 +67,7 @@ public class UserService {
 
         //verifica se o e-mail já está cadastrado
         if (userRepository.findByEmail(user.getEmail()) != null) {
-            throw new EmailAlreadyExistsException(user.getName());
+            throw new EmailAlreadyExistsException(user.getEmail());
         }
         // Verifica se o CPF já está cadastrado
         else if (userRepository.findByCpf(user.getCpf()) != null) {
