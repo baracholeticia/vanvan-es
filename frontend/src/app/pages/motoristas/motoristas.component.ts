@@ -74,7 +74,8 @@ export class MotoristasComponent implements OnInit {
       this.motoristasFiltrados.set(
         this.listaMotoristas.filter(m =>
           m.name.toLowerCase().includes(termo) ||
-          m.cnh.includes(termo)
+          m.cnh.includes(termo) ||
+          m.cpf.includes(termo)
         )
       );
     }

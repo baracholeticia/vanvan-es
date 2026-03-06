@@ -12,6 +12,8 @@
         <input
           type="text"
           placeholder="Pesquisar por ID ou Nome"
+          [(ngModel)]="termoBusca"
+          (input)="filtrarMotoristas()"
           class="flex-1 bg-transparent text-body text-subtle-text font-['Work_Sans'] focus:outline-none placeholder:text-subtle-text placeholder:opacity-70"
         />
       </div>

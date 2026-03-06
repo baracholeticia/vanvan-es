@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.vanvan.config.security.JwtService;
 import com.vanvan.service.UserService;
-import com.vanvan.service.VehicleService;
 import com.vanvan.model.Driver;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
@@ -35,7 +34,6 @@ public class AuthController {
 
     private final UserService userService;
     private final JwtService jwtService;
-    private final VehicleService vehicleService;
     private final ObjectMapper objectMapper;
     private final Validator validator;
 
@@ -87,13 +85,9 @@ public class AuthController {
             throw new IllegalArgumentException("Erro de validação: " + errorMessage);
         }
 
-        // Registrar o motorista
-        var user = userService.register(driverData);
-        Driver driver = (Driver) user;
-
-        // Criar o veículo associado ao motorista
-        VehicleResponseDTO vehicle = vehicleService.createVehicle(
-                driver.getId(),
+        // Registrar o motorista e o veículo atomicamente via UserService
+        DriverWithVehicleResponseDTO result = userService.registerDriverWithVehicle(
+                driverData,
                 driverData.getVehicleModelName(),
                 driverData.getVehicleLicensePlate(),
                 vehicleDocument,
@@ -102,7 +96,7 @@ public class AuthController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new DriverWithVehicleResponseDTO(UserResponseDTO.from(driver), vehicle));
+                .body(result);
     }
 
 }

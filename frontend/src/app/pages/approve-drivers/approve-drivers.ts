@@ -4,13 +4,14 @@ import { AdminService, DriverAdmin, Vehicle } from '../../services/admin.service
 import { Tag } from '../../components/tags/tags';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import {FormsModule} from '@angular/forms';
 
 type TabType = 'PENDING' | 'REJECTED';
 
 @Component({
   selector: 'app-approve-drivers',
   standalone: true,
-  imports: [CommonModule, Tag],
+  imports: [CommonModule, Tag, FormsModule],
   templateUrl: './approve-drivers.html',
   styleUrl: './approve-drivers.css',
 })
@@ -19,13 +20,25 @@ export class ApproveDrivers implements OnInit {
   loading = signal(true);
   error = signal('');
   activeTab = signal<TabType>('PENDING');
-  searchQuery = signal('');
+  searchQuery = signal(''); // Não usado, mas mantenho
+  termoBusca: string = '';
+
+  // Dados brutos carregados do backend (até 100)
+  listaMotoristas: DriverAdmin[] = [];
+
+  // Dados filtrados pela busca (subconjunto de listaMotoristas)
+  motoristasFiltrados: DriverAdmin[] = [];
 
   // Pagination
   currentPage = signal(0);
   totalPages = signal(1);
   totalElements = signal(0);
-  pageSize = 5;
+
+  // Backend page size (traz tudo)
+  backendPageSize = 100;
+
+  // Frontend page size (exibe paginado)
+  uiPageSize = 5;
 
   pendingCount = signal(0);
   rejectedCount = signal(0);
@@ -61,11 +74,15 @@ export class ApproveDrivers implements OnInit {
   loadDrivers(): void {
     this.loading.set(true);
     this.error.set('');
-    this.adminService.listDrivers(this.activeTab(), this.currentPage(), this.pageSize).subscribe({
+    // Carrega até 100 itens do backend
+    this.adminService.listDrivers(this.activeTab(), 0, this.backendPageSize).subscribe({
       next: (page) => {
-        this.drivers.set(page.content);
-        this.totalPages.set(page.totalPages);
-        this.totalElements.set(page.totalElements);
+        // Armazena todos os registros carregados
+        this.listaMotoristas = page.content;
+
+        // Inicializa a lista filtrada com todos
+        this.filtrarMotoristas();
+
         this.loading.set(false);
       },
       error: (err) => {
@@ -124,7 +141,7 @@ export class ApproveDrivers implements OnInit {
   goToPage(page: number): void {
     if (page < 0 || page >= this.totalPages()) return;
     this.currentPage.set(page);
-    this.loadDrivers();
+    this.updateView();
   }
 
   get pages(): number[] {
@@ -201,5 +218,35 @@ export class ApproveDrivers implements OnInit {
         alert('Erro ao carregar foto do veículo.');
       }
     });
+  }
+
+  filtrarMotoristas() {
+    // 1. Aplica o filtro sobre a lista completa
+    if (!this.termoBusca.trim()) {
+      this.motoristasFiltrados = [...this.listaMotoristas];
+    } else {
+      const termo = this.termoBusca.toLowerCase();
+      this.motoristasFiltrados = this.listaMotoristas.filter(m =>
+        m.name.toLowerCase().includes(termo) ||
+        m.cnh.includes(termo) ||
+        m.cpf.includes(termo)
+      );
+    }
+
+    // 2. Reseta para a primeira página e atualiza a visualização
+    this.currentPage.set(0);
+    this.updateView();
+  }
+
+  updateView() {
+    const total = this.motoristasFiltrados.length;
+    this.totalElements.set(total);
+    this.totalPages.set(Math.ceil(total / this.uiPageSize) || 1);
+
+    const startIndex = this.currentPage() * this.uiPageSize;
+    const endIndex = startIndex + this.uiPageSize;
+
+    const pageContent = this.motoristasFiltrados.slice(startIndex, endIndex);
+    this.drivers.set(pageContent);
   }
 }

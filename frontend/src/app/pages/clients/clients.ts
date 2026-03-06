@@ -12,13 +12,13 @@ import { ClienteService, Cliente } from '../../services/client.service';
   selector: 'app-clients',
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    ClienteAddComponent, 
-    ClienteEditComponent, 
+    CommonModule,
+    FormsModule,
+    ClienteAddComponent,
+    ClienteEditComponent,
     ClienteDeleteComponent
   ],
-  templateUrl: './clients.html', 
+  templateUrl: './clients.html',
 })
 export class ClientsComponent implements OnInit {
 
@@ -48,7 +48,7 @@ export class ClientsComponent implements OnInit {
   carregarClientes(): void {
     this.carregando.set(true);
     this.erro.set('');
-    
+
     // Agora usamos o listar() do ClienteService
     this.clienteService.listar(0, 100).subscribe({
       next: (clientes: Cliente[]) => {
@@ -74,7 +74,8 @@ export class ClientsComponent implements OnInit {
       this.clientesFiltrados.set(
         this.listaClientes.filter(c =>
           c.name.toLowerCase().includes(termo) ||
-          c.email.toLowerCase().includes(termo) 
+          c.email.toLowerCase().includes(termo) ||
+          c.cpf.toLowerCase().includes(termo)
         )
       );
     }
