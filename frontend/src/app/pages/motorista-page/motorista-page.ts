@@ -19,6 +19,7 @@ export class MotoristaPage implements OnDestroy {
     private toastService: ToastService
   ) {}
 
+
   // ===== Trip Status =====
   tripStatus: TripStatus = 'scheduled'; // Estado padrão com viagem agendada
 
@@ -92,11 +93,8 @@ export class MotoristaPage implements OnDestroy {
 
   cancelCurrentTrip(): void {
     if (this.tripStatus === 'in_progress') {
-      // Confirmar cancelamento durante viagem
-      if (confirm('Tem certeza que deseja cancelar a viagem em andamento?')) {
-        this.resetTrip();
-        this.toastService.error('Viagem cancelada');
-      }
+      this.resetTrip();
+      this.toastService.error('Viagem em andamento cancelada');
     } else {
       this.resetTrip();
       this.toastService.success('Viagem cancelada');
@@ -224,11 +222,13 @@ export class MotoristaPage implements OnDestroy {
   }
 
   callEmergency(): void {
-    alert('Ligando para emergência...');
+    this.toastService.success('Acionando emergência médica (192)...');
+    this.toggleEmergencyPopup();
   }
 
   reportProblem(): void {
-    alert('Abrindo formulário de reporte...');
+    this.toastService.success('Abrindo formulário de reporte...');
+    this.toggleEmergencyPopup();
   }
 
   ngOnDestroy(): void {
@@ -256,6 +256,8 @@ export class MotoristaPage implements OnDestroy {
     months: 1,
     profit: 'R$2300,00',
     dailyProfits: [42, 73, 59, 51, 67, 100],
+    dailyLabels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+    dailyValues: [105, 183, 148, 128, 168, 250],
   };
 
   verFaturamento(): void {

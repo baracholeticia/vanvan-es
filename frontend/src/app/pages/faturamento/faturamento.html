@@ -4,225 +4,553 @@
 </div>
 
 <!-- Background van image -->
-<div class="fixed top-0 left-1/2 -translate-x-1/2 w-[1242px] h-[1242px] -mt-8 z-[2] pointer-events-none opacity-80">
-  <img src="assets/van_topview.png" class="w-full h-full object-cover" alt="background van">
+<div class="fixed inset-0 z-[2] pointer-events-none">
+  <img src="assets/VAN-LIGHTS.png" class="w-full h-full object-cover" alt="background van">
+</div>
+
+<!-- Ambient Glowing Orbs -->
+<div class="fixed inset-0 z-[3] pointer-events-none overflow-hidden">
+  <div class="absolute top-[-10%] left-[-5%] w-[400px] h-[400px] bg-secondary/20 rounded-full blur-[100px]"></div>
+  <div class="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]"></div>
+  <div class="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-[#31D0AA]/10 rounded-full blur-[150px]"></div>
 </div>
 
 <!-- Main Container -->
-<div class="relative z-[10] flex flex-col gap-6 w-full min-h-full pb-6">
+<div class="relative z-[10] flex flex-col gap-6 w-full min-h-full pb-6 pt-4 px-2 md:px-6 stagger-cards">
 
   <!-- ===== HEADER ===== -->
   <div class="flex items-center gap-4">
     <button (click)="goBack()"
-      class="size-12 rounded-full glass-card flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+      class="size-12 rounded-full glass-card flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity btn-press">
       <div class="size-6 bg-text"
-        style="-webkit-mask: url(assets/icons/arrow-left.svg) no-repeat center / contain; mask: url(assets/icons/arrow-left.svg) no-repeat center / contain;">
+        style="-webkit-mask: url(assets/icons/arrow_back.svg) no-repeat center / contain; mask: url(assets/icons/arrow_back.svg) no-repeat center / contain;">
       </div>
     </button>
     <div class="flex flex-col gap-1">
-      <h1 class="text-header-1 text-text">Faturamento</h1>
+      <h1 class="text-header-1 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-text to-secondary">
+        Faturamento</h1>
       <p class="text-body text-subtle-text">Acompanhe seus ganhos e estatísticas</p>
     </div>
   </div>
 
-  <!-- ===== SUMMARY CARDS ===== -->
-  <div class="grid grid-cols-4 gap-4">
+  <!-- ===== ROW 1: SUMMARY CARDS ===== -->
+  <div class="grid grid-cols-4 gap-4 fat-grid-4 stagger-cards">
 
     <!-- Total do Mês -->
-    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 hover-lift bg-light/80">
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4 hover-lift metric-card">
       <div class="flex items-center justify-between">
-        <span class="text-small text-subtle-text">Total do Mês</span>
-        <div class="size-10 rounded-full bg-secondary/20 flex items-center justify-center">
-          <div class="size-5 bg-secondary"
+        <div class="flex items-center gap-3">
+          <div class="size-5 bg-text"
             style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;">
           </div>
+          <span class="text-subtitle text-text">Total do Mês</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-small font-bold text-green-600">+{{ summary.percentChange }}%</span>
+          <button
+            class="size-8 rounded-full border border-subtle-text/20 flex items-center justify-center hover:bg-black/[0.03] active:scale-95 transition-all cursor-pointer">
+            <div class="size-4 bg-text"
+              style="-webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain; mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;">
+            </div>
+          </button>
         </div>
       </div>
-      <span class="text-header-1 text-text">{{ formatCurrency(summary.totalMonth) }}</span>
-      <div class="flex items-center gap-1">
-        <div class="size-4 bg-green-500"
-          style="-webkit-mask: url(assets/icons/arrow-up.svg) no-repeat center / contain; mask: url(assets/icons/arrow-up.svg) no-repeat center / contain;">
-        </div>
-        <span class="text-small text-green-600">+{{ summary.percentChange }}% vs mês anterior</span>
-      </div>
+      <span class="text-header-2 text-text tracking-tight leading-none">{{ formatCurrency(summary.totalMonth) }}</span>
+      <span class="text-[11px] text-subtle-text">vs mês anterior</span>
     </div>
 
     <!-- Total da Semana -->
-    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 hover-lift">
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4 hover-lift metric-card">
       <div class="flex items-center justify-between">
-        <span class="text-small text-subtle-text">Total da Semana</span>
-        <div class="size-10 rounded-full bg-primary/20 flex items-center justify-center">
-          <div class="size-5 bg-primary"
+        <div class="flex items-center gap-3">
+          <div class="size-5 bg-text"
             style="-webkit-mask: url(assets/icons/calendar.svg) no-repeat center / contain; mask: url(assets/icons/calendar.svg) no-repeat center / contain;">
           </div>
+          <span class="text-subtitle text-text">Semanal</span>
         </div>
+        <button
+          class="size-8 rounded-full border border-subtle-text/20 flex items-center justify-center hover:bg-black/[0.03] active:scale-95 transition-all cursor-pointer">
+          <div class="size-4 bg-text"
+            style="-webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain; mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;">
+          </div>
+        </button>
       </div>
-      <span class="text-header-1 text-text">{{ formatCurrency(summary.totalWeek) }}</span>
-      <span class="text-small text-subtle-text">{{ summary.tripsWeek }} viagens realizadas</span>
+      <span class="text-header-2 text-text tracking-tight leading-none">{{ formatCurrency(summary.totalWeek) }}</span>
+      <div class="flex items-center gap-1.5">
+        <div class="size-4 bg-subtle-text"
+          style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+        </div>
+        <span class="text-[11px] text-subtle-text">{{ summary.tripsWeek }} viagens</span>
+      </div>
     </div>
 
     <!-- Total de Hoje -->
-    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 hover-lift">
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4 hover-lift metric-card">
       <div class="flex items-center justify-between">
-        <span class="text-small text-subtle-text">Total de Hoje</span>
-        <div class="size-10 rounded-full bg-green-500/20 flex items-center justify-center">
-          <div class="size-5 bg-green-500"
+        <div class="flex items-center gap-3">
+          <div class="size-5 bg-text"
             style="-webkit-mask: url(assets/icons/wallet.svg) no-repeat center / contain; mask: url(assets/icons/wallet.svg) no-repeat center / contain;">
           </div>
+          <span class="text-subtitle text-text">Hoje</span>
         </div>
+        <button
+          class="size-8 rounded-full border border-subtle-text/20 flex items-center justify-center hover:bg-black/[0.03] active:scale-95 transition-all cursor-pointer">
+          <div class="size-4 bg-text"
+            style="-webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain; mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;">
+          </div>
+        </button>
       </div>
-      <span class="text-header-1 text-text">{{ formatCurrency(summary.totalToday) }}</span>
-      <span class="text-small text-subtle-text">Última viagem às 14:30</span>
+      <span class="text-header-2 text-text tracking-tight leading-none">{{ formatCurrency(summary.totalToday) }}</span>
+      <div class="flex items-center gap-1.5">
+        <div class="size-4 bg-subtle-text"
+          style="-webkit-mask: url(assets/icons/clock.svg) no-repeat center / contain; mask: url(assets/icons/clock.svg) no-repeat center / contain;">
+        </div>
+        <span class="text-[11px] text-subtle-text">Última viagem às 14:30</span>
+      </div>
     </div>
 
     <!-- Avaliação Média -->
-    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 hover-lift">
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4 hover-lift metric-card">
       <div class="flex items-center justify-between">
-        <span class="text-small text-subtle-text">Avaliação Média</span>
-        <div class="size-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-          <div class="size-5 bg-yellow-500"
+        <div class="flex items-center gap-3">
+          <div class="size-5 bg-text"
             style="-webkit-mask: url(assets/icons/star.svg) no-repeat center / contain; mask: url(assets/icons/star.svg) no-repeat center / contain;">
           </div>
+          <span class="text-subtitle text-text">Avaliação</span>
         </div>
+        <button
+          class="size-8 rounded-full border border-subtle-text/20 flex items-center justify-center hover:bg-black/[0.03] active:scale-95 transition-all cursor-pointer">
+          <div class="size-4 bg-text"
+            style="-webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain; mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;">
+          </div>
+        </button>
       </div>
-      <div class="flex items-baseline gap-1">
-        <span class="text-header-1 text-text">{{ summary.avgRating }}</span>
-        <span class="text-body text-subtle-text">/ 5.0</span>
+      <div class="flex items-baseline gap-2">
+        <span class="text-header-2 text-text tracking-tight leading-none">{{ summary.avgRating }}</span>
+        <span class="text-body text-subtle-text/60">/ 5.0</span>
       </div>
-      <span class="text-small text-subtle-text">Baseado em {{ summary.tripsMonth }} avaliações</span>
+      <div class="flex gap-1">
+        <div *ngFor="let star of [1,2,3,4,5]" class="size-4" [class]="star <= 4 ? 'bg-yellow-400' : 'bg-yellow-400/40'"
+          style="-webkit-mask: url(assets/icons/star.svg) no-repeat center / contain; mask: url(assets/icons/star.svg) no-repeat center / contain;">
+        </div>
+        <span class="text-[11px] text-subtle-text ml-1 self-center">{{ summary.tripsMonth }}</span>
+      </div>
     </div>
   </div>
 
-  <!-- ===== CHARTS SECTION ===== -->
-  <div class="grid grid-cols-3 gap-4">
+  <!-- ===== ROW 2: CHARTS SECTION ===== -->
+  <div class="grid grid-cols-3 gap-4 fat-grid-3">
 
-    <!-- Gráfico de Linha - Faturamento Mensal (Ocupa 2 colunas) -->
+    <!-- Block Chart — Faturamento Mensal (2 cols) -->
     <div class="col-span-2 glass-card rounded-[24px] p-5 flex flex-col gap-4">
       <div class="flex items-center justify-between">
-        <h2 class="text-header-3 text-text">Faturamento Mensal</h2>
+        <div class="flex flex-col gap-1">
+          <h2 class="text-header-3 text-text">Faturamento Mensal</h2>
+          <span class="text-small text-subtle-text">Evolução ao longo dos meses</span>
+        </div>
 
         <!-- Period Selector -->
-        <div class="flex gap-1 bg-light rounded-full p-1">
-          <button
-            (click)="setPeriod('week')"
-            class="px-4 py-2 rounded-full text-small cursor-pointer transition-all"
+        <div class="flex gap-1 glass-inner rounded-full p-1">
+          <button (click)="setPeriod('week')"
+            class="px-4 py-2 rounded-full text-small cursor-pointer transition-all btn-press"
             [class]="selectedPeriod === 'week' ? 'bg-white text-text shadow-sm' : 'text-subtle-text hover:text-text'">
             Semana
           </button>
-          <button
-            (click)="setPeriod('month')"
-            class="px-4 py-2 rounded-full text-small cursor-pointer transition-all"
+          <button (click)="setPeriod('month')"
+            class="px-4 py-2 rounded-full text-small cursor-pointer transition-all btn-press"
             [class]="selectedPeriod === 'month' ? 'bg-white text-text shadow-sm' : 'text-subtle-text hover:text-text'">
             Mês
           </button>
-          <button
-            (click)="setPeriod('year')"
-            class="px-4 py-2 rounded-full text-small cursor-pointer transition-all"
+          <button (click)="setPeriod('year')"
+            class="px-4 py-2 rounded-full text-small cursor-pointer transition-all btn-press"
             [class]="selectedPeriod === 'year' ? 'bg-white text-text shadow-sm' : 'text-subtle-text hover:text-text'">
             Ano
           </button>
         </div>
       </div>
 
-      <!-- Chart -->
-      <div class="h-[280px]">
-        <canvas *ngIf="isBrowser"
-          baseChart
-          [type]="'line'"
-          [data]="lineChartData"
-          [options]="lineChartOptions">
-        </canvas>
+      <!-- Block chart with equal square-ish blocks -->
+      <div class="flex items-end gap-3 h-[260px] px-2 fat-hover-container" (mouseleave)="hoveredBlockIndex = null">
+        <div *ngFor="let month of blockChartData; let i = index"
+          class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end block-chart-col cursor-pointer fat-hover-item"
+          [class.fat-hover-item--active]="hoveredBlockIndex === i" (mouseenter)="hoveredBlockIndex = i">
+          <!-- Hover tooltip -->
+          <div class="text-[12px] font-bold text-text transition-opacity duration-200 h-[18px]"
+            [ngStyle]="{'opacity': hoveredBlockIndex === i ? 1 : 0}">
+            {{ month.value }}
+          </div>
+          <!-- Stacked equal square blocks -->
+          <div class="w-full flex flex-col-reverse gap-[4px] items-center">
+            <div *ngFor="let opacity of getBlockOpacities(month.blocks, month.highlight); let j = index"
+              class="w-full rounded-[10px] block-cell"
+              [ngClass]="month.highlight ? 'block-cell-highlight' : 'block-cell-faded'" [ngStyle]="{
+                'height': '40px',
+                'opacity': opacity,
+                'animation-delay': (i * 0.06 + j * 0.04) + 's'
+              }">
+            </div>
+          </div>
+          <!-- Label -->
+          <span class="text-[11px] font-medium shrink-0"
+            [class]="month.highlight ? 'text-text font-bold' : 'text-subtle-text'">{{ month.label }}</span>
+        </div>
       </div>
     </div>
 
-    <!-- Gráfico de Rosca - Destinos Populares -->
-    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4">
+    <!-- Destinos Populares — stacked circular arcs (Audience Insights style) -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3">
       <h2 class="text-header-3 text-text">Destinos Populares</h2>
 
-      <div class="h-[280px] flex items-center justify-center">
-        <canvas *ngIf="isBrowser"
-          baseChart
-          [type]="'doughnut'"
-          [data]="doughnutChartData"
-          [options]="doughnutChartOptions">
-        </canvas>
+      <!-- Stacked circular arcs — large -->
+      <div class="relative flex items-center justify-center flex-1 min-h-[220px]">
+        <svg width="220" height="220" viewBox="0 0 220 220" class="ring-progress">
+          <!-- Track rings -->
+          <circle cx="110" cy="110" r="95" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="14" />
+          <circle cx="110" cy="110" r="72" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="14" />
+          <circle cx="110" cy="110" r="49" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="14" />
+
+          <!-- Filled arcs — top destination is outermost -->
+          <circle cx="110" cy="110" r="95" fill="none" [attr.stroke]="destinations[0].color" stroke-width="14"
+            stroke-linecap="round" class="ring-fill" [attr.stroke-dasharray]="2 * 3.14159 * 95"
+            [attr.stroke-dashoffset]="2 * 3.14159 * 95 * (1 - destinations[0].percent / 100)" />
+          <circle cx="110" cy="110" r="72" fill="none" [attr.stroke]="destinations[1].color" stroke-width="14"
+            stroke-linecap="round" class="ring-fill" [attr.stroke-dasharray]="2 * 3.14159 * 72"
+            [attr.stroke-dashoffset]="2 * 3.14159 * 72 * (1 - destinations[1].percent / 100)" />
+          <circle cx="110" cy="110" r="49" fill="none" [attr.stroke]="destinations[2].color" stroke-width="14"
+            stroke-linecap="round" class="ring-fill" [attr.stroke-dasharray]="2 * 3.14159 * 49"
+            [attr.stroke-dashoffset]="2 * 3.14159 * 49 * (1 - destinations[2].percent / 100)" />
+        </svg>
+      </div>
+
+      <!-- Compact legend — just color dot + name + percent in a row -->
+      <div class="flex items-center justify-center gap-5">
+        <div *ngFor="let dest of destinations" class="flex items-center gap-1.5">
+          <div class="size-2.5 rounded-full shrink-0" [ngStyle]="{'background': dest.color}"></div>
+          <span class="text-[12px] text-text font-medium">{{ dest.percent }}%</span>
+          <span class="text-[11px] text-subtle-text">{{ dest.name }}</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ===== BOTTOM ROW ===== -->
-  <div class="grid grid-cols-2 gap-4">
+  <!-- ===== ROW 3: Bar Chart + Meta Mensal + Métricas ===== -->
+  <div class="grid grid-cols-3 gap-4 fat-grid-3">
 
-    <!-- Gráfico de Barras - Viagens por Dia da Semana -->
+    <!-- Bar Chart — Viagens por Dia -->
     <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4">
-      <h2 class="text-header-3 text-text">Viagens por Dia da Semana</h2>
+      <div class="flex items-center justify-between">
+        <h2 class="text-header-3 text-text">Viagens por Dia</h2>
+        <div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10">
+          <span class="text-[11px] font-bold text-primary">Sáb</span>
+          <span class="text-[10px] text-primary/70">melhor dia</span>
+        </div>
+      </div>
 
       <div class="h-[200px]">
-        <canvas *ngIf="isBrowser"
-          baseChart
-          [type]="'bar'"
-          [data]="barChartData"
-          [options]="barChartOptions">
+        <canvas *ngIf="isBrowser" baseChart [type]="'bar'" [data]="barChartData" [options]="barChartOptions">
         </canvas>
       </div>
     </div>
 
-    <!-- Últimas Viagens -->
+    <!-- Ring Progress — Meta Mensal -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col items-center justify-center gap-4">
+      <h2 class="text-header-3 text-text self-start">Meta Mensal</h2>
+
+      <div class="relative flex items-center justify-center">
+        <svg class="ring-progress" width="200" height="200" viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#F66B0E" />
+              <stop offset="100%" stop-color="#31D0AA" />
+            </linearGradient>
+          </defs>
+          <circle class="ring-track" cx="100" cy="100" r="80" stroke-width="14" />
+          <circle class="ring-fill animate-ring-fill" cx="100" cy="100" r="80" stroke-width="14"
+            stroke="url(#ringGradient)" [attr.stroke-dasharray]="ringCircumference"
+            [attr.stroke-dashoffset]="ringOffset" [style.--ring-circumference]="ringCircumference"
+            [style.--ring-target]="ringOffset" />
+        </svg>
+        <div class="absolute flex flex-col items-center">
+          <span class="text-[2.5rem] font-extrabold text-text leading-none">{{ monthlyGoalPercent }}<span
+              class="text-header-3">%</span></span>
+          <span class="text-small text-subtle-text mt-1">da meta</span>
+        </div>
+      </div>
+
+      <div class="flex gap-8 items-center">
+        <div class="flex flex-col items-center gap-0.5">
+          <span class="text-[10px] text-subtle-text uppercase tracking-wider">Atual</span>
+          <span class="text-body text-secondary font-bold">{{ formatCurrency(summary.totalMonth) }}</span>
+        </div>
+        <div class="w-px h-8 bg-subtle-text/20"></div>
+        <div class="flex flex-col items-center gap-0.5">
+          <span class="text-[10px] text-subtle-text uppercase tracking-wider">Meta</span>
+          <span class="text-body text-text font-bold">{{ formatCurrency(monthlyGoal) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Métricas Rápidas — stat grid 2x2 -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3">
+      <h2 class="text-header-3 text-text">Métricas</h2>
+
+      <div class="grid grid-cols-2 gap-3 flex-1">
+        <div class="glass-inner rounded-[16px] p-3 flex flex-col items-center justify-center gap-2 metric-card">
+          <div class="relative">
+            <svg class="ring-progress" width="48" height="48" viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="18" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="4" />
+              <circle cx="24" cy="24" r="18" fill="none" stroke="#F66B0E" stroke-width="4" stroke-linecap="round"
+                [attr.stroke-dasharray]="getSmallRingCircumference()"
+                [attr.stroke-dashoffset]="getSmallRingOffset(getMetricPercent(metrics.totalKm, metrics.maxKm))"
+                class="ring-fill" />
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="size-4 bg-secondary"
+                style="-webkit-mask: url(assets/icons/routing.svg) no-repeat center / contain; mask: url(assets/icons/routing.svg) no-repeat center / contain;">
+              </div>
+            </div>
+          </div>
+          <span class="text-body text-text font-bold leading-none">{{ metrics.totalKm.toLocaleString() }}</span>
+          <span class="text-[10px] text-subtle-text text-center">Km percorridos</span>
+        </div>
+
+        <div class="glass-inner rounded-[16px] p-3 flex flex-col items-center justify-center gap-2 metric-card">
+          <div class="relative">
+            <svg class="ring-progress" width="48" height="48" viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="18" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="4" />
+              <circle cx="24" cy="24" r="18" fill="none" stroke="#F66B0E" stroke-width="4" stroke-linecap="round"
+                [attr.stroke-dasharray]="getSmallRingCircumference()"
+                [attr.stroke-dashoffset]="getSmallRingOffset(getMetricPercent(metrics.totalPassengers, metrics.maxPassengers))"
+                class="ring-fill" />
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="size-4 bg-primary"
+                style="-webkit-mask: url(assets/icons/profile-2user.svg) no-repeat center / contain; mask: url(assets/icons/profile-2user.svg) no-repeat center / contain;">
+              </div>
+            </div>
+          </div>
+          <span class="text-body text-text font-bold leading-none">{{ metrics.totalPassengers }}</span>
+          <span class="text-[10px] text-subtle-text text-center">Passageiros</span>
+        </div>
+
+        <div class="glass-inner rounded-[16px] p-3 flex flex-col items-center justify-center gap-2 metric-card">
+          <div class="relative">
+            <svg class="ring-progress" width="48" height="48" viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="18" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="4" />
+              <circle cx="24" cy="24" r="18" fill="none" stroke="#31D0AA" stroke-width="4" stroke-linecap="round"
+                [attr.stroke-dasharray]="getSmallRingCircumference()"
+                [attr.stroke-dashoffset]="getSmallRingOffset(getMetricPercent(metrics.avgPerTrip, metrics.maxPerTrip))"
+                class="ring-fill" />
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="size-4 bg-green-600"
+                style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;">
+              </div>
+            </div>
+          </div>
+          <span class="text-body text-text font-bold leading-none">{{ formatCurrency(metrics.avgPerTrip) }}</span>
+          <span class="text-[10px] text-subtle-text text-center">Média/viagem</span>
+        </div>
+
+        <div class="glass-inner rounded-[16px] p-3 flex flex-col items-center justify-center gap-2 metric-card">
+          <div class="relative">
+            <svg class="ring-progress" width="48" height="48" viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="18" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="4" />
+              <circle cx="24" cy="24" r="18" fill="none" stroke="#9333EA" stroke-width="4" stroke-linecap="round"
+                [attr.stroke-dasharray]="getSmallRingCircumference()"
+                [attr.stroke-dashoffset]="getSmallRingOffset(getMetricPercent(metrics.totalHours, metrics.maxHours))"
+                class="ring-fill" />
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="size-4 bg-purple-600"
+                style="-webkit-mask: url(assets/icons/clock.svg) no-repeat center / contain; mask: url(assets/icons/clock.svg) no-repeat center / contain;">
+              </div>
+            </div>
+          </div>
+          <span class="text-body text-text font-bold leading-none">{{ metrics.totalHours }}h</span>
+          <span class="text-[10px] text-subtle-text text-center">Na estrada</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ROW 4: Earnings by Type + Peak Hours (expanded) ===== -->
+  <div class="grid grid-cols-2 gap-4 fat-grid-2">
+
+    <!-- Faturamento por Tipo — individual horizontal bars -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4">
+      <h2 class="text-header-3 text-text">Faturamento por Tipo</h2>
+
+      <div class="flex flex-col gap-4 flex-1 justify-center fat-hover-container" (mouseleave)="hoveredTypeIndex = null">
+        <div *ngFor="let type of earningsByType; let i = index" class="flex flex-col gap-2 fat-hover-item"
+          [class.fat-hover-item--active]="hoveredTypeIndex === i" (mouseenter)="hoveredTypeIndex = i">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full shrink-0" [ngStyle]="{'background': type.color}"></div>
+              <span class="text-body text-text font-medium">{{ type.label }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-header-3 text-text">{{ type.percent }}%</span>
+              <span class="text-[11px] text-subtle-text">{{ formatCurrency(type.value) }}</span>
+            </div>
+          </div>
+          <!-- Wide bar -->
+          <div class="h-10 rounded-full bg-black/[0.06] overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-700"
+              [ngStyle]="{'width': type.percent + '%', 'background': type.color}">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stacked total bar -->
+      <div class="flex flex-col gap-1">
+        <span class="text-[10px] text-subtle-text uppercase tracking-wider">Distribuição total</span>
+        <div class="h-3 rounded-full bg-black/[0.06] overflow-hidden flex">
+          <div *ngFor="let type of earningsByType" class="h-full transition-all duration-700"
+            [ngStyle]="{'width': type.percent + '%', 'background': type.color}">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Horários de Pico — 4x4 scratch squares, 2 column layout -->
+    <div class="glass-card rounded-[24px] p-8 flex gap-10">
+
+      <!-- Left Column: Title & Legend -->
+      <div class="flex flex-col justify-between items-start shrink-0 min-w-[230px]">
+        <div class="flex flex-col gap-3 items-start">
+          <h2 class="text-header-3 text-text">Horários de Pico</h2>
+          <div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary/10">
+            <div class="size-3 bg-secondary"
+              style="-webkit-mask: url(assets/icons/clock.svg) no-repeat center / contain; mask: url(assets/icons/clock.svg) no-repeat center / contain;">
+            </div>
+            <span class="text-[11px] font-bold text-secondary">Pico: 17h</span>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="flex flex-col gap-1.5 w-full mt-6">
+          <div class="flex items-center justify-between w-full">
+            <span class="text-[10px] text-subtle-text">Baixa</span>
+            <span class="text-[10px] text-subtle-text">Alta</span>
+          </div>
+          <div class="flex gap-1 w-full h-3">
+            <div class="flex-1 rounded-[3px] scratch-legend-cell" style="background-color: #F66B0E; opacity: 0.15;">
+            </div>
+            <div class="flex-1 rounded-[3px] scratch-legend-cell" style="background-color: #F66B0E; opacity: 0.35;">
+            </div>
+            <div class="flex-1 rounded-[3px] scratch-legend-cell" style="background-color: #F66B0E; opacity: 0.60;">
+            </div>
+            <div class="flex-1 rounded-[3px] scratch-legend-cell" style="background-color: #F66B0E; opacity: 0.80;">
+            </div>
+            <div class="flex-1 rounded-[3px] scratch-legend-cell" style="background-color: #F66B0E; opacity: 1;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: 4x4 Grid of scratch squares with labels inside -->
+      <div class="grid grid-cols-4 gap-2 flex-1 fat-hover-container" (mouseleave)="hoveredHourIndex = null">
+        <div *ngFor="let hour of peakHours; let i = index"
+          class="aspect-square rounded-[24px] scratch-cell overflow-hidden relative flex items-center justify-center transition-all duration-500 fat-hover-item"
+          [class.fat-hover-item--active]="hoveredHourIndex === i" (mouseenter)="hoveredHourIndex = i"
+          [ngStyle]="{'opacity': getIntensityOpacity(hour.intensity)}"
+          [title]="hour.label + ': ' + hour.intensity + '% atividade'" style="background-color: #F66B0E;">
+          <!-- Diagonal scratch/hatching pattern -->
+          <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+            <defs>
+              <pattern [attr.id]="'scratch-' + hour.label" patternUnits="userSpaceOnUse" width="5" height="5"
+                patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" [attr.fill]="'url(#scratch-' + hour.label + ')'" />
+          </svg>
+          <!-- Label inside -->
+          <span class="relative z-10 text-[11px] font-bold text-white/90">{{ hour.label }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== ROW 5: Últimas Viagens + Comparativo Mensal ===== -->
+  <div class="grid grid-cols-2 gap-4 fat-grid-2">
+
+    <!-- Últimas Viagens — Timeline layout -->
     <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4">
       <div class="flex items-center justify-between">
         <h2 class="text-header-3 text-text">Últimas Viagens</h2>
-        <a class="text-small text-primary underline cursor-pointer hover:opacity-70">Ver todas</a>
+        <a (click)="goToTrips()"
+          class="text-small text-primary underline cursor-pointer hover:opacity-70 transition-opacity">Ver todas</a>
       </div>
 
-      <div class="flex flex-col gap-2">
-        <!-- Trip Item -->
-        <div class="glass-inner rounded-[12px] p-3 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="size-10 rounded-full bg-secondary/20 flex items-center justify-center">
-              <div class="size-5 bg-secondary"
-                style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+      <div class="flex flex-col gap-0 relative trip-timeline">
+        <div *ngFor="let trip of recentTrips; let last = last" class="flex gap-4 relative trip-timeline-item"
+          [class.pb-4]="!last">
+          <div class="flex flex-col items-center shrink-0">
+            <div class="size-3 rounded-full bg-secondary ring-4 ring-secondary/10 z-10"></div>
+            <div *ngIf="!last" class="w-0.5 flex-1 bg-secondary/15 mt-1"></div>
+          </div>
+          <div class="glass-inner rounded-[14px] p-3 flex items-center justify-between flex-1 hover-lift -mt-1">
+            <div class="flex flex-col gap-0.5">
+              <span class="text-body text-text font-medium">{{ trip.route }}</span>
+              <span class="text-[11px] text-subtle-text">{{ trip.date }}</span>
+            </div>
+            <div class="flex flex-col items-end gap-0.5">
+              <span class="text-body font-bold text-green-600 px-2.5 py-0.5 rounded-full bg-green-500/10">+{{
+                formatCurrency(trip.earnings) }}</span>
+              <div class="flex items-center gap-1">
+                <div class="size-3 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/profile-2user.svg) no-repeat center / contain; mask: url(assets/icons/profile-2user.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-[11px] text-subtle-text">{{ trip.passengers }}</span>
               </div>
             </div>
-            <div class="flex flex-col">
-              <span class="text-body text-text">Garanhuns → Recife</span>
-              <span class="text-small text-subtle-text">Hoje, 14:30</span>
-            </div>
           </div>
-          <span class="text-body text-green-600 font-medium">+R$ 180,00</span>
         </div>
+      </div>
+    </div>
 
-        <div class="glass-inner rounded-[12px] p-3 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="size-10 rounded-full bg-secondary/20 flex items-center justify-center">
-              <div class="size-5 bg-secondary"
-                style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <span class="text-body text-text">Recife → Garanhuns</span>
-              <span class="text-small text-subtle-text">Ontem, 16:00</span>
+    <!-- Comparativo Mensal -->
+    <div class="glass-card rounded-[24px] p-5 flex flex-col gap-4">
+      <h2 class="text-header-3 text-text">Comparativo Mensal</h2>
+
+      <div class="flex flex-col gap-4 flex-1 justify-center">
+        <div *ngFor="let item of monthComparison" class="flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <span class="text-body text-text">{{ item.label }}</span>
+            <div class="flex items-center gap-2">
+              <span class="text-body text-text font-bold">{{ item.current }}</span>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"
+                [class]="item.changePositive ? 'bg-green-500/15 text-green-600' : 'bg-red-500/15 text-red-500'">
+                <div class="size-3" [class]="item.changePositive ? 'bg-green-500' : 'bg-red-500'"
+                  [ngStyle]="{'transform': item.changePositive ? 'none' : 'rotate(180deg)'}"
+                  style="-webkit-mask: url(assets/icons/arrow-up.svg) no-repeat center / contain; mask: url(assets/icons/arrow-up.svg) no-repeat center / contain;">
+                </div>
+                {{ item.change }}
+              </span>
             </div>
           </div>
-          <span class="text-body text-green-600 font-medium">+R$ 175,00</span>
-        </div>
-
-        <div class="glass-inner rounded-[12px] p-3 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="size-10 rounded-full bg-secondary/20 flex items-center justify-center">
-              <div class="size-5 bg-secondary"
-                style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+          <div class="flex gap-2 items-center">
+            <span class="text-[10px] text-subtle-text w-[30px] shrink-0 uppercase tracking-wider">Atual</span>
+            <div class="flex-1 h-2.5 rounded-full bg-black/[0.06] overflow-hidden">
+              <div class="h-full rounded-full comparison-bar-gradient transition-all duration-700"
+                [ngStyle]="{'width': item.currentPercent + '%'}">
               </div>
             </div>
-            <div class="flex flex-col">
-              <span class="text-body text-text">Garanhuns → Caruaru</span>
-              <span class="text-small text-subtle-text">03/03, 08:00</span>
+          </div>
+          <div class="flex gap-2 items-center">
+            <span class="text-[10px] text-subtle-text w-[30px] shrink-0 uppercase tracking-wider">Ant.</span>
+            <div class="flex-1 h-2.5 rounded-full bg-black/[0.06] overflow-hidden">
+              <div class="h-full rounded-full bg-subtle-text/25 transition-all duration-700"
+                [ngStyle]="{'width': item.previousPercent + '%'}">
+              </div>
             </div>
           </div>
-          <span class="text-body text-green-600 font-medium">+R$ 95,00</span>
         </div>
       </div>
     </div>
   </div>
 
 </div>
-

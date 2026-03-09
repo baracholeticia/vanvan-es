@@ -1,16 +1,152 @@
 /* Faturamento page styles */
+/* Glass card styles use global unified system from styles.css */
 
-/* Glass card styles are inherited from global styles */
-
-.glass-card {
-  background: rgba(238, 238, 239, 0.4);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+/* ===== BLOCK CHART ===== */
+.block-chart-col {
+  transition: transform 0.2s ease;
 }
 
-.glass-inner {
-  background: rgba(238, 238, 239, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+.block-chart-col:hover {
+  transform: translateY(-4px);
+}
+
+.block-cell {
+  min-height: 8px;
+  border-radius: 6px;
+  animation: blockGrow 0.5s ease-out forwards;
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+@keyframes blockGrow {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+.block-cell-faded {
+  background: #F66B0E;
+}
+
+.block-cell-highlight {
+  background: #F66B0E;
+}
+
+/* ===== CHART HOVER EFFECTS ===== */
+.fat-hover-container:hover .fat-hover-item:not(.fat-hover-item--active) {
+  opacity: 0.35;
+  filter: blur(1.5px);
+}
+
+.fat-hover-item {
+  transition: opacity 0.25s ease, filter 0.25s ease, transform 0.25s ease;
+}
+
+.fat-hover-item--active {
+  transform: scale(1.04);
+}
+
+/* ===== GOAL PROGRESS BAR ===== */
+.goal-progress-bar {
+  background: linear-gradient(90deg, #F66B0E, #31D0AA);
+}
+
+/* ===== RING PROGRESS SVG ===== */
+.ring-progress {
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 2px 6px rgba(246, 107, 14, 0.15));
+}
+
+.ring-track {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.06);
+}
+
+.ring-fill {
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== COMPARISON BAR GRADIENT ===== */
+.comparison-bar-gradient {
+  background: linear-gradient(90deg, #F66B0E, #31D0AA);
+}
+
+/* ===== SCRATCH HEATMAP CELLS ===== */
+.peak-hours-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.scratch-cell {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.scratch-cell:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(246, 107, 14, 0.2);
+}
+
+.scratch-cell-light {
+  background-color: #F66B0E;
+}
+
+.scratch-cell-strong {
+  background-color: #F66B0E;
+}
+
+.scratch-legend-cell {
+  position: relative;
+  overflow: hidden;
+}
+
+.scratch-legend-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.3) 2px,
+    rgba(255, 255, 255, 0.3) 3.5px
+  );
+}
+
+/* ===== TRIP TIMELINE ===== */
+.trip-timeline-item {
+  animation: slideUpIn 0.35s ease-out forwards;
+  opacity: 0;
+}
+
+.trip-timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.trip-timeline-item:nth-child(2) { animation-delay: 0.2s; }
+.trip-timeline-item:nth-child(3) { animation-delay: 0.3s; }
+.trip-timeline-item:nth-child(4) { animation-delay: 0.4s; }
+
+/* ===== METRIC CARD HOVER ===== */
+.metric-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVE GRID ===== */
+@media (max-width: 1024px) {
+  .fat-grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .fat-grid-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .fat-grid-4,
+  .fat-grid-3,
+  .fat-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
 }

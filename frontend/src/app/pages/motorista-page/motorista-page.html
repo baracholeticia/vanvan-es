@@ -1,46 +1,48 @@
-<!-- Full-viewport gradient background -->
-<div class="fixed inset-0 z-[1] pointer-events-none" style="background: linear-gradient(-68deg, rgba(177,177,177,1) 1%, rgba(233,233,233,1) 100%)"></div>
+<!-- Full-viewport gradient background fallback -->
+<div class="fixed inset-0 z-[1] pointer-events-none"
+  style="background: linear-gradient(-68deg, rgba(177,177,177,1) 1%, rgba(233,233,233,1) 100%)"></div>
+
+<!-- Full-screen background image -->
+<div class="fixed inset-0 z-[2] pointer-events-none">
+  <img src="assets/VAN-GLASS_2.png" class="w-full h-full object-cover" alt="background van">
+</div>
 
 <!-- Main Container -->
-<div class="flex flex-col items-center relative w-full min-h-full gap-10 mt-[100px]">
+<div class="flex flex-col items-center relative z-[10] w-full min-h-full gap-2 mt-[20px]">
 
-  <!-- Background van top-view image -->
-  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[1242px] h-[1242px] -mt-8 z-[2] pointer-events-none">
-    <img src="assets/van_topview.png" class="w-full h-full object-cover" alt="background van">
-  </div>
 
   <!-- ===== MAIN CONTENT: 2-column layout ===== -->
-  <div class="relative z-[10] w-full flex flex-col lg:flex-row justify-between items-stretch gap-6 lg:gap-0">
+  <div
+    class="relative z-[10] w-full flex flex-col lg:flex-row justify-between items-stretch gap-6 lg:gap-0 mt-2 stagger-cards">
 
     <!-- =============== LEFT COLUMN =============== -->
     <div class="flex flex-col gap-6 w-full lg:w-[43%]">
 
       <!-- ===== VIAGEM ATUAL (Current Trip Card) ===== -->
-      <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 transition-all h-[320px] overflow-hidden hover-lift">
+      <div
+        class="glass-card rounded-[24px] p-5 flex flex-col gap-3 transition-all h-[320px] overflow-hidden hover-lift">
 
         <!-- Header com status dinâmico -->
         <div class="flex items-center justify-between w-full shrink-0">
           <h2 class="text-header-3 text-text">
             {{ tripStatus === 'none' ? 'Viagem atual' :
-               tripStatus === 'scheduled' ? 'Viagem atual' :
-               tripStatus === 'in_progress' ? 'Viagem em andamento' :
-               tripStatus === 'arriving' ? 'Chegando ao destino!' :
-               'Viagem finalizada!' }}
+            tripStatus === 'scheduled' ? 'Viagem atual' :
+            tripStatus === 'in_progress' ? 'Viagem em andamento' :
+            tripStatus === 'arriving' ? 'Chegando ao destino!' :
+            'Viagem finalizada!' }}
           </h2>
 
           <!-- Status badge -->
           <div *ngIf="tripStatus !== 'scheduled' && tripStatus !== 'none'"
             class="glass-inner px-3 py-1 rounded-full flex items-center gap-2"
             [class.animate-pulse]="tripStatus !== 'completed'">
-            <div class="size-2 rounded-full"
-              [class]="tripStatus === 'completed' ? 'bg-secondary' :
+            <div class="size-2 rounded-full" [class]="tripStatus === 'completed' ? 'bg-secondary' :
                        tripStatus === 'arriving' ? 'bg-primary' : 'bg-green-500'">
             </div>
-            <span class="text-small font-medium"
-              [class]="tripStatus === 'completed' ? 'text-secondary' :
+            <span class="text-small font-medium" [class]="tripStatus === 'completed' ? 'text-secondary' :
                        tripStatus === 'arriving' ? 'text-primary' : 'text-green-600'">
               {{ tripStatus === 'completed' ? 'Concluída' :
-                 tripStatus === 'arriving' ? 'Quase lá!' : 'Ao vivo' }}
+              tripStatus === 'arriving' ? 'Quase lá!' : 'Ao vivo' }}
             </span>
           </div>
         </div>
@@ -57,7 +59,8 @@
           <!-- Mensagem -->
           <div class="flex flex-col items-center gap-1">
             <span class="text-body text-text font-medium">Nenhuma viagem agendada</span>
-            <span class="text-small text-subtle-text text-center">Oferte uma nova viagem para<br>começar a receber passageiros</span>
+            <span class="text-small text-subtle-text text-center">Oferte uma nova viagem para<br>começar a receber
+              passageiros</span>
           </div>
 
           <!-- Botão de ofertar -->
@@ -71,7 +74,8 @@
         </div>
 
         <!-- ==================== ESTADO: AGENDADO ==================== -->
-        <div *ngIf="tripStatus === 'scheduled' && currentTrip" class="flex flex-col md:flex-row gap-3 items-stretch w-full">
+        <div *ngIf="tripStatus === 'scheduled' && currentTrip"
+          class="flex flex-col md:flex-row gap-3 items-stretch w-full">
           <!-- Sub-card 1: Assentos disponíveis -->
           <div class="glass-inner rounded-[12px] p-5 flex flex-col items-center justify-center gap-2 ">
             <div class="flex flex-col items-center">
@@ -137,7 +141,8 @@
 
           <!-- Sub-card 3: Date/time + actions -->
           <div class="flex flex-col gap-[10px] items-stretch">
-            <div class="glass-inner-subtle rounded-[12px] px-5 py-3 flex flex-col gap-1 items-center justify-center flex-1">
+            <div
+              class="glass-inner-subtle rounded-[12px] px-5 py-3 flex flex-col gap-1 items-center justify-center flex-1">
               <span class="text-body text-text leading-[1.2]">Data e horário</span>
               <div class="flex gap-[10px] items-center justify-center w-full">
                 <div class="flex gap-[5px] items-center">
@@ -172,7 +177,8 @@
         </div>
 
         <!-- ==================== ESTADO: EM ANDAMENTO / CHEGANDO ==================== -->
-        <div *ngIf="(tripStatus === 'in_progress' || tripStatus === 'arriving') && currentTrip" class="flex flex-col gap-3 w-full flex-1">
+        <div *ngIf="(tripStatus === 'in_progress' || tripStatus === 'arriving') && currentTrip"
+          class="flex flex-col gap-3 w-full flex-1">
 
           <!-- Row 1: Tempo, Progresso, Chegada -->
           <div class="flex gap-2 items-stretch">
@@ -186,14 +192,11 @@
             <div class="glass-inner rounded-[12px] p-3 flex items-center justify-center">
               <div class="relative size-12">
                 <svg class="size-12 -rotate-90" viewBox="0 0 48 48">
-                  <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="4"/>
+                  <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="4" />
                   <circle cx="24" cy="24" r="20" fill="none"
-                    [attr.stroke]="tripStatus === 'arriving' ? '#F66B0E' : '#1E88E5'"
-                    stroke-width="4"
-                    stroke-linecap="round"
-                    [attr.stroke-dasharray]="126"
-                    [attr.stroke-dashoffset]="126 - (126 * tripProgress / 100)"
-                    class="transition-all duration-500"/>
+                    [attr.stroke]="tripStatus === 'arriving' ? '#F66B0E' : '#1E88E5'" stroke-width="4"
+                    stroke-linecap="round" [attr.stroke-dasharray]="126"
+                    [attr.stroke-dashoffset]="126 - (126 * tripProgress / 100)" class="transition-all duration-500" />
                 </svg>
                 <span class="absolute inset-0 flex items-center justify-center text-small font-bold text-text">
                   {{ tripProgress | number:'1.0-0' }}%
@@ -215,8 +218,7 @@
               <span class="text-small text-text font-medium">{{ currentTrip.origin }}</span>
               <div class="flex-1 relative h-1.5 bg-white/50 rounded-full overflow-hidden">
                 <div class="absolute inset-y-0 left-0 rounded-full transition-all duration-500"
-                  [class]="tripStatus === 'arriving' ? 'bg-primary' : 'bg-secondary'"
-                  [style.width.%]="tripProgress">
+                  [class]="tripStatus === 'arriving' ? 'bg-primary' : 'bg-secondary'" [style.width.%]="tripProgress">
                 </div>
                 <div class="absolute top-1/2 -translate-y-1/2 transition-all duration-500"
                   [style.left]="'calc(' + tripProgress + '% - 6px)'">
@@ -225,7 +227,8 @@
                   </div>
                 </div>
               </div>
-              <span class="text-small font-medium" [class]="tripStatus === 'arriving' ? 'text-primary' : 'text-text'">{{ currentTrip.destination }}</span>
+              <span class="text-small font-medium" [class]="tripStatus === 'arriving' ? 'text-primary' : 'text-text'">{{
+                currentTrip.destination }}</span>
             </div>
           </div>
 
@@ -273,11 +276,11 @@
             <button (click)="finishTrip()"
               class="glass-inner-strong rounded-[12px] px-4 py-3 flex gap-2 items-center justify-center cursor-pointer hover:opacity-90 transition-all flex-1"
               [class.bg-primary/20]="tripStatus === 'arriving'">
-              <div class="size-4"
-                [class]="tripStatus === 'arriving' ? 'bg-primary' : 'bg-secondary'"
+              <div class="size-4" [class]="tripStatus === 'arriving' ? 'bg-primary' : 'bg-secondary'"
                 style="-webkit-mask: url(assets/icons/tick-circle.svg) no-repeat center / contain; mask: url(assets/icons/tick-circle.svg) no-repeat center / contain;">
               </div>
-              <span class="text-button-text" [class]="tripStatus === 'arriving' ? 'text-primary' : 'text-secondary'">FINALIZAR VIAGEM</span>
+              <span class="text-button-text"
+                [class]="tripStatus === 'arriving' ? 'text-primary' : 'text-secondary'">FINALIZAR VIAGEM</span>
             </button>
           </div>
         </div>
@@ -326,7 +329,8 @@
           <div class="flex flex-col gap-2">
             <div *ngFor="let passenger of passengers; let i = index"
               class="flex items-center gap-3 p-2 glass-inner rounded-[10px]">
-              <div class="size-7 rounded-full bg-secondary/20 flex items-center justify-center text-small text-secondary font-medium">
+              <div
+                class="size-7 rounded-full bg-secondary/20 flex items-center justify-center text-small text-secondary font-medium">
                 {{ i + 1 }}
               </div>
               <span class="text-small text-text flex-1">{{ passenger.name }}</span>
@@ -346,8 +350,7 @@
       <div *ngIf="showEmergencyPopup"
         class="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center"
         (click)="toggleEmergencyPopup()">
-        <div class="glass-card rounded-[24px] p-5 w-[280px]"
-          (click)="$event.stopPropagation()">
+        <div class="glass-card rounded-[24px] p-5 w-[280px]" (click)="$event.stopPropagation()">
           <h3 class="text-header-3 text-primary mb-3 text-center">Emergência</h3>
           <div class="flex flex-col gap-2">
             <button (click)="callEmergency()"
@@ -376,14 +379,14 @@
       <div class="grid grid-cols-2 gap-[24px]">
 
         <!-- Ofertar Viagem Card -->
-        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3 hover-lift">
+        <div
+          class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3 hover-lift">
           <h2 class="text-header-3 text-text">Ofertar viagem</h2>
           <!-- Map preview -->
           <div class="w-full flex-1 rounded-[12px] overflow-hidden relative">
             <img src="assets/map_example.png" class="w-full h-full object-cover" alt="map preview">
             <!-- Arrow circle overlay -->
-            <div
-              class="absolute top-2 left-2 size-[57px] bg-secondary rounded-full flex items-center justify-center">
+            <div class="absolute top-2 left-2 size-[57px] bg-secondary rounded-full flex items-center justify-center">
               <div class="size-6 bg-white"
                 style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
               </div>
@@ -400,7 +403,8 @@
         </div>
 
         <!-- Viagens Anteriores Card -->
-        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3 hover-lift">
+        <div
+          class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3 hover-lift">
           <h2 class="text-header-3 text-text">Viagens anteriores</h2>
 
           <!-- Past trip details -->
@@ -471,8 +475,10 @@
           <div class="glass-inner-subtle rounded-[24px] p-5 flex items-center justify-between">
             <span class="text-header-3 text-text">Relatório</span>
             <button (click)="verFaturamento()"
-              class="text-small text-primary underline cursor-pointer hover:opacity-70 transition-opacity">
-              Ver completo
+              class="size-10 rounded-full border border-subtle-text/40 flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer">
+              <div class="size-6 bg-text"
+                style="-webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain; mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;">
+              </div>
             </button>
           </div>
 
@@ -481,19 +487,38 @@
             <div class="flex items-center justify-center w-full">
               <span class="text-header-3 text-text">Lucro diário</span>
             </div>
-            <!-- Bar chart -->
+            <!-- Improved Bar chart with axes, labels, tooltips -->
             <div class="flex gap-[2px] items-end justify-center flex-1 w-full">
               <!-- Y-axis labels -->
               <div class="flex flex-col justify-between h-full text-pre-title text-subtle-text mr-1">
-                <span>250</span>
-                <span>0</span>
+                <span>R$250</span>
+                <span>R$125</span>
+                <span>R$0</span>
               </div>
-              <!-- Bars -->
-              <div class="flex flex-1 items-end justify-between h-full gap-1">
-                <div *ngFor="let bar of report.dailyProfits; let last = last"
-                  class="rounded-[24px] w-[38px] min-w-[24px] flex-1 max-w-[42px] transition-all"
-                  [ngClass]="last ? 'bg-secondary' : 'bg-light'"
-                  [ngStyle]="{'height': bar + '%'}">
+              <!-- Chart area with grid lines -->
+              <div class="flex flex-col flex-1 h-full relative">
+                <!-- Grid lines -->
+                <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                  <div class="border-b border-dashed border-subtle-text/15 w-full"></div>
+                  <div class="border-b border-dashed border-subtle-text/15 w-full"></div>
+                  <div class="border-b border-subtle-text/15 w-full"></div>
+                </div>
+                <!-- Bars -->
+                <div class="flex flex-1 items-end justify-between h-full gap-1 relative z-[1]">
+                  <div *ngFor="let bar of report.dailyProfits; let i = index; let last = last"
+                    class="flex flex-col items-center justify-end flex-1 max-w-[42px] gap-1 bar-wrapper relative h-full">
+                    <!-- Tooltip -->
+                    <div class="bar-tooltip">R${{ report.dailyValues[i] }}</div>
+                    <!-- Bar -->
+                    <div
+                      class="rounded-t-[8px] rounded-b-[4px] w-full min-w-[24px] transition-all animate-bar-grow cursor-pointer"
+                      [ngClass]="last ? 'bg-secondary' : 'bg-light hover:bg-secondary/30'"
+                      [ngStyle]="{'height': bar + '%', 'animation-delay': (i * 0.08) + 's'}"
+                      style="transform-origin: bottom;">
+                    </div>
+                    <!-- X-axis label -->
+                    <span class="text-[10px] text-subtle-text leading-none">{{ report.dailyLabels[i] }}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -593,5 +618,3 @@
     </div>
   </div>
 </div>
-
-
