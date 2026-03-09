@@ -20,7 +20,6 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
-@SQLRestriction("active = true")
 public abstract class User implements UserDetails {
 
     @Id
@@ -98,7 +97,7 @@ public abstract class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.active;
     }
 
 }

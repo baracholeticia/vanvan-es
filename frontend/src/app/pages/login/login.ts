@@ -48,10 +48,10 @@ export class Login {
       error: (err) => {
         console.error('Login failed', err);
         let errorMsg = 'Erro ao conectar com o servidor. Tente novamente mais tarde.';
-        if (err.status === 401 || err.status === 403) {
-          errorMsg = 'E-mail ou senha incorretos.';
-        } else if (err.error && typeof err.error === 'object' && err.error.message) {
+        if (err.error && typeof err.error === 'object' && err.error.message) {
           errorMsg = err.error.message;
+        } else if (err.status === 401 || err.status === 403) {
+          errorMsg = 'E-mail ou senha incorretos.';
         } else if (typeof err.error === 'string') {
           errorMsg = err.error;
         }

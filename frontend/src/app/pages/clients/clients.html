@@ -31,6 +31,7 @@
         <span class="text-text text-header-3 tracking-narrow flex-1">Nome do cliente</span>
         <span class="text-text text-header-3 tracking-narrow flex-1 text-center">Identidade/CPF</span>
         <span class="text-text text-header-3 tracking-narrow flex-1 text-center">Email</span>
+        <span class="text-text text-header-3 tracking-narrow flex-1 text-center">Status</span>
         <span class="text-text text-header-3 tracking-narrow flex-1 text-center">Ações</span>
       </div>
 
@@ -76,11 +77,24 @@
               </span>
             </div>
 
+            <div class="flex-1 flex justify-center">
+              <span class="text-medium font-bold" 
+                    [ngClass]="client.active ? 'text-green-600' : 'text-red-500'">
+                {{ client.active ? 'Ativo' : 'Inativo' }}
+              </span>
+            </div>
+
             <div class="flex-1 flex justify-center gap-8">
-              <button (click)="abrirModalEditar(client)">
+              <button (click)="abrirModalEditar(client)" 
+                      [disabled]="!client.active" 
+                      [class.opacity-30]="!client.active"
+                      class="transition-opacity">
                 <img src="assets/icons/edit.svg" alt="Editar" class="w-6 h-6" />
               </button>
-              <button (click)="abrirModalExcluir(client)">
+              <button (click)="abrirModalExcluir(client)" 
+                      [disabled]="!client.active" 
+                      [class.opacity-30]="!client.active"
+                      class="transition-opacity">
                 <img src="assets/icons/trash.svg" alt="Excluir" class="w-6 h-6" />
               </button>
             </div>

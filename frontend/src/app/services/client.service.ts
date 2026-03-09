@@ -12,6 +12,7 @@ export interface Cliente {
   phone: string;
   email: string;
   role: string;
+  active: boolean;
 }
 
 @Injectable({
