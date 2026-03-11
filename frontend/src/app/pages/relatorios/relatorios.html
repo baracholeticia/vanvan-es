@@ -1,5 +1,4 @@
 <div class="flex flex-col w-full h-full bg-white p-5 gap-4 box-border overflow-y-auto">
-
   <!-- Header -->
   <div class="flex items-end justify-between shrink-0">
     <h1 class="text-header-1 text-text">Relatórios</h1>
@@ -8,21 +7,30 @@
 
   <!-- Bento Grid -->
   <div class="bento-grid w-full">
-
     <!-- ======== KPI: Faturamento ======== -->
-    <div class="bento-revenue bg-dark rounded-[28px] p-5 flex flex-col justify-between gap-2 shadow-sm">
+    <div
+      class="bento-revenue bg-dark rounded-[28px] p-5 flex flex-col justify-between gap-2 shadow-sm"
+    >
       <div class="flex items-start justify-between gap-2">
         <span class="text-subtitle text-light">Faturamento Mensal</span>
         <div class="flex items-center gap-2 shrink-0">
           <ng-container *ngIf="!isLoading; else changeSkel">
             <span class="text-small font-bold text-success">+{{ kpis.revenue.change }}%</span>
           </ng-container>
-          <ng-template #changeSkel><app-skeleton width="40px" height="16px" rounded="8px"></app-skeleton></ng-template>
+          <ng-template #changeSkel
+            ><app-skeleton width="40px" height="16px" rounded="8px"></app-skeleton
+          ></ng-template>
           <button
-            class="size-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 active:scale-95 transition-all cursor-pointer">
-            <div class="size-4 bg-light"
-              style="-webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain; mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;">
-            </div>
+            class="size-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 active:scale-95 transition-all cursor-pointer"
+          >
+            <div
+              class="size-4 bg-light"
+              style="
+                -webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center /
+                  contain;
+                mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
         </div>
       </div>
@@ -30,7 +38,9 @@
         <ng-container *ngIf="!isLoading; else revSkel">
           <span class="text-header-2 text-light leading-none">{{ kpis.revenue.value }}</span>
         </ng-container>
-        <ng-template #revSkel><app-skeleton width="140px" height="36px" rounded="10px"></app-skeleton></ng-template>
+        <ng-template #revSkel
+          ><app-skeleton width="140px" height="36px" rounded="10px"></app-skeleton
+        ></ng-template>
       </div>
     </div>
 
@@ -42,63 +52,98 @@
           <ng-container *ngIf="!isLoading; else tripChangeSkel">
             <span class="text-small font-bold text-success">+{{ kpis.trips.change }}%</span>
           </ng-container>
-          <ng-template #tripChangeSkel><app-skeleton width="36px" height="16px"
-              rounded="8px"></app-skeleton></ng-template>
+          <ng-template #tripChangeSkel
+            ><app-skeleton width="36px" height="16px" rounded="8px"></app-skeleton
+          ></ng-template>
           <button
-            class="size-8 rounded-full border border-accent flex items-center justify-center hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain; mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;">
-            </div>
+            class="size-8 rounded-full border border-accent flex items-center justify-center hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center /
+                  contain;
+                mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
         </div>
       </div>
       <ng-container *ngIf="!isLoading; else tripValSkel">
         <span class="text-header-2 text-text leading-none">{{ kpis.trips.value }}</span>
       </ng-container>
-      <ng-template #tripValSkel><app-skeleton width="80px" height="36px" rounded="10px"></app-skeleton></ng-template>
+      <ng-template #tripValSkel
+        ><app-skeleton width="80px" height="36px" rounded="10px"></app-skeleton
+      ></ng-template>
     </div>
 
     <!-- ======== KPI: Motoristas ======== -->
-    <div class="bento-drivers bg-light rounded-[28px] p-5 flex flex-col gap-3 shadow-sm shadow-black/[0.02]">
+    <div
+      class="bento-drivers bg-light rounded-[28px] p-5 flex flex-col gap-3 shadow-sm shadow-black/[0.02]"
+    >
       <div class="flex items-center justify-between shrink-0">
         <span class="text-subtitle text-text">Motoristas</span>
         <button
-          class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
-          <div class="size-4 bg-text"
-            style="-webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain; mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;">
-          </div>
+          class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+        >
+          <div
+            class="size-4 bg-text"
+            style="
+              -webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+              mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+            "
+          ></div>
         </button>
       </div>
       <ng-container *ngIf="!isLoading; else driverBarsSkel">
         <div class="flex gap-1.5 w-full items-end" (mouseleave)="hoveredDriverIndex = null">
-          <div class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
+          <div
+            class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
             [class.bar-col--dimmed]="hoveredDriverIndex !== null && hoveredDriverIndex !== 0"
-            [class.bar-col--active]="hoveredDriverIndex === 0" [style.flex]="driverCounts.ativos + ' 1 0%'"
-            (mouseenter)="hoveredDriverIndex = 0">
+            [class.bar-col--active]="hoveredDriverIndex === 0"
+            [style.flex]="driverCounts.ativos + ' 1 0%'"
+            (mouseenter)="hoveredDriverIndex = 0"
+          >
             <span class="text-small font-bold text-text">{{ driverCounts.ativos }}</span>
-            <div class="w-full h-8 rounded-xl bg-secondary transition-all duration-500 cursor-pointer"></div>
+            <div
+              class="w-full h-8 rounded-xl bg-secondary transition-all duration-500 cursor-pointer"
+            ></div>
           </div>
-          <div class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
+          <div
+            class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
             [class.bar-col--dimmed]="hoveredDriverIndex !== null && hoveredDriverIndex !== 1"
-            [class.bar-col--active]="hoveredDriverIndex === 1" [style.flex]="driverCounts.aguardando + ' 1 0%'"
-            (mouseenter)="hoveredDriverIndex = 1">
+            [class.bar-col--active]="hoveredDriverIndex === 1"
+            [style.flex]="driverCounts.aguardando + ' 1 0%'"
+            (mouseenter)="hoveredDriverIndex = 1"
+          >
             <span class="text-small font-bold text-text">{{ driverCounts.aguardando }}</span>
-            <div class="w-full h-8 rounded-xl bg-[#5988E4] transition-all duration-500 cursor-pointer"></div>
+            <div
+              class="w-full h-8 rounded-xl bg-[#5988E4] transition-all duration-500 cursor-pointer"
+            ></div>
           </div>
-          <div class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
+          <div
+            class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
             [class.bar-col--dimmed]="hoveredDriverIndex !== null && hoveredDriverIndex !== 2"
-            [class.bar-col--active]="hoveredDriverIndex === 2" [style.flex]="driverCounts.rejeitados + ' 1 0%'"
-            (mouseenter)="hoveredDriverIndex = 2">
+            [class.bar-col--active]="hoveredDriverIndex === 2"
+            [style.flex]="driverCounts.rejeitados + ' 1 0%'"
+            (mouseenter)="hoveredDriverIndex = 2"
+          >
             <span class="text-small font-bold text-text">{{ driverCounts.rejeitados }}</span>
-            <div class="w-full h-8 rounded-xl bg-tetiary transition-all duration-500 cursor-pointer"></div>
+            <div
+              class="w-full h-8 rounded-xl bg-tetiary transition-all duration-500 cursor-pointer"
+            ></div>
           </div>
         </div>
         <div class="flex flex-wrap gap-3 text-small text-subtle-text">
-          <span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-secondary"></span> Ativos</span>
-          <span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-[#5988E4]"></span>
-            Aguardando</span>
-          <span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-tetiary"></span>
-            Rejeitados</span>
+          <span class="flex items-center gap-1.5"
+            ><span class="size-2.5 rounded-full bg-secondary"></span> Ativos</span
+          >
+          <span class="flex items-center gap-1.5"
+            ><span class="size-2.5 rounded-full bg-[#5988E4]"></span> Aguardando</span
+          >
+          <span class="flex items-center gap-1.5"
+            ><span class="size-2.5 rounded-full bg-tetiary"></span> Rejeitados</span
+          >
         </div>
       </ng-container>
       <ng-template #driverBarsSkel>
@@ -123,53 +168,101 @@
           <ng-container *ngIf="!isLoading; else clientChangeSkel">
             <span class="text-small font-bold text-success">+{{ kpis.clients.change }}%</span>
           </ng-container>
-          <ng-template #clientChangeSkel><app-skeleton width="36px" height="16px"
-              rounded="8px"></app-skeleton></ng-template>
+          <ng-template #clientChangeSkel
+            ><app-skeleton width="36px" height="16px" rounded="8px"></app-skeleton
+          ></ng-template>
           <button
-            class="size-8 rounded-full border border-accent flex items-center justify-center hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain; mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;">
-            </div>
+            class="size-8 rounded-full border border-accent flex items-center justify-center hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center /
+                  contain;
+                mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
         </div>
       </div>
       <ng-container *ngIf="!isLoading; else clientValSkel">
         <span class="text-header-2 text-text leading-none">{{ kpis.clients.value }}</span>
       </ng-container>
-      <ng-template #clientValSkel><app-skeleton width="80px" height="36px" rounded="10px"></app-skeleton></ng-template>
+      <ng-template #clientValSkel
+        ><app-skeleton width="80px" height="36px" rounded="10px"></app-skeleton
+      ></ng-template>
     </div>
 
     <!-- ======== Occupancy Gauge ======== -->
     <div
-      class="bento-occ bg-light rounded-[28px] p-6 flex flex-col gap-3 overflow-hidden shadow-sm shadow-black/[0.02]">
+      class="bento-occ bg-light rounded-[28px] p-6 flex flex-col gap-3 overflow-hidden shadow-sm shadow-black/[0.02]"
+    >
       <div class="flex items-center justify-between w-full shrink-0">
         <span class="text-subtitle text-text">Ocupação Média</span>
         <div class="flex items-center gap-1">
           <button
-            class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain; mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;">
-            </div>
+            class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center /
+                  contain;
+                mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
           <button
-            class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain; mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;">
-            </div>
+            class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+                mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
         </div>
       </div>
       <ng-container *ngIf="!isLoading; else gaugeSkel">
         <div class="flex flex-col flex-1 min-h-0 items-center justify-center gap-2">
-          <div class="relative w-full max-w-[280px] flex items-center justify-center" style="height: 140px;">
+          <div
+            class="relative w-full max-w-[280px] flex items-center justify-center"
+            style="height: 140px"
+          >
             <svg viewBox="0 0 200 145" class="w-full h-full">
-              <rect *ngFor="let seg of gaugeSegments" x="97" y="16" width="8" height="22" rx="3"
+              <rect
+                *ngFor="let seg of gaugeSegments"
+                x="97"
+                y="16"
+                width="8"
+                height="22"
+                rx="3"
                 [attr.transform]="'rotate(' + seg.angle + ', 100, 100)'"
-                [attr.fill]="seg.filled ? 'rgb(85,125,150)' : 'rgba(85,125,150,0.1)'" />
-              <text x="100" y="105" text-anchor="middle" fill="#557D96" font-family="Google Sans Flex" font-weight="700"
-                font-size="36">{{ occupancyRate }}%</text>
-              <text x="100" y="120" text-anchor="middle" fill="#646464" font-family="Google Sans Flex"
-                font-size="12">este mês</text>
+                [attr.fill]="seg.filled ? 'rgb(85,125,150)' : 'rgba(85,125,150,0.1)'"
+              />
+              <text
+                x="100"
+                y="105"
+                text-anchor="middle"
+                fill="#557D96"
+                font-family="Google Sans Flex"
+                font-weight="700"
+                font-size="36"
+              >
+                {{ occupancyRate }}%
+              </text>
+              <text
+                x="100"
+                y="120"
+                text-anchor="middle"
+                fill="#646464"
+                font-family="Google Sans Flex"
+                font-size="12"
+              >
+                este mês
+              </text>
             </svg>
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
@@ -187,14 +280,21 @@
     </div>
 
     <!-- ======== Taxa de Cancelamento (Funil) ======== -->
-    <div class="bento-rating bg-light rounded-[28px] p-6 flex flex-col gap-4 shadow-sm shadow-black/[0.02]">
+    <div
+      class="bento-rating bg-light rounded-[28px] p-6 flex flex-col gap-4 shadow-sm shadow-black/[0.02]"
+    >
       <div class="flex items-center justify-between shrink-0">
         <span class="text-subtitle text-text">Taxa de Cancelamento</span>
         <button
-          class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
-          <div class="size-4 bg-text"
-            style="-webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain; mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;">
-          </div>
+          class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+        >
+          <div
+            class="size-4 bg-text"
+            style="
+              -webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+              mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+            "
+          ></div>
         </button>
       </div>
       <ng-container *ngIf="!isLoading; else funnelSkel">
@@ -202,15 +302,21 @@
           <div *ngFor="let step of funnelData; let i = index" class="flex flex-col gap-1">
             <div *ngIf="i > 0" class="flex items-center gap-2 px-1 mb-1">
               <div class="flex-1 h-[1px] bg-accent/20"></div>
-              <span class="text-[11px] font-bold text-[#d45959] shrink-0">-{{ funnelDropoff(i) }}%</span>
+              <span class="text-[11px] font-bold text-[#d45959] shrink-0"
+                >-{{ funnelDropoff(i) }}%</span
+              >
               <div class="flex-1 h-[1px] bg-accent/20"></div>
             </div>
             <div class="flex items-center gap-3">
-              <span class="text-[11px] text-subtle-text w-[72px] text-right shrink-0">{{ step.label }}</span>
+              <span class="text-[11px] text-subtle-text w-[72px] text-right shrink-0">{{
+                step.label
+              }}</span>
               <div class="flex-1 flex justify-center">
-                <div class="h-8 rounded-xl transition-all duration-700 hover:brightness-110 cursor-pointer"
-                  [ngClass]="step.color" [style.width.%]="(step.count / funnelMax) * 100">
-                </div>
+                <div
+                  class="h-8 rounded-xl transition-all duration-700 hover:brightness-110 cursor-pointer"
+                  [ngClass]="step.color"
+                  [style.width.%]="(step.count / funnelMax) * 100"
+                ></div>
               </div>
               <span class="text-small font-bold text-text w-8 shrink-0">{{ step.count }}</span>
             </div>
@@ -218,7 +324,9 @@
         </div>
         <div class="flex items-center justify-between shrink-0 pt-1 border-t border-accent/15">
           <span class="text-[11px] text-subtle-text">Cancelamentos este mês</span>
-          <span class="text-small font-bold text-[#d45959]">{{ 127 - 96 }} viagens ({{ funnelDropoff(2) }}%)</span>
+          <span class="text-small font-bold text-[#d45959]"
+            >{{ 127 - 96 }} viagens ({{ funnelDropoff(2) }}%)</span
+          >
         </div>
       </ng-container>
       <ng-template #funnelSkel>
@@ -231,64 +339,109 @@
     </div>
 
     <!-- ======== Status das Viagens ======== -->
-    <div class="bento-status bg-light rounded-[28px] p-6 flex flex-col gap-8 shadow-sm shadow-black/[0.02]">
+    <div
+      class="bento-status bg-light rounded-[28px] p-6 flex flex-col gap-8 shadow-sm shadow-black/[0.02]"
+    >
       <div class="flex items-center justify-between">
         <span class="text-subtitle text-text">Status das Viagens</span>
         <div class="flex items-center gap-2">
           <button
-            class="flex items-center gap-1.5 text-small text-text border border-accent rounded-full px-3 py-1.5 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
+            class="flex items-center gap-1.5 text-small text-text border border-accent rounded-full px-3 py-1.5 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
             <span>Este mês</span>
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain; mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;">
-            </div>
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+                mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
           <button
-            class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain; mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;">
-            </div>
+            class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+                mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
         </div>
       </div>
       <ng-container *ngIf="!isLoading; else statusSkel">
         <div class="flex gap-2 w-full items-end" (mouseleave)="hoveredStatusIndex = null">
-          <div class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
+          <div
+            class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
             [class.bar-col--dimmed]="hoveredStatusIndex !== null && hoveredStatusIndex !== 0"
             [class.bar-col--active]="hoveredStatusIndex === 0"
-            [style.flex]="statusPercent(statusCounts.confirmado) + ' 1 0%'" (mouseenter)="hoveredStatusIndex = 0">
-            <span class="text-small font-bold text-text">{{ statusPercent(statusCounts.confirmado) }}%</span>
-            <div class="w-full h-12 rounded-full bg-dark transition-all duration-500 cursor-pointer"></div>
+            [style.flex]="statusPercent(statusCounts.confirmado) + ' 1 0%'"
+            (mouseenter)="hoveredStatusIndex = 0"
+          >
+            <span class="text-small font-bold text-text"
+              >{{ statusPercent(statusCounts.confirmado) }}%</span
+            >
+            <div
+              class="w-full h-12 rounded-full bg-dark transition-all duration-500 cursor-pointer"
+            ></div>
           </div>
-          <div class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
+          <div
+            class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
             [class.bar-col--dimmed]="hoveredStatusIndex !== null && hoveredStatusIndex !== 1"
             [class.bar-col--active]="hoveredStatusIndex === 1"
-            [style.flex]="statusPercent(statusCounts.aguardando) + ' 1 0%'" (mouseenter)="hoveredStatusIndex = 1">
-            <span class="text-small font-bold text-text">{{ statusPercent(statusCounts.aguardando) }}%</span>
-            <div class="w-full h-12 rounded-full bg-secondary transition-all duration-500 cursor-pointer"></div>
+            [style.flex]="statusPercent(statusCounts.aguardando) + ' 1 0%'"
+            (mouseenter)="hoveredStatusIndex = 1"
+          >
+            <span class="text-small font-bold text-text"
+              >{{ statusPercent(statusCounts.aguardando) }}%</span
+            >
+            <div
+              class="w-full h-12 rounded-full bg-secondary transition-all duration-500 cursor-pointer"
+            ></div>
           </div>
-          <div class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
+          <div
+            class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
             [class.bar-col--dimmed]="hoveredStatusIndex !== null && hoveredStatusIndex !== 2"
             [class.bar-col--active]="hoveredStatusIndex === 2"
-            [style.flex]="statusPercent(statusCounts.cancelado) + ' 1 0%'" (mouseenter)="hoveredStatusIndex = 2">
-            <span class="text-small font-bold text-text">{{ statusPercent(statusCounts.cancelado) }}%</span>
-            <div class="w-full h-12 rounded-full bg-[#5988E4] transition-all duration-500 cursor-pointer"></div>
+            [style.flex]="statusPercent(statusCounts.cancelado) + ' 1 0%'"
+            (mouseenter)="hoveredStatusIndex = 2"
+          >
+            <span class="text-small font-bold text-text"
+              >{{ statusPercent(statusCounts.cancelado) }}%</span
+            >
+            <div
+              class="w-full h-12 rounded-full bg-[#5988E4] transition-all duration-500 cursor-pointer"
+            ></div>
           </div>
-          <div class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
+          <div
+            class="flex flex-col items-center gap-1.5 min-w-0 bar-col"
             [class.bar-col--dimmed]="hoveredStatusIndex !== null && hoveredStatusIndex !== 3"
             [class.bar-col--active]="hoveredStatusIndex === 3"
-            [style.flex]="statusPercent(statusCounts.finalizado) + ' 1 0%'" (mouseenter)="hoveredStatusIndex = 3">
-            <span class="text-small font-bold text-text">{{ statusPercent(statusCounts.finalizado) }}%</span>
-            <div class="w-full h-12 rounded-full bg-tetiary transition-all duration-500 cursor-pointer"></div>
+            [style.flex]="statusPercent(statusCounts.finalizado) + ' 1 0%'"
+            (mouseenter)="hoveredStatusIndex = 3"
+          >
+            <span class="text-small font-bold text-text"
+              >{{ statusPercent(statusCounts.finalizado) }}%</span
+            >
+            <div
+              class="w-full h-12 rounded-full bg-tetiary transition-all duration-500 cursor-pointer"
+            ></div>
           </div>
         </div>
         <div class="flex flex-wrap gap-4 text-small text-subtle-text">
-          <span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-dark"></span> Confirmado</span>
-          <span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-secondary"></span>
-            Aguardando</span>
-          <span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-[#5988E4]"></span>
-            Cancelado</span>
-          <span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-tetiary"></span>
-            Finalizado</span>
+          <span class="flex items-center gap-1.5"
+            ><span class="size-2.5 rounded-full bg-dark"></span> Confirmado</span
+          >
+          <span class="flex items-center gap-1.5"
+            ><span class="size-2.5 rounded-full bg-secondary"></span> Aguardando</span
+          >
+          <span class="flex items-center gap-1.5"
+            ><span class="size-2.5 rounded-full bg-[#5988E4]"></span> Cancelado</span
+          >
+          <span class="flex items-center gap-1.5"
+            ><span class="size-2.5 rounded-full bg-tetiary"></span> Finalizado</span
+          >
         </div>
       </ng-container>
       <ng-template #statusSkel>
@@ -308,13 +461,17 @@
     </div>
 
     <!-- ======== Faturamento Bar Chart ======== -->
-    <div class="bento-line bg-light rounded-[28px] p-6 flex gap-6 overflow-hidden shadow-sm shadow-black/[0.02]">
+    <div
+      class="bento-line bg-light rounded-[28px] p-6 flex gap-6 overflow-hidden shadow-sm shadow-black/[0.02]"
+    >
       <div class="flex flex-col justify-between shrink-0 min-w-[120px]">
         <span class="text-subtitle text-text">Faturamento</span>
         <div class="flex flex-col gap-2">
           <button
-            class="bg-dark rounded-full px-3 py-1.5 text-[11px] text-light font-bold w-fit hover:opacity-80 active:scale-95 transition-all cursor-pointer">30
-            Dias</button>
+            class="bg-dark rounded-full px-3 py-1.5 text-[11px] text-light font-bold w-fit hover:opacity-80 active:scale-95 transition-all cursor-pointer"
+          >
+            30 Dias
+          </button>
           <ng-container *ngIf="!isLoading; else revValSkel">
             <span class="text-header-2 text-text leading-none">R$ 42.5K</span>
             <div class="flex items-start gap-2">
@@ -328,53 +485,83 @@
           </ng-template>
         </div>
         <div class="flex flex-col gap-1 text-[11px] text-subtle-text">
-          <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-[#1a2938]"></span>
-            Anteriores</span>
-          <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-secondary"></span> Mês
-            anterior</span>
-          <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-tetiary"></span> Mês atual</span>
+          <span class="flex items-center gap-1.5"
+            ><span class="size-2 rounded-full bg-[#1a2938]"></span> Anteriores</span
+          >
+          <span class="flex items-center gap-1.5"
+            ><span class="size-2 rounded-full bg-secondary"></span> Mês anterior</span
+          >
+          <span class="flex items-center gap-1.5"
+            ><span class="size-2 rounded-full bg-tetiary"></span> Mês atual</span
+          >
         </div>
       </div>
       <div class="flex-1 flex flex-col min-w-0 gap-3">
         <div class="flex justify-end gap-2">
           <button
-            class="flex items-center gap-1.5 text-small text-text border border-accent rounded-full px-3 py-1.5 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
+            class="flex items-center gap-1.5 text-small text-text border border-accent rounded-full px-3 py-1.5 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
             <span>Últimos 30 dias</span>
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain; mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;">
-            </div>
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+                mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
           <button
-            class="flex items-center gap-1.5 text-small text-text border border-accent rounded-full px-3 py-1.5 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
+            class="flex items-center gap-1.5 text-small text-text border border-accent rounded-full px-3 py-1.5 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
             <span>Todas as fontes</span>
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain; mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;">
-            </div>
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+                mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
           <button
-            class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain; mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;">
-            </div>
+            class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+                mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
         </div>
         <ng-container *ngIf="!isLoading; else barsSkel">
           <div class="flex items-end gap-3 flex-1 min-h-0" (mouseleave)="hoveredBarIndex = null">
-            <div *ngFor="let month of revenueMonths; let i = index"
+            <div
+              *ngFor="let month of revenueMonths; let i = index"
               class="flex flex-col items-center gap-2 flex-1 h-full justify-end bar-col"
               [class.bar-col--dimmed]="hoveredBarIndex !== null && hoveredBarIndex !== i"
-              [class.bar-col--active]="hoveredBarIndex === i" (mouseenter)="hoveredBarIndex = i">
-              <div class="revenue-bar w-full" [class.bar-dark]="!isPreviousMonth(i) && !isCurrentMonth(i)"
-                [class.bar-secondary]="isPreviousMonth(i)" [class.bar-primary]="isCurrentMonth(i)"
-                [style.height.%]="barHeight(month.value)">
+              [class.bar-col--active]="hoveredBarIndex === i"
+              (mouseenter)="hoveredBarIndex = i"
+            >
+              <div
+                class="revenue-bar w-full"
+                [class.bar-dark]="!isPreviousMonth(i) && !isCurrentMonth(i)"
+                [class.bar-secondary]="isPreviousMonth(i)"
+                [class.bar-primary]="isCurrentMonth(i)"
+                [style.height.%]="barHeight(month.value)"
+              >
                 <div class="bar-label">
                   <span *ngIf="barTrend(i) === 'up'">↗</span>
                   <span *ngIf="barTrend(i) === 'down'">↙</span>
                   {{ month.display }}
                 </div>
               </div>
-              <span class="text-[11px]" [class.text-text]="isCurrentMonth(i)" [class.font-bold]="isCurrentMonth(i)"
-                [class.text-subtle-text]="!isCurrentMonth(i)">
+              <span
+                class="text-[11px]"
+                [class.text-text]="isCurrentMonth(i)"
+                [class.font-bold]="isCurrentMonth(i)"
+                [class.text-subtle-text]="!isCurrentMonth(i)"
+              >
                 {{ month.label }}
               </span>
             </div>
@@ -393,54 +580,80 @@
 
     <!-- ======== Rotas Populares ======== -->
     <div
-      class="bento-routes bg-light rounded-[28px] p-6 flex flex-col gap-3 overflow-hidden shadow-sm shadow-black/[0.02]">
+      class="bento-routes bg-light rounded-[28px] p-6 flex flex-col gap-3 overflow-hidden shadow-sm shadow-black/[0.02]"
+    >
       <div class="flex items-start justify-between shrink-0">
         <span class="text-subtitle text-text">Rotas Populares</span>
         <div class="flex items-center gap-2">
           <button
-            class="flex items-center gap-1.5 text-small text-text border border-accent rounded-full px-3 py-1.5 shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
+            class="flex items-center gap-1.5 text-small text-text border border-accent rounded-full px-3 py-1.5 shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
             <span>TOP 5</span>
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain; mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;">
-            </div>
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+                mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
           <button
-            class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
-            <div class="size-4 bg-text"
-              style="-webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain; mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;">
-            </div>
+            class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+          >
+            <div
+              class="size-4 bg-text"
+              style="
+                -webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+                mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+              "
+            ></div>
           </button>
         </div>
       </div>
       <ng-container *ngIf="!isLoading; else routesSkel">
         <div class="flex flex-col gap-1 flex-1 min-h-0 overflow-y-auto">
-          <div *ngFor="let route of popularRoutes; let i = index" class="route-row flex flex-col gap-1.5 shrink-0">
+          <div
+            *ngFor="let route of popularRoutes; let i = index"
+            class="route-row flex flex-col gap-1.5 shrink-0"
+          >
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-1.5">
                 <span class="text-pre-title text-accent w-4">{{ i + 1 }}</span>
                 <span class="text-small font-bold text-text">{{ route.origin }}</span>
-                <div class="size-3.5 shrink-0 bg-subtle-text"
-                  style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
-                </div>
+                <div
+                  class="size-3.5 shrink-0 bg-subtle-text"
+                  style="
+                    -webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;
+                    mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;
+                  "
+                ></div>
                 <span class="text-small font-bold text-text">{{ route.destination }}</span>
               </div>
               <div class="flex items-center gap-2">
-                <span *ngIf="route.trend > 0" class="text-[11px] font-bold text-success">+{{ route.trend }}%</span>
-                <span *ngIf="route.trend < 0" class="text-[11px] font-bold text-[#d45959]">{{ route.trend }}%</span>
-                <span class="text-small font-bold text-text bg-white rounded-[8px] px-2 py-0.5">{{ route.count }}</span>
+                <span *ngIf="route.trend > 0" class="text-[11px] font-bold text-success"
+                  >+{{ route.trend }}%</span
+                >
+                <span *ngIf="route.trend < 0" class="text-[11px] font-bold text-[#d45959]"
+                  >{{ route.trend }}%</span
+                >
+                <span class="text-small font-bold text-text bg-white rounded-[8px] px-2 py-0.5">{{
+                  route.count
+                }}</span>
               </div>
             </div>
             <div class="w-full h-2 bg-white rounded-full overflow-hidden">
-              <div class="h-full rounded-full transition-all duration-700"
-                [class]="i === 0 ? 'bg-primary' : 'bg-secondary'" [style.width.%]="(route.count / maxRouteCount) * 100">
-              </div>
+              <div
+                class="h-full rounded-full transition-all duration-700"
+                [class]="i === 0 ? 'bg-primary' : 'bg-secondary'"
+                [style.width.%]="(route.count / maxRouteCount) * 100"
+              ></div>
             </div>
           </div>
         </div>
       </ng-container>
       <ng-template #routesSkel>
         <div class="flex flex-col gap-3 flex-1">
-          <div *ngFor="let n of [1,2,3,4,5]" class="flex flex-col gap-1.5">
+          <div *ngFor="let n of [1, 2, 3, 4, 5]" class="flex flex-col gap-1.5">
             <div class="flex justify-between">
               <app-skeleton width="140px" height="14px" rounded="6px"></app-skeleton>
               <app-skeleton width="40px" height="14px" rounded="6px"></app-skeleton>
@@ -452,14 +665,21 @@
     </div>
 
     <!-- ======== Toggle Settings ======== -->
-    <div class="bento-toggles bg-light rounded-[28px] p-6 flex flex-col gap-4 shadow-sm shadow-black/[0.02]">
+    <div
+      class="bento-toggles bg-light rounded-[28px] p-6 flex flex-col gap-4 shadow-sm shadow-black/[0.02]"
+    >
       <div class="flex items-center justify-between">
         <span class="text-subtitle text-text">Configurações</span>
         <button
-          class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer">
-          <div class="size-4 bg-text"
-            style="-webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain; mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;">
-          </div>
+          class="size-8 rounded-full border border-accent flex items-center justify-center shrink-0 hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
+        >
+          <div
+            class="size-4 bg-text"
+            style="
+              -webkit-mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+              mask: url(assets/icons/more-vertical.svg) no-repeat center / contain;
+            "
+          ></div>
         </button>
       </div>
       <div class="flex flex-col gap-4 flex-1 justify-center">
@@ -499,45 +719,109 @@
 
     <!-- ======== Recent Trips Table ======== -->
     <div
-      class="bento-recent bg-light rounded-[28px] p-6 flex flex-col gap-3 overflow-hidden shadow-sm shadow-black/[0.02]">
+      class="bento-recent bg-light rounded-[28px] p-6 flex flex-col gap-3 overflow-hidden shadow-sm shadow-black/[0.02]"
+    >
       <div class="flex items-center justify-between">
         <span class="text-subtitle text-text">Viagens Recentes</span>
         <button
-          class="flex items-center gap-2 text-small font-bold text-primary bg-primary/10 hover:bg-primary/20 active:scale-95 rounded-full px-4 py-2 transition-all cursor-pointer">
+          (click)="openRecentTripsModal($event)"
+          class="flex items-center gap-2 text-small font-bold text-primary bg-primary/10 hover:bg-primary/20 active:scale-95 rounded-full px-4 py-2 transition-all cursor-pointer"
+        >
           <span>Ver todas</span>
-          <div class="size-4 bg-primary"
-            style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
-          </div>
+          <div
+            class="size-4 bg-primary"
+            style="
+              -webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;
+              mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;
+            "
+          ></div>
         </button>
       </div>
-      <div class="flex-1 overflow-auto scrollbar-hide">
+      <div class="flex-1 overflow-auto scrollbar-hide max-h-[360px]">
         <ng-container *ngIf="!isLoading; else tableSkel">
           <table class="w-full">
             <thead>
+              <tr class="text-left"></tr>
               <tr class="text-left">
-                <th class="text-pre-title text-subtle-text pb-3 font-medium">Data</th>
+                <th
+                  class="group text-pre-title text-subtle-text pb-3 font-medium cursor-pointer hover:text-text transition-colors"
+                  (click)="toggleSort('date')"
+                >
+                  <div class="flex items-center gap-1">
+                    Data
+                    <div
+                      class="size-3.5 transition-all"
+                      [ngClass]="{
+                        'bg-text opacity-100': sortColumn === 'date',
+                        'bg-subtle-text opacity-30 group-hover:bg-text group-hover:opacity-100':
+                          sortColumn !== 'date',
+                      }"
+                      [style.transform]="
+                        sortColumn === 'date' && sortDirection === 'desc'
+                          ? 'rotate(180deg)'
+                          : 'none'
+                      "
+                      style="
+                        -webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+                        mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+                      "
+                    ></div>
+                  </div>
+                </th>
                 <th class="text-pre-title text-subtle-text pb-3 font-medium">Rota</th>
                 <th class="text-pre-title text-subtle-text pb-3 font-medium">Motorista</th>
-                <th class="text-pre-title text-subtle-text pb-3 font-medium">Status</th>
-                <th class="text-pre-title text-subtle-text pb-3 font-medium text-right">Valor</th>
+                <th
+                  class="group text-pre-title text-subtle-text pb-3 font-medium cursor-pointer hover:text-text transition-colors"
+                  (click)="toggleSort('status')"
+                >
+                  <div class="flex items-center gap-1">
+                    Status
+                    <div
+                      class="size-3.5 transition-all"
+                      [ngClass]="{
+                        'bg-text opacity-100': sortColumn === 'status',
+                        'bg-subtle-text opacity-30 group-hover:bg-text group-hover:opacity-100':
+                          sortColumn !== 'status',
+                      }"
+                      [style.transform]="
+                        sortColumn === 'status' && sortDirection === 'desc'
+                          ? 'rotate(180deg)'
+                          : 'none'
+                      "
+                      style="
+                        -webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+                        mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+                      "
+                    ></div>
+                  </div>
+                </th>
+                <th class="text-pre-title text-subtle-text pb-3 font-medium text-right">Veículo</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let trip of recentTrips"
-                class="trip-row border-t border-accent/15 transition-colors hover:bg-black/[0.02]">
+              <tr
+                *ngFor="let trip of sortedTrips"
+                class="trip-row border-t border-accent/15 transition-colors hover:bg-black/[0.02]"
+              >
                 <td class="py-2.5 text-small text-subtle-text">{{ trip.date }}</td>
                 <td class="py-2.5">
                   <div class="flex items-center gap-1">
                     <span class="text-bold text-text">{{ trip.origin }}</span>
-                    <div class="size-4 shrink-0 bg-text"
-                      style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
-                    </div>
+                    <div
+                      class="size-4 shrink-0 bg-text"
+                      style="
+                        -webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;
+                        mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;
+                      "
+                    ></div>
                     <span class="text-bold text-text">{{ trip.destination }}</span>
                   </div>
                 </td>
                 <td class="py-2.5 text-small text-text">{{ trip.driver }}</td>
-                <td class="py-2.5"><app-tag [label]="trip.status" [variant]="trip.variant"></app-tag></td>
-                <td class="py-2.5 text-bold text-text text-right">{{ trip.price }}</td>
+                <td class="py-2.5">
+                  <app-tag [label]="trip.status" [variant]="trip.variant"></app-tag>
+                </td>
+                <td class="py-2.5 text-small text-text text-right">{{ trip.vehicle }}</td>
               </tr>
             </tbody>
           </table>
@@ -551,7 +835,10 @@
               <app-skeleton width="60px" height="12px" rounded="4px"></app-skeleton>
               <app-skeleton width="40px" height="12px" rounded="4px"></app-skeleton>
             </div>
-            <div *ngFor="let n of [1,2,3,4,5,6]" class="flex gap-4 items-center py-1 border-t border-accent/10">
+            <div
+              *ngFor="let n of [1, 2, 3, 4, 5, 6]"
+              class="flex gap-4 items-center py-1 border-t border-accent/10"
+            >
               <app-skeleton width="36px" height="14px" rounded="4px"></app-skeleton>
               <app-skeleton width="160px" height="14px" rounded="4px"></app-skeleton>
               <app-skeleton width="100px" height="14px" rounded="4px"></app-skeleton>
@@ -562,6 +849,148 @@
         </ng-template>
       </div>
     </div>
+  </div>
+</div>
 
+<!-- Modal Viagens Recentes -->
+<div *ngIf="isRecentTripsModalOpen"
+     class="fixed inset-0 z-[9999] flex justify-center items-center p-4 modal-backdrop"
+     (click)="closeRecentTripsModal()">
+
+  <div class="bg-light rounded-[32px] w-full max-w-[1240px] max-h-[90vh] flex flex-col overflow-hidden shadow-2xl mx-4 modal-container"
+       [style.--origin-x]="modalOrigin.x + 'px'"
+       [style.--origin-y]="modalOrigin.y + 'px'"
+       [style.--origin-w]="modalOrigin.w + 'px'"
+       [style.--origin-h]="modalOrigin.h + 'px'"
+       (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="px-10 py-7 flex items-center justify-between shrink-0">
+      <h2 class="text-header-1 text-text tracking-narrow">Todas as Viagens Recentes</h2>
+      <button class="flex items-center justify-center w-11 h-11 bg-white border border-black/[0.04] rounded-full hover:bg-light shadow-sm transition-colors cursor-pointer"
+              (click)="closeRecentTripsModal()">
+        <div class="size-6 bg-text"
+             style="-webkit-mask: url(assets/icons/close.svg) no-repeat center / contain; mask: url(assets/icons/close.svg) no-repeat center / contain;"></div>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="flex-1 flex flex-col px-10 pb-8 min-h-0 min-w-0">
+      <div class="flex flex-col gap-[10px] w-full flex-1 overflow-hidden">
+        <!-- Custom Header Row (Matches Admin Design) -->
+        <div class="bg-white flex items-center px-6 py-5 rounded-[12px] w-full shrink-0 gap-4">
+          <div
+            class="flex-1 flex items-center gap-1 cursor-pointer hover:text-text transition-colors group"
+            (click)="toggleSort('date')"
+          >
+            <span class="text-text text-header-3 tracking-narrow">Data</span>
+            <div
+              class="size-4 transition-all"
+              [ngClass]="{
+                'bg-text opacity-100': sortColumn === 'date',
+                'bg-subtle-text opacity-30 group-hover:opacity-100 group-hover:bg-text':
+                  sortColumn !== 'date',
+              }"
+              [style.transform]="
+                sortColumn === 'date' && sortDirection === 'desc' ? 'rotate(180deg)' : 'none'
+              "
+              style="
+                -webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+                mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+              "
+            ></div>
+          </div>
+
+          <span class="text-text text-header-3 tracking-narrow flex-[1.5]">Rota</span>
+          <span class="text-text text-header-3 tracking-narrow flex-1">Motorista</span>
+
+          <div
+            class="flex-1 flex items-center gap-1 cursor-pointer hover:text-text transition-colors group"
+            (click)="toggleSort('status')"
+          >
+            <span class="text-text text-header-3 tracking-narrow">Status</span>
+            <div
+              class="size-4 transition-all"
+              [ngClass]="{
+                'bg-text opacity-100': sortColumn === 'status',
+                'bg-subtle-text opacity-30 group-hover:opacity-100 group-hover:bg-text':
+                  sortColumn !== 'status',
+              }"
+              [style.transform]="
+                sortColumn === 'status' && sortDirection === 'desc' ? 'rotate(180deg)' : 'none'
+              "
+              style="
+                -webkit-mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+                mask: url(assets/icons/arrow-down.svg) no-repeat center / contain;
+              "
+            ></div>
+          </div>
+
+          <span class="text-text text-header-3 tracking-narrow flex-[1.5]">Veículo / Placa</span>
+          <span class="text-text text-header-3 tracking-narrow flex-[0.8] text-center"
+            >Ocupação</span
+          >
+          <span class="text-text text-header-3 tracking-narrow flex-1 text-right">Valor</span>
+        </div>
+
+        <!-- Data Rows List -->
+        <div class="flex flex-col w-full overflow-y-auto flex-1 scrollbar-hide">
+          <ng-container *ngFor="let trip of sortedTrips">
+            <div
+              class="flex items-center px-6 py-[14px] w-full transition-colors hover:bg-black/[0.02] gap-4"
+            >
+              <div class="flex-1 text-text text-medium font-medium leading-tight">
+                {{ trip.date }}
+              </div>
+
+              <div class="flex-[1.5] flex items-center gap-2">
+                <span class="text-bold text-text text-[15px]">{{ trip.origin }}</span>
+                <div
+                  class="size-[14px] shrink-0 bg-subtle-text"
+                  style="
+                    -webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;
+                    mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;
+                  "
+                ></div>
+                <span class="text-bold text-text text-[15px]">{{ trip.destination }}</span>
+              </div>
+
+              <div class="flex-1 text-text text-medium leading-tight flex items-center gap-2">
+                <span>{{ trip.driver }}</span>
+              </div>
+
+              <div class="flex-1 flex items-center">
+                <app-tag [label]="trip.status" [variant]="trip.variant"></app-tag>
+              </div>
+
+              <div class="flex-[1.5] flex flex-col gap-0.5 justify-center">
+                <span class="text-text text-medium leading-tight font-medium">{{
+                  trip.vehicle
+                }}</span>
+                <span
+                  class="text-subtle-text text-[13px] font-mono leading-tight tracking-wider uppercase"
+                  >{{ trip.licensePlate }}</span
+                >
+              </div>
+
+              <div class="flex-[0.8] flex items-end justify-center gap-1">
+                <span class="text-text text-[16px] font-bold">{{ trip.passengers }}</span>
+                <span class="text-subtle-text text-[13px] font-medium mb-[1px]"
+                  >/ {{ trip.capacity }}</span
+                >
+              </div>
+
+              <div
+                class="flex-1 text-[16px] font-bold text-success text-right flex items-center justify-end gap-1"
+              >
+                <span>{{ trip.price }}</span>
+              </div>
+            </div>
+
+            <div class="w-full h-[1px] bg-accent/20 shrink-0"></div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
