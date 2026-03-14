@@ -1,0 +1,196 @@
+<div class="flex w-full h-screen bg-dark p-[1.25rem] box-border">
+
+    <div class="flex flex-col w-full h-full bg-white rounded-[1.5rem] p-4 md:p-8 lg:p-14 overflow-hidden">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between w-full px-4 md:px-8 lg:px-16 pb-4 sm:pb-2 shrink-0 gap-2">
+            <h1 class="text-text text-header-1 lg:text-title whitespace-nowrap leading-[0.8] cursor-pointer" routerLink="/">VanVan</h1>
+            <h2 class="text-subtle-text text-header-3 lg:text-header-2 whitespace-nowrap leading-[0.8]">Cadastro Motorista</h2>
+        </div>
+
+        <div class="flex flex-col lg:flex-row w-full flex-1 bg-light rounded-3xl lg:rounded-[72px] overflow-hidden">
+
+            <!-- Banner -->
+            <div class="hidden lg:block w-full lg:flex-1 h-[200px] sm:h-[300px] lg:h-full">
+                <img
+                    class="w-full h-full object-cover"
+                    alt="Van em estrada"
+                    src="assets/login-banner-1.jpg"
+                />
+            </div>
+
+            <!-- Form Wrapper via Stepper -->
+            <div class="flex flex-col content-between flex-1 w-full relative sm:overflow-y-auto sm:max-h-screen ">
+                <app-stepper
+                    #stepper
+                    [initialStep]="1"
+                >
+
+                    <!-- STEP 1: Personal Data -->
+                    <app-step>
+                        <div class="flex flex-col gap-5 pt-2 pb-6">
+                            <div class="flex flex-col gap-1">
+                                <h2 class="text-text text-header-2 font-bold">Dados Pessoais</h2>
+                                <p class="text-subtle-text text-header-3">Como devemos lhe chamar?</p>
+                            </div>
+
+                            <form class="flex flex-col gap-4">
+                                <!-- Name -->
+                                <div class="flex flex-col gap-[3px] w-full">
+                                    <label class="text-text text-small">Nome Completo</label>
+                                    <input type="text" placeholder="Digite seu nome" [(ngModel)]="name" name="name"
+                                        class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary" />
+                                </div>
+                                <!-- Email & Password -->
+                                <div class="flex flex-col md:flex-row gap-4 w-full">
+                                    <div class="flex flex-col gap-[3px] w-full">
+                                        <label class="text-text text-small">E-mail</label>
+                                        <input type="email" placeholder="exemplo@email.com" [(ngModel)]="email" name="email"
+                                            class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary" />
+                                    </div>
+                                    <div class="flex flex-col gap-[3px] w-full">
+                                        <label class="text-text text-small">Senha</label>
+                                        <div class="relative w-full">
+                                            <input [type]="showPassword() ? 'text' : 'password'" placeholder="Crie uma senha" [(ngModel)]="password" name="password"
+                                                class="w-full bg-white rounded-lg px-4 py-3 pr-12 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary" />
+                                            <button type="button" (click)="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-subtle-text hover:text-text transition-colors">
+                                                <svg *ngIf="showPassword()" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.11 6.11m3.768 3.768a3 3 0 00-.879 2.121M14.12 14.12l3.768 3.768M14.12 14.12a3 3 0 00.879-2.121m0 0L6.11 6.11m0 0L3 3m3.11 3.11l2.768 2.768M21 21l-3.768-3.768" />
+                                                </svg>
+                                                <svg *ngIf="!showPassword()" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Details -->
+                                <div class="flex flex-col md:flex-row gap-4 w-full">
+                                    <div class="flex flex-col gap-[3px] w-full">
+                                        <label class="text-text text-small">CPF</label>
+                                        <input type="text" placeholder="000.000.000-00" [ngModel]="cpf" (input)="onCpfInput($event)" name="cpf" inputmode="numeric" maxlength="11"
+                                            class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary" />
+                                    </div>
+                                    <div class="flex flex-col gap-[3px] w-full">
+                                        <label class="text-text text-small">Data de nascimento</label>
+                                        <input type="text" placeholder="dd/mm/aaaa" [ngModel]="birthdate" (input)="onBirthdateInput($event)" name="birthdate" inputmode="numeric" maxlength="10"
+                                            class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary" />
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-[3px] w-full">
+                                    <label class="text-text text-small">Telefone</label>
+                                    <input type="tel" placeholder="(00) 00000-0000" [ngModel]="telephone" (input)="onPhoneInput($event)" name="telephone" maxlength="15"
+                                        class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </app-step>
+
+                    <!-- STEP 2: Professional and Vehicle Data -->
+                    <app-step>
+                        <div class="flex flex-col gap-5 pt-2 pb-6">
+                            <div class="flex flex-col gap-1">
+                                <h2 class="text-text text-header-2 font-bold">Informações do Veículo</h2>
+                                <p class="text-subtle-text text-header-3">Preencha os dados profissionais</p>
+                            </div>
+
+                            <form class="flex flex-col gap-4">
+                                <div class="flex flex-col md:flex-row gap-4 w-full">
+                                    <div class="flex flex-col gap-[3px] w-full">
+                                        <label class="text-text text-small">CNH</label>
+                                        <input type="text" placeholder="11 dígitos" [ngModel]="cnh" (input)="onCnhInput($event)" name="cnh" inputmode="numeric" maxlength="11"
+                                            class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary" />
+                                    </div>
+                                    <div class="flex flex-col gap-[3px] w-full">
+                                        <label class="text-text text-small">Chave PIX</label>
+                                        <input type="text" placeholder="Para recebimento" [(ngModel)]="chavePix" name="chavePix"
+                                            class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary" />
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col md:flex-row gap-4 w-full">
+                                    <div class="flex flex-col gap-[3px] w-full">
+                                        <label class="text-text text-small">Modelo do Veículo</label>
+                                        <input type="text" placeholder="Modelo do veículo - Ano" [(ngModel)]="vehicle" name="vehicle"
+                                            class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary" />
+                                    </div>
+                                    <div class="flex flex-col gap-[3px] w-full">
+                                        <label class="text-text text-small">Placa Mercosul</label>
+                                        <input type="text" placeholder="ABC1D23" [(ngModel)]="licensePlate" (input)="onLicensePlateInput($event)" name="licensePlate" maxlength="7"
+                                            class="w-full bg-white rounded-lg px-4 py-3 text-body font-['Work_Sans'] text-subtle-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-primary uppercase" />
+                                        <span *ngIf="licensePlateError" class="text-red-500 text-xs mt-1">{{ licensePlateError }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Uploads -->
+                                <div class="flex flex-col gap-[3px] w-full">
+                                    <label class="text-text text-small">Documento do Veículo (PDF) *</label>
+                                    <div class="relative">
+                                        <input id="vehicleDocUnified" type="file" accept=".pdf,application/pdf" (change)="onDocumentChange($event)" class="hidden" />
+                                        <label for="vehicleDocUnified" [class]="vehicleDocument ? 'flex items-center justify-center gap-2 w-full bg-white border-2 border-dashed border-primary rounded-lg px-4 py-4 cursor-pointer transition-colors' : 'flex items-center justify-center gap-2 w-full bg-white border-2 border-dashed border-gray-300 rounded-lg px-4 py-4 cursor-pointer hover:border-primary transition-colors'">
+                                            <svg xmlns="http://www.w3.org/2000/svg" [class]="vehicleDocument ? 'h-6 w-6 text-primary' : 'h-6 w-6 text-gray-400'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                            </svg>
+                                            <span [class]="vehicleDocument ? 'text-text text-sm' : 'text-subtle-text text-sm'">{{ vehicleDocumentName || 'Clique para enviar (PDF)' }}</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gap-[3px] w-full">
+                                    <label class="text-text text-small">Foto do Veículo (opcional)</label>
+                                    <div class="relative">
+                                        <input id="vehiclePhotoUnified" type="file" accept="image/jpeg,image/jpg,image/png" (change)="onPhotoChange($event)" class="hidden" />
+                                        <label for="vehiclePhotoUnified" [class]="vehiclePhoto ? 'flex items-center justify-center gap-2 w-full bg-white border-2 border-dashed border-primary rounded-lg px-4 py-4 cursor-pointer transition-colors' : 'flex items-center justify-center gap-2 w-full bg-white border-2 border-dashed border-gray-300 rounded-lg px-4 py-4 cursor-pointer hover:border-primary transition-colors'">
+                                            <svg xmlns="http://www.w3.org/2000/svg" [class]="vehiclePhoto ? 'h-6 w-6 text-primary' : 'h-6 w-6 text-gray-400'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <span [class]="vehiclePhoto ? 'text-text text-sm' : 'text-subtle-text text-sm'">{{ vehiclePhotoName || 'Clique para enviar (JPG/PNG)' }}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </app-step>
+
+                    <!-- Injected Footer Buttons -->
+                    <div stepper-footer class="flex w-full mt-4" [ngClass]="stepper.currentStep !== 1 ? 'justify-between' : 'justify-end'">
+                        <button
+                            *ngIf="stepper.currentStep !== 1"
+                            (click)="stepper.handleBack()"
+                            type="button"
+                            class="px-16 py-3.5 font-medium border-[2px] border-dashed border-subtle-text hover:border-text/90 rounded-[12px] transition-colors cursor-pointer"
+                        >
+                            Voltar
+                        </button>
+
+                        <button
+                            *ngIf="stepper.currentStep === 1"
+                            (click)="stepper.handleNext()"
+                            type="button"
+                            class="px-16 py-3.5 ml-auto shadow-sm bg-secondary text-white font-medium rounded-[12px] hover:bg-secondary/90 transition-colors cursor-pointer"
+                        >
+                            Continuar
+                        </button>
+
+                        <button
+                            *ngIf="stepper.currentStep === 2"
+                            (click)="onFinalStepCompleted()"
+                            type="button"
+                            class="px-16 py-3.5 ml-auto shadow-sm bg-primary text-white text-button-text uppercase rounded-[12px] hover:bg-primary/90 transition-colors cursor-pointer"
+                        >
+                            Finalizar
+                        </button>
+                    </div>
+
+                </app-stepper>
+
+                <div class="relative flex justify-center w-full">
+                  <div routerLink="/login" class="text-link-text text-subtle-text text-center underline decoration-solid cursor-pointer">
+                    Já tem uma conta? Faça login
+                  </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

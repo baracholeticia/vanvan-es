@@ -202,10 +202,11 @@ export class Faturamento implements OnInit {
   ];
 
   // ===== Destinations Data (top 3 only for visual legend) =====
+  activeDestination: string | null = null;
   destinations = [
-    { name: 'Vila Velha', percent: 65, color: '#557D96' },
-    { name: 'Recife', percent: 45, color: '#F66B0E' },
-    { name: 'Caruaru', percent: 15, color: '#31D0AA' },
+    { id: 'vila-velha', name: 'Vila Velha', percent: 65, color: '#557D96' },
+    { id: 'recife', name: 'Recife', percent: 45, color: '#F66B0E' },
+    { id: 'caruaru', name: 'Caruaru', percent: 15, color: '#31D0AA' },
   ];
 
   // ===== Line Chart — Monthly Revenue =====

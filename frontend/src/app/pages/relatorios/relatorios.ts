@@ -12,7 +12,11 @@ export interface RecentTrip {
   driver: string;
   status: string;
   variant: TagVariant;
+  vehicle: string;
   price: string;
+  passengers: number;
+  capacity: number;
+  licensePlate: string;
 }
 
 export interface PopularRoute {
@@ -61,7 +65,7 @@ export class Relatorios {
     return Math.max(
       this.driverCounts.ativos,
       this.driverCounts.aguardando,
-      this.driverCounts.rejeitados
+      this.driverCounts.rejeitados,
     );
   }
 
@@ -75,7 +79,7 @@ export class Relatorios {
     const startAngle = -120;
     const endAngle = 120;
     const step = (endAngle - startAngle) / (total - 1);
-    const filledCount = Math.round(total * this.occupancyRate / 100);
+    const filledCount = Math.round((total * this.occupancyRate) / 100);
 
     return Array.from({ length: total }, (_, i) => ({
       angle: startAngle + i * step,
@@ -101,7 +105,7 @@ export class Relatorios {
   funnelData = [
     { label: 'Solicitadas', count: 127, color: 'bg-dark' },
     { label: 'Confirmadas', count: 112, color: 'bg-secondary' },
-    { label: 'Realizadas',  count: 96,  color: 'bg-tetiary' },
+    { label: 'Realizadas', count: 96, color: 'bg-tetiary' },
   ];
 
   get totalTrips(): number {
@@ -125,7 +129,7 @@ export class Relatorios {
   }
 
   get maxRevenueValue(): number {
-    return Math.max(...this.revenueMonths.map(m => m.value));
+    return Math.max(...this.revenueMonths.map((m) => m.value));
   }
 
   get revenueChange(): number {
@@ -138,6 +142,44 @@ export class Relatorios {
 
   barHeight(value: number): number {
     return Math.round((value / this.maxRevenueValue) * 100);
+  }
+
+  // Sorting
+  sortColumn: 'date' | 'status' | null = null;
+  sortDirection: 'asc' | 'desc' = 'asc';
+
+  toggleSort(column: 'date' | 'status') {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+  }
+
+  get sortedTrips(): RecentTrip[] {
+    const list = [...this.recentTrips];
+    list.sort((a, b) => {
+      if (a.status === 'Em andamento' && b.status !== 'Em andamento') return -1;
+      if (b.status === 'Em andamento' && a.status !== 'Em andamento') return 1;
+
+      if (!this.sortColumn) return 0;
+
+      if (this.sortColumn === 'status') {
+        const comp = a.status.localeCompare(b.status);
+        return this.sortDirection === 'asc' ? comp : -comp;
+      } else if (this.sortColumn === 'date') {
+        // Parse DD/MM logic
+        const [dayA, monthA] = a.date.split('/').map(Number);
+        const [dayB, monthB] = b.date.split('/').map(Number);
+        const dateA = monthA * 100 + dayA;
+        const dateB = monthB * 100 + dayB;
+        const comp = dateA - dateB;
+        return this.sortDirection === 'asc' ? comp : -comp;
+      }
+      return 0;
+    });
+    return list.slice(0, 20);
   }
 
   barTrend(i: number): 'up' | 'down' | 'same' {
@@ -162,7 +204,7 @@ export class Relatorios {
   ];
 
   get maxRouteCount(): number {
-    return Math.max(...this.popularRoutes.map(r => r.count));
+    return Math.max(...this.popularRoutes.map((r) => r.count));
   }
 
   settings = {
@@ -173,13 +215,133 @@ export class Relatorios {
   };
 
   recentTrips: RecentTrip[] = [
-    { date: '06/03', origin: 'Garanhuns', destination: 'Recife', driver: 'Carlos Silva', status: 'Confirmado', variant: 'success', price: 'R$ 40,00' },
-    { date: '06/03', origin: 'Caruaru', destination: 'Recife', driver: 'Ana Souza', status: 'Aguardando', variant: 'warning', price: 'R$ 35,00' },
-    { date: '05/03', origin: 'Recife', destination: 'Garanhuns', driver: 'Pedro Lima', status: 'Finalizado', variant: 'success', price: 'R$ 40,00' },
-    { date: '05/03', origin: 'Petrolina', destination: 'Recife', driver: 'Maria Oliveira', status: 'Cancelado', variant: 'error', price: 'R$ 85,00' },
-    { date: '04/03', origin: 'João Pessoa', destination: 'Recife', driver: 'José Santos', status: 'Finalizado', variant: 'success', price: 'R$ 50,00' },
-    { date: '04/03', origin: 'Garanhuns', destination: 'Caruaru', driver: 'Carlos Silva', status: 'Finalizado', variant: 'success', price: 'R$ 25,00' },
+    {
+      date: '06/03',
+      origin: 'Recife',
+      destination: 'Garanhuns',
+      driver: 'Manoel Pedro',
+      status: 'Em andamento',
+      variant: 'info',
+      vehicle: 'Van Renault Master',
+      price: 'R$ 45,00',
+      passengers: 12,
+      capacity: 15,
+      licensePlate: 'ABC-1234',
+    },
+    {
+      date: '06/03',
+      origin: 'Garanhuns',
+      destination: 'Recife',
+      driver: 'Carlos Silva',
+      status: 'Confirmado',
+      variant: 'success',
+      vehicle: 'Sprinter 415 CDI',
+      price: 'R$ 40,00',
+      passengers: 15,
+      capacity: 15,
+      licensePlate: 'XYZ-9876',
+    },
+    {
+      date: '06/03',
+      origin: 'Caruaru',
+      destination: 'Recife',
+      driver: 'Ana Souza',
+      status: 'Aguardando',
+      variant: 'warning',
+      vehicle: 'Fiat Ducato',
+      price: 'R$ 35,00',
+      passengers: 8,
+      capacity: 16,
+      licensePlate: 'DEF-5555',
+    },
+    {
+      date: '05/03',
+      origin: 'Recife',
+      destination: 'Garanhuns',
+      driver: 'Pedro Lima',
+      status: 'Finalizado',
+      variant: 'success',
+      vehicle: 'Van Renault Master',
+      price: 'R$ 40,00',
+      passengers: 14,
+      capacity: 15,
+      licensePlate: 'GHI-9999',
+    },
+    {
+      date: '05/03',
+      origin: 'Petrolina',
+      destination: 'Recife',
+      driver: 'Maria Oliveira',
+      status: 'Cancelado',
+      variant: 'error',
+      vehicle: 'Ford Transit',
+      price: 'R$ 85,00',
+      passengers: 0,
+      capacity: 14,
+      licensePlate: 'JKL-1111',
+    },
+    {
+      date: '04/03',
+      origin: 'João Pessoa',
+      destination: 'Recife',
+      driver: 'José Santos',
+      status: 'Finalizado',
+      variant: 'success',
+      vehicle: 'Sprinter 515',
+      price: 'R$ 50,00',
+      passengers: 18,
+      capacity: 18,
+      licensePlate: 'MNO-2222',
+    },
+    {
+      date: '04/03',
+      origin: 'Garanhuns',
+      destination: 'Caruaru',
+      driver: 'Carlos Silva',
+      status: 'Finalizado',
+      variant: 'success',
+      vehicle: 'Sprinter 415 CDI',
+      price: 'R$ 25,00',
+      passengers: 10,
+      capacity: 15,
+      licensePlate: 'XYZ-9876',
+    },
+    {
+      date: '03/03',
+      origin: 'Garanhuns',
+      destination: 'Caruaru',
+      driver: 'Carlos Silva',
+      status: 'Cancelado',
+      variant: 'error',
+      vehicle: 'Sprinter 2020',
+      price: 'R$ 25,00',
+      passengers: 0,
+      capacity: 16,
+      licensePlate: 'PQR-3333',
+    },
   ];
+
+  isRecentTripsModalOpen = false;
+  modalOrigin = { x: 0, y: 0, w: 0, h: 0 };
+
+
+openRecentTripsModal(event: MouseEvent) {
+  const card = (event.currentTarget as HTMLElement).closest('.bento-recent') as HTMLElement;
+  if (card) {
+    const rect = card.getBoundingClientRect();
+    this.modalOrigin = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+      w: rect.width,
+      h: rect.height,
+    };
+  }
+  this.isRecentTripsModalOpen = true;
+}
+
+closeRecentTripsModal() {
+  this.isRecentTripsModalOpen = false;
+}
 
   constructor() {
     this.gaugeSegments = this.buildGauge();

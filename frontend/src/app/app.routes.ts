@@ -10,8 +10,7 @@ import { ClientLayout } from './layout/client-layout';
 export const routes: Routes = [
   { path: 'login', loadComponent: () => import('./pages/login/login').then(m => m.Login) },
   { path: 'register', loadComponent: () => import('./pages/register/register').then(m => m.Register) },
-  { path: 'register-driver-1', loadComponent: () => import('./pages/register-driver/register-driver-1/register-driver-1').then(m => m.RegisterDriverOne) },
-  { path: 'register-driver-2', loadComponent: () => import('./pages/register-driver/register-driver-2/register-driver-2').then(m => m.RegisterDriverTwo) },
+  { path: 'register-driver', loadComponent: () => import('./pages/register-driver/register-driver-unified/register-driver-unified').then(m => m.RegisterDriverUnified) },
   { path: 'buttons', loadComponent: () => import('./pages/button-showcase/button-showcase').then(m => m.ButtonShowcase) },
   {
     path: 'admin',
@@ -23,6 +22,7 @@ export const routes: Routes = [
       { path: 'relatorios', loadComponent: () => import('./pages/relatorios/relatorios').then(m => m.Relatorios) },
       { path: 'motoristas', loadComponent: () => import('./pages/motoristas/motoristas.component').then(m => m.MotoristasComponent)},
       { path: 'clientes', loadComponent: () => import('./pages/clients/clients').then(m => m.ClientsComponent)},
+      { path: 'avaliacoes', loadComponent: () => import('./pages/ratings/ratings').then(m => m.RatingsComponent)},
       { path: 'aprovar-motoristas', loadComponent: () => import('./pages/approve-drivers/approve-drivers').then(m => m.ApproveDrivers)},
       { path: 'settings', loadComponent: () => import('./pages/settings/settings').then(m => m.SettingsComponent)}
     ]

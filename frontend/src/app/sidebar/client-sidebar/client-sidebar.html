@@ -1,57 +1,67 @@
-<div class="w-full flex items-center justify-between relative rounded-[72px] h-[56px] px-2">
-    <!-- Logo -->
-    <a [routerLink]="['/home']" class="flex items-center gap-3 h-[56px] cursor-pointer select-none no-underline">
-        <div class="size-[40px] transition-colors duration-300"
-             [ngClass]="useSecondaryColor() ? 'bg-secondary' : 'bg-white'"
-             style="-webkit-mask: url(assets/logo/LOGO%20-%20VANVAN%20-%20SVG.svg) no-repeat center / contain; mask: url(assets/logo/LOGO%20-%20VANVAN%20-%20SVG.svg) no-repeat center / contain;">
-        </div>
-        <p class="font-sans text-header-2 relative shrink-0 transition-colors duration-300 m-0"
-           [ngClass]="useSecondaryColor() ? 'text-secondary' : 'text-white'">
-            VanVan
-        </p>
-    </a>
+<div class="w-full flex items-center justify-between relative rounded-[72px] h-[56px] px-2 transition-all duration-300">
+     <!-- Logo -->
+     <a [routerLink]="['/home']" class="flex items-center gap-3 h-[56px] cursor-pointer select-none no-underline">
+          <div class="size-[40px] transition-colors duration-300"
+               [ngClass]="useSecondaryColor() ? 'bg-secondary' : 'bg-white'"
+               style="-webkit-mask: url(assets/logo/LOGO%20-%20VANVAN%20-%20SVG.svg) no-repeat center / contain; mask: url(assets/logo/LOGO%20-%20VANVAN%20-%20SVG.svg) no-repeat center / contain;">
+          </div>
+          <p class="font-sans text-header-2 relative shrink-0 transition-colors duration-300 m-0"
+               [ngClass]="useSecondaryColor() ? 'text-secondary' : 'text-white'">
+               VanVan
+          </p>
+     </a>
 
-    <!-- Center Navigation -->
-    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 backdrop-blur-[12px] bg-[#FAFAFA]/60 flex gap-[2px] items-center justify-center p-[3px] rounded-[72px]">
+     <!-- Center Navigation -->
+     <div
+          class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 backdrop-blur-[12px] bg-[#FAFAFA]/60 flex gap-[2px] items-center justify-center p-[3px] rounded-[72px]">
 
-        <!-- Sliding Background -->
-        <div class="absolute bg-light/90 rounded-[72px] transition-all duration-300 ease-in-out z-0 h-[50px] top-[3px]"
-             [style.left.px]="sliderStyle().left.replace('px','') "
-             [style.width.px]="sliderStyle().width.replace('px','') "
-             [style.opacity]="sliderStyle().opacity">
-        </div>
+          <!-- Sliding Background -->
+          <div class="absolute bg-light/90 rounded-[72px] transition-all duration-300 ease-in-out z-0 h-[50px] top-[3px]"
+               [style.left.px]="sliderStyle().left.replace('px','') "
+               [style.width.px]="sliderStyle().width.replace('px','') " [style.opacity]="sliderStyle().opacity">
+          </div>
 
-        <!-- Home -->
-        <a #navItem [routerLink]="['/home']" routerLinkActive="active-route" [routerLinkActiveOptions]="{exact: true}" class="z-10 flex gap-[6px] items-center justify-center px-[42px] h-[50px] rounded-[72px] transition-colors duration-300 bg-transparent hover:bg-light/30 text-secondary no-underline">
-             <img src="assets/icons/home.svg" class="size-[24px]" alt="Início">
-             <span class="font-sans text-header-3">Início</span>
-        </a>
+          <!-- Home -->
+          <a #navItem [routerLink]="['/home']" routerLinkActive="active-route" [routerLinkActiveOptions]="{exact: true}"
+               class="z-10 flex gap-[6px] items-center justify-center px-[42px] h-[50px] rounded-[72px] transition-colors duration-300 bg-transparent hover:bg-light/30 text-secondary no-underline">
+               <img src="assets/icons/home.svg" class="size-[24px]" alt="Início">
+               <span class="font-sans text-header-3">Início</span>
+          </a>
 
-        <!-- Viagens -->
-        <a #navItem [routerLink]="['/viagens']" routerLinkActive="active-route" class="z-10 flex gap-[6px] items-center justify-center px-[42px] h-[50px] rounded-[72px] transition-colors duration-300 bg-transparent hover:bg-light/30 text-secondary no-underline">
-             <img src="assets/icons/airplane-square.svg" class="size-[24px]" alt="Viagens">
-             <span class="font-sans text-header-3">Viagens</span>
-        </a>
+          <!-- Viagens -->
+          <a #navItem [routerLink]="['/viagens']" routerLinkActive="active-route"
+               class="z-10 flex gap-[6px] items-center justify-center px-[42px] h-[50px] rounded-[72px] transition-colors duration-300 bg-transparent hover:bg-light/30 text-secondary no-underline">
+               <img src="assets/icons/airplane-square.svg" class="size-[24px]" alt="Viagens">
+               <span class="font-sans text-header-3">Viagens</span>
+          </a>
 
-        <!-- Motorista (Conditional) -->
-        <a #navItem *ngIf="isDriver()" [routerLink]="['/motorista']" routerLinkActive="active-route" class="z-10 flex gap-[6px] items-center justify-center px-[42px] h-[50px] rounded-[72px] transition-colors duration-300 bg-transparent hover:bg-light/30 text-secondary no-underline">
-             <img src="assets/icons/car.svg" class="size-[24px]" alt="Motorista">
-             <span class="font-sans text-header-3">Motorista</span>
-        </a>
+          <!-- Motorista (Conditional) -->
+          <a #navItem *ngIf="isDriver()" [routerLink]="['/motorista']" routerLinkActive="active-route"
+               class="z-10 flex gap-[6px] items-center justify-center px-[42px] h-[50px] rounded-[72px] transition-colors duration-300 bg-transparent hover:bg-light/30 text-secondary no-underline">
+               <img src="assets/icons/car.svg" class="size-[24px]" alt="Motorista">
+               <span class="font-sans text-header-3">Motorista</span>
+          </a>
 
-    </div>
+     </div>
 
-    <!-- Right Side (User/Login) -->
-    <div class="flex items-center justify-end h-[56px]">
-        <!-- Not Logged In -->
-        <a *ngIf="!isLoggedIn()" [routerLink]="['/login']" class="backdrop-blur-[12.5px] bg-[#FAFAFA]/60 flex h-full items-center justify-center gap-[6px] px-[20px] py-[8px] rounded-[72px] cursor-pointer hover:bg-[#FAFAFA]/80 transition-all text-secondary no-underline">
-            <div class="size-[24px] bg-secondary" style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;"></div>
-            <span class="font-sans text-header-3">Fazer login</span>
-        </a>
+     <!-- Right Side (User/Login) -->
+     <div class="flex items-center justify-end h-[56px]">
+          <!-- Not Logged In -->
+          <a *ngIf="!isLoggedIn()" [routerLink]="['/login']"
+               class="backdrop-blur-[12.5px] bg-[#FAFAFA]/60 flex h-full items-center justify-center gap-[6px] px-[20px] py-[8px] rounded-[72px] cursor-pointer hover:bg-[#FAFAFA]/80 transition-all text-secondary no-underline">
+               <div class="size-[24px] bg-secondary"
+                    style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;">
+               </div>
+               <span class="font-sans text-header-3">Fazer login</span>
+          </a>
 
-        <!-- Logged In -->
-        <div *ngIf="isLoggedIn()" (click)="logout()" class="size-[56px] backdrop-blur-[12.5px] bg-[#FAFAFA]/60 flex items-center justify-center rounded-full p-[8px] cursor-pointer hover:bg-[#FAFAFA]/80 transition-all" title="Sair">
-             <div class="size-[24px] bg-secondary" style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;"></div>
-        </div>
-    </div>
+          <!-- Logged In -->
+          <div *ngIf="isLoggedIn()" (click)="logout()"
+               class="size-[56px] backdrop-blur-[12.5px] bg-[#FAFAFA]/60 flex items-center justify-center rounded-full p-[8px] cursor-pointer hover:bg-[#FAFAFA]/80 transition-all"
+               title="Sair">
+               <div class="size-[24px] bg-secondary"
+                    style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;">
+               </div>
+          </div>
+     </div>
 </div>

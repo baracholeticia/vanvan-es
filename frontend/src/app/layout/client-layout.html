@@ -1,10 +1,16 @@
 <div class="flex flex-col h-screen w-screen overflow-hidden relative bg-white">
   <!-- Navbar overlay -->
-  <div class="absolute top-0 left-0 right-0 z-50 p-[20px] pb-0 pointer-events-none">
-    <app-client-sidebar class="w-full block pointer-events-auto"></app-client-sidebar>
+  <div class="absolute top-0 left-0 right-0 z-50 pointer-events-none transition-all duration-300"
+       [class.backdrop-blur-xl]="isScrolled" 
+       [class.bg-white/10]="isScrolled"
+       [class.rounded-b-[24px]]="isScrolled"
+       [class.shadow-sm]="isScrolled">
+    <div class="px-[20px] pt-[20px] transition-all duration-300" [class.pb-[15px]]="isScrolled">
+      <app-client-sidebar [isScrolled]="isScrolled" class="w-full block pointer-events-auto"></app-client-sidebar>
+    </div>
   </div>
   <!-- Content (full screen, scrolls behind navbar) -->
-  <div class="flex-1 w-full h-full overflow-auto scrollbar-hide p-[20px] pt-[96px]">
+  <div class="flex-1 w-full h-full overflow-auto scrollbar-hide p-[20px] pt-[96px]" (scroll)="onScroll($event)">
     <router-outlet></router-outlet>
   </div>
 

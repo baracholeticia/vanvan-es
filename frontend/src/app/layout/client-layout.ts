@@ -9,4 +9,12 @@ import { Toast } from '../components/toast/toast';
   imports: [RouterOutlet, ClientSidebar, Toast],
   templateUrl: './client-layout.html',
 })
-export class ClientLayout {}
+export class ClientLayout {
+  isScrolled = false;
+
+  onScroll(event: Event) {
+    const target = event.target as HTMLElement;
+    // Set to true when scrolled down more than 10px
+    this.isScrolled = target.scrollTop > 10;
+  }
+}

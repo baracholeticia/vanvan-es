@@ -204,30 +204,43 @@
       <!-- Stacked circular arcs — large -->
       <div class="relative flex items-center justify-center flex-1 min-h-[220px]">
         <svg width="220" height="220" viewBox="0 0 220 220" class="ring-progress">
-          <!-- Track rings -->
-          <circle cx="110" cy="110" r="95" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="14" />
-          <circle cx="110" cy="110" r="72" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="14" />
-          <circle cx="110" cy="110" r="49" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="14" />
+          <!-- Glow Filters for each active segment -->
+          <defs>
+            <filter *ngFor="let dest of destinations" [attr.id]="'radial-glow-' + dest.id" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="6" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
 
-          <!-- Filled arcs — top destination is outermost -->
-          <circle cx="110" cy="110" r="95" fill="none" [attr.stroke]="destinations[0].color" stroke-width="14"
-            stroke-linecap="round" class="ring-fill" [attr.stroke-dasharray]="2 * 3.14159 * 95"
-            [attr.stroke-dashoffset]="2 * 3.14159 * 95 * (1 - destinations[0].percent / 100)" />
-          <circle cx="110" cy="110" r="72" fill="none" [attr.stroke]="destinations[1].color" stroke-width="14"
-            stroke-linecap="round" class="ring-fill" [attr.stroke-dasharray]="2 * 3.14159 * 72"
-            [attr.stroke-dashoffset]="2 * 3.14159 * 72 * (1 - destinations[1].percent / 100)" />
-          <circle cx="110" cy="110" r="49" fill="none" [attr.stroke]="destinations[2].color" stroke-width="14"
-            stroke-linecap="round" class="ring-fill" [attr.stroke-dasharray]="2 * 3.14159 * 49"
-            [attr.stroke-dashoffset]="2 * 3.14159 * 49 * (1 - destinations[2].percent / 100)" />
+          <!-- Track rings -->
+          <circle *ngFor="let dest of destinations; let i = index"
+            cx="110" cy="110" [attr.r]="95 - (i * 23)" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="14" />
+
+          <!-- Filled arcs with hover effects -->
+          <circle *ngFor="let dest of destinations; let i = index"
+            cx="110" cy="110" [attr.r]="95 - (i * 23)" fill="none" class="ring-fill transition-all duration-300 drop-shadow-sm cursor-pointer"
+            [attr.stroke]="dest.color" stroke-width="14" stroke-linecap="round"
+            [attr.stroke-dasharray]="2 * 3.14159 * (95 - (i * 23))"
+            [attr.stroke-dashoffset]="2 * 3.14159 * (95 - (i * 23)) * (1 - dest.percent / 100)"
+            [attr.opacity]="activeDestination === null || activeDestination === dest.id ? 1 : 0.3"
+            [attr.filter]="activeDestination === dest.id ? 'url(#radial-glow-' + dest.id + ')' : null"
+            (mouseenter)="activeDestination = dest.id"
+            (mouseleave)="activeDestination = null" />
         </svg>
+        
+        <!-- Center overlay text or icon could go here -->
       </div>
 
-      <!-- Compact legend — just color dot + name + percent in a row -->
+      <!-- Compact legend -->
       <div class="flex items-center justify-center gap-5">
-        <div *ngFor="let dest of destinations" class="flex items-center gap-1.5">
+        <div *ngFor="let dest of destinations" 
+          class="flex items-center gap-1.5 cursor-pointer transition-all duration-300"
+          [style.opacity]="activeDestination === null || activeDestination === dest.id ? 1 : 0.4"
+          (mouseenter)="activeDestination = dest.id"
+          (mouseleave)="activeDestination = null">
           <div class="size-2.5 rounded-full shrink-0" [ngStyle]="{'background': dest.color}"></div>
-          <span class="text-[12px] text-text font-medium">{{ dest.percent }}%</span>
-          <span class="text-[11px] text-subtle-text">{{ dest.name }}</span>
+          <span class="text-[12px] font-medium transition-colors" [ngClass]="activeDestination === dest.id ? 'text-primary' : 'text-text'">{{ dest.percent }}%</span>
+          <span class="text-[11px] text-subtle-text truncate">{{ dest.name }}</span>
         </div>
       </div>
     </div>
@@ -467,7 +480,7 @@
             <rect width="100%" height="100%" [attr.fill]="'url(#scratch-' + hour.label + ')'" />
           </svg>
           <!-- Label inside -->
-          <span class="relative z-10 text-[11px] font-bold text-white/90">{{ hour.label }}</span>
+          <span class="relative z-10 text- text-white">{{ hour.label }}</span>
         </div>
       </div>
 

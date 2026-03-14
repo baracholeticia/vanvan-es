@@ -1,0 +1,50 @@
+<div class="flex flex-1 flex-col items-center justify-start w-full h-full transition-all duration-300">
+  <!-- Stepper Indicators -->
+  <div class="flex w-full items-center px-4 sm:px-8 pt-4 pb-2 z-10 bg-light">
+    <ng-container *ngFor="let step of steps; let i = index">
+      
+      <!-- Indicator -->
+      <div 
+        class="relative flex shrink-0 items-center justify-center outline-none"
+        [class.cursor-pointer]="!disableStepIndicators && (i+1) !== currentStep"
+        (click)="goToStep(i + 1)"
+      >
+        <div 
+          [@indicatorAnimation]="getStatus(i + 1)"
+          class="flex h-8 w-8 items-center justify-center rounded-full font-semibold transition-colors duration-300"
+        >
+          <!-- Check Icon Complete -->
+          <svg *ngIf="getStatus(i + 1) === 'complete'" class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+          <!-- Active dot -->
+          <div *ngIf="getStatus(i + 1) === 'active'" class="h-3 w-3 rounded-full bg-white"></div>
+          <!-- Inactive Number -->
+          <span *ngIf="getStatus(i + 1) === 'inactive'" class="text-sm">{{ i + 1 }}</span>
+        </div>
+      </div>
+
+      <!-- Connecting Line -->
+      <div *ngIf="i < totalSteps - 1" class="relative mx-2 h-0.5 flex-1 overflow-hidden rounded bg-neutral-200">
+        <div 
+          class="absolute left-0 top-0 h-full"
+          [@lineAnimation]="currentStep > i + 1 ? 'complete' : 'incomplete'"
+        ></div>
+      </div>
+
+    </ng-container>
+  </div>
+
+<!-- Step Content Wrapper with Animation -->
+  <div 
+    class="relative w-full flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar min-h-0 sm:min-h-[400px]" 
+    [@stepAnimation]="{ value: currentStep, params: { enterLeft: enteringTransform, leaveLeft: leavingTransform } }"
+  >
+    <ng-content></ng-content>
+  </div>
+
+  <!-- Footer Actions (Projected by the parent) -->
+  <div *ngIf="!isCompleted" class="w-full px-4 sm:px-8 pb-4 pt-4 mt-auto shrink-0 bg-light z-10">
+    <ng-content select="[stepper-footer]"></ng-content>
+  </div>
+</div>

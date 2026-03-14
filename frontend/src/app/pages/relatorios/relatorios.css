@@ -11,30 +11,54 @@
   grid-template-rows: auto auto 320px minmax(280px, auto);
   gap: 16px;
   grid-template-areas:
-    "revenue trips   drivers  clients"
-    "occ     status  status   status"
-    "rating  line    line     routes"
-    "recent  recent  recent   toggles";
+    'revenue trips   drivers  clients'
+    'occ     status  status   status'
+    'rating  line    line     routes'
+    'recent  recent  recent   toggles';
 }
 
-.bento-revenue  { grid-area: revenue; }
-.bento-trips    { grid-area: trips; }
-.bento-drivers  { grid-area: drivers; }
-.bento-clients  { grid-area: clients; }
-.bento-occ      { grid-area: occ; }
-.bento-status   { grid-area: status; }
-.bento-line     { grid-area: line; }
-.bento-routes   { grid-area: routes; }
-.bento-toggles  { grid-area: toggles; }
-.bento-recent   { grid-area: recent; }
-.bento-rating   { grid-area: rating; }
+.bento-revenue {
+  grid-area: revenue;
+}
+.bento-trips {
+  grid-area: trips;
+}
+.bento-drivers {
+  grid-area: drivers;
+}
+.bento-clients {
+  grid-area: clients;
+}
+.bento-occ {
+  grid-area: occ;
+}
+.bento-status {
+  grid-area: status;
+}
+.bento-line {
+  grid-area: line;
+}
+.bento-routes {
+  grid-area: routes;
+}
+.bento-toggles {
+  grid-area: toggles;
+}
+.bento-recent {
+  grid-area: recent;
+}
+.bento-rating {
+  grid-area: rating;
+}
 
 /* ===== Hover: KPI cards ===== */
 .bento-revenue,
 .bento-trips,
 .bento-drivers,
 .bento-clients {
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
   cursor: default;
 }
 
@@ -42,7 +66,7 @@
 .bento-trips:hover,
 .bento-drivers:hover,
 .bento-clients:hover {
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   transform: translateY(-1px);
 }
 
@@ -55,7 +79,9 @@
   align-items: flex-start;
   justify-content: center;
   padding-top: 10px;
-  transition: height 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+  transition:
+    height 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.2s ease;
   cursor: pointer;
 }
 
@@ -65,19 +91,37 @@
 
 .bar-dark {
   background:
-    repeating-linear-gradient(-55deg, transparent 0px, transparent 5px, rgba(255,255,255,0.06) 5px, rgba(255,255,255,0.06) 10px),
-    linear-gradient(180deg, #1e3a50 0%, #112B3C 100%);
+    repeating-linear-gradient(
+      -55deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(255, 255, 255, 0.06) 5px,
+      rgba(255, 255, 255, 0.06) 10px
+    ),
+    linear-gradient(180deg, #1e3a50 0%, #112b3c 100%);
 }
 
 .bar-secondary {
   background:
-    repeating-linear-gradient(-55deg, transparent 0px, transparent 5px, rgba(255,255,255,0.06) 5px, rgba(255,255,255,0.06) 10px),
+    repeating-linear-gradient(
+      -55deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(255, 255, 255, 0.06) 5px,
+      rgba(255, 255, 255, 0.06) 10px
+    ),
     linear-gradient(180deg, #54768c 0%, #54768c 100%);
 }
 
 .bar-primary {
   background:
-    repeating-linear-gradient(-55deg, transparent 0px, transparent 5px, rgba(255,255,255,0.06) 5px, rgba(255,255,255,0.06) 10px),
+    repeating-linear-gradient(
+      -55deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(255, 255, 255, 0.06) 5px,
+      rgba(255, 255, 255, 0.06) 10px
+    ),
     linear-gradient(180deg, #c7b18e 0%, #d0b488 100%);
 }
 
@@ -86,7 +130,7 @@
   font-size: 14px;
   font-weight: 500;
   font-family: 'Google Sans Flex', sans-serif;
-  background: rgba(250,250,250,1);
+  background: rgba(250, 250, 250, 1);
   padding: 4px 12px;
   border-radius: 24px;
   white-space: nowrap;
@@ -116,13 +160,22 @@
 }
 
 /* ===== Funnel bars ===== */
-.funnel-bar-dark     { background-color: var(--color-dark, #112B3C); }
-.funnel-bar-secondary { background-color: var(--color-secondary, #557D96); }
-.funnel-bar-tetiary  { background-color: var(--color-tetiary, #c0a070); }
+.funnel-bar-dark {
+  background-color: var(--color-dark, #112b3c);
+}
+.funnel-bar-secondary {
+  background-color: var(--color-secondary, #557d96);
+}
+.funnel-bar-tetiary {
+  background-color: var(--color-tetiary, #c0a070);
+}
 
 /* ===== Bar chart focus effect ===== */
 .bar-col {
-  transition: opacity 0.25s ease, filter 0.25s ease, transform 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    filter 0.25s ease,
+    transform 0.25s ease;
   transform-origin: bottom center;
 }
 
@@ -141,18 +194,20 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
     grid-template-areas:
-      "revenue  trips"
-      "drivers  clients"
-      "occ      occ"
-      "status   status"
-      "rating   rating"
-      "line     line"
-      "routes   routes"
-      "recent   recent"
-      "toggles  toggles";
+      'revenue  trips'
+      'drivers  clients'
+      'occ      occ'
+      'status   status'
+      'rating   rating'
+      'line     line'
+      'routes   routes'
+      'recent   recent'
+      'toggles  toggles';
   }
 
-  .bento-status { align-self: stretch; }
+  .bento-status {
+    align-self: stretch;
+  }
 
   .bento-line {
     min-height: 320px;
@@ -164,17 +219,17 @@
   .bento-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "revenue"
-      "trips"
-      "drivers"
-      "clients"
-      "occ"
-      "status"
-      "rating"
-      "line"
-      "routes"
-      "recent"
-      "toggles";
+      'revenue'
+      'trips'
+      'drivers'
+      'clients'
+      'occ'
+      'status'
+      'rating'
+      'line'
+      'routes'
+      'recent'
+      'toggles';
   }
 
   .bento-line {
@@ -187,5 +242,59 @@
     flex-wrap: wrap;
     gap: 16px;
     min-width: unset;
+  }
+}
+
+/* ===== Container Transform Modal ===== */
+.modal-backdrop {
+  animation: backdropIn 0.45s cubic-bezier(0.2, 0, 0, 1) forwards;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+}
+
+@keyframes backdropIn {
+  0% {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  40% {
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+.modal-container {
+  animation: containerExpand 0.45s cubic-bezier(0.2, 0, 0, 1) forwards;
+
+  /* Calcula transform-origin relativo ao centro do card de origem */
+  transform-origin:
+    calc(var(--origin-x) - 50vw + 50%)
+    calc(var(--origin-y) - 50vh + 50%);
+}
+
+@keyframes containerExpand {
+  0% {
+    opacity: 0;
+    transform: scale(0) translate(0, 0);
+    border-radius: 28px;
+    /* Comprime para o tamanho e posição do card original */
+    width: var(--origin-w);
+    height: var(--origin-h);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+    border-radius: 32px;
   }
 }

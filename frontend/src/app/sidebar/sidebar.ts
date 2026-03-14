@@ -41,6 +41,8 @@ export class Sidebar {
       this.router.navigate(['/admin/motoristas']);
     }else if (page === 'clients') {
       this.router.navigate(['/admin/clientes']);
+    } else if (page === 'ratings') {
+      this.router.navigate(['/admin/avaliacoes']);
     } else if (page === 'verification') {
       this.router.navigate(['/admin/aprovar-motoristas']);
     } else if (page === 'admin') {

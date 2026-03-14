@@ -1,0 +1,130 @@
+/* ==========================================
+   RATINGS PAGE — Animations & Enhancements
+   ========================================== */
+
+/* ---------- Card stagger entrance ---------- */
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-enter {
+  animation: cardEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- Badge / header elements ---------- */
+@keyframes badgeEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rating-badge-enter {
+  animation: badgeEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- Empty state ---------- */
+@keyframes emptyEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.empty-state-enter {
+  animation: emptyEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Floating star decoration */
+@keyframes floatStar {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(8deg); }
+}
+
+.float-star {
+  animation: floatStar 3s ease-in-out infinite;
+}
+
+/* ---------- Skeleton shimmer ---------- */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.shimmer-wave {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.08) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- Score ring SVG animation ---------- */
+@keyframes ringDraw {
+  from {
+    stroke-dashoffset: 175.9;
+  }
+}
+
+.score-ring-animate {
+  animation: ringDraw 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.2s;
+}
+
+/* ---------- Progress bar animation ---------- */
+@keyframes progressFill {
+  from { width: 0%; }
+  to   { width: var(--target-width, 0%); }
+}
+
+.progress-bar-animate {
+  animation: progressFill 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.15s;
+}
+
+/* ---------- Attention badge subtle pulse ---------- */
+@keyframes attentionPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 89, 89, 0); }
+  50%       { box-shadow: 0 0 0 4px rgba(212, 89, 89, 0.15); }
+}
+
+.attention-pulse {
+  animation: attentionPulse 2.4s ease-in-out infinite;
+}
+
+/* ---------- Hover card glow ---------- */
+.group:hover .card-glow-negative {
+  box-shadow: 0 20px 40px rgba(212, 89, 89, 0.12);
+}
+
+/* ---------- Line clamp utility (comment preview) ---------- */
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

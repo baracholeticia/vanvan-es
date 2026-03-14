@@ -1,4 +1,4 @@
-import { Component, signal, inject, computed, ViewChildren, QueryList, ElementRef, AfterViewInit, effect } from '@angular/core';
+import { Component, signal, inject, computed, ViewChildren, QueryList, ElementRef, AfterViewInit, effect, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -11,6 +11,8 @@ import { filter } from 'rxjs/operators';
   templateUrl: './client-sidebar.html',
 })
 export class ClientSidebar implements AfterViewInit {
+  @Input() isScrolled = false;
+  
   private router = inject(Router);
   private authService = inject(AuthService);
   

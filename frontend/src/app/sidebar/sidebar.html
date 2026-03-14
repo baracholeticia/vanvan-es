@@ -66,7 +66,7 @@
 
       <!-- Clientes -->
       <div (click)="setActivePage('clients')"
-        [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-bl-[10px] rounded-br-[10px] rounded-tl-[4px] rounded-tr-[4px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'clients' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
+        [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-[4px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'clients' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
         <div class="relative shrink-0 size-[34px]">
           <div class="absolute contents inset-0">
             <div [class]="'size-full ' + (activePage() === 'clients' ? 'bg-dark' : 'bg-subtle-text')"
@@ -81,6 +81,27 @@
           </div>
           <p class="leading-[normal] relative shrink-0 text-small m-0">
             Gerencie os clientes
+          </p>
+        </div>
+      </div>
+
+      <!-- Avaliações -->
+      <div (click)="setActivePage('ratings')"
+        [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-bl-[10px] rounded-br-[10px] rounded-tl-[4px] rounded-tr-[4px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'ratings' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
+        <div class="relative shrink-0 size-[34px]">
+          <div class="absolute contents inset-0">
+            <div [class]="'size-full ' + (activePage() === 'ratings' ? 'bg-dark' : 'bg-subtle-text')"
+              [style.mask-image]="'url(assets/icons/star.svg)'" [style.webkit-mask-image]="'url(assets/icons/star.svg)'"
+              style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
+          </div>
+        </div>
+        <div
+          [class]="'content-stretch flex flex-col font-medium items-start justify-center not-italic relative shrink-0 ' + (activePage() === 'ratings' ? 'text-dark' : 'text-subtle-text')">
+          <div class="flex flex-col justify-center leading-[0] relative shrink-0 text-medium w-[121px]">
+            <p class="leading-[1.2] whitespace-pre-wrap m-0">Avaliações</p>
+          </div>
+          <p class="leading-[normal] relative shrink-0 text-small m-0">
+            Gerencie feedbacks
           </p>
         </div>
       </div>
@@ -193,10 +214,19 @@
       </div>
       <!-- Clientes -->
       <div (click)="setActivePage('clients')"
-        [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-b-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'clients' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
+        [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[4px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'clients' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
         <div class="relative shrink-0 size-[34px]">
           <div [class]="'size-full ' + (activePage() === 'clients' ? 'bg-dark' : 'bg-subtle-text')"
             [style.mask-image]="'url(' + User + ')'" [style.webkit-mask-image]="'url(' + User + ')'"
+            style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
+        </div>
+      </div>
+      <!-- Avaliações -->
+      <div (click)="setActivePage('ratings')"
+        [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-b-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'ratings' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
+        <div class="relative shrink-0 size-[34px]">
+          <div [class]="'size-full ' + (activePage() === 'ratings' ? 'bg-dark' : 'bg-subtle-text')"
+            [style.mask-image]="'url(assets/icons/star.svg)'" [style.webkit-mask-image]="'url(assets/icons/star.svg)'"
             style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
         </div>
       </div>
