@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.br.CPF;
 import java.time.LocalDate;
 
 @JsonTypeInfo(
@@ -43,9 +42,8 @@ public abstract class RegisterDTO {
     @Size(min = 8)//sem complicações aqui por ora
     protected String password;
 
-    @CPF
-    @NotBlank
-    protected String cpf; // já validado pelo jakarta
+    @Size(min = 11, max = 11, message = "CPF deve conter 11 dígitos")
+    protected String cpf;//CPF agora como opcional
 
     @Pattern(regexp = "\\d{10,11}")
     @NotBlank

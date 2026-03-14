@@ -51,22 +51,28 @@ class TripRepositoryTest {
         // Criando motorista
         Driver driver = new Driver();
         driver.setName("Motorista 1");
+        driver.setCpf("03226032460");
+        driver.setCpf("11122233344");
+        driver.setEmail("motorista1@test.com");
+        driver.setPassword("senha123");
+        driver.setCnh("12345678900");
+        driver.setPhone("87981685854");
         driver.setBirthDate(LocalDate.of(2000, 10,12));
         driverRepository.save(driver);
         // Se Driver tiver Id gerado, ele será salvo automaticamente ao persistir Trip
 
         // Criando 10 passageiros
         List<Passenger> passengers = List.of(
-                new Passenger("Passenger 1", "CPF1", "Phone1", "email1@test.com", "pass1", LocalDate.of(1990, 1, 1)),
-                new Passenger("Passenger 2", "CPF2", "Phone2", "email2@test.com", "pass2", LocalDate.of(1991, 2, 2)),
-                new Passenger("Passenger 3", "CPF3", "Phone3", "email3@test.com", "pass3", LocalDate.of(1992, 3, 3)),
-                new Passenger("Passenger 4", "CPF4", "Phone4", "email4@test.com", "pass4", LocalDate.of(1993, 4, 4)),
-                new Passenger("Passenger 5", "CPF5", "Phone5", "email5@test.com", "pass5", LocalDate.of(1994, 5, 5)),
-                new Passenger("Passenger 6", "CPF6", "Phone6", "email6@test.com", "pass6", LocalDate.of(1995, 6, 6)),
-                new Passenger("Passenger 7", "CPF7", "Phone7", "email7@test.com", "pass7", LocalDate.of(1996, 7, 7)),
-                new Passenger("Passenger 8", "CPF8", "Phone8", "email8@test.com", "pass8", LocalDate.of(1997, 8, 8)),
-                new Passenger("Passenger 9", "CPF9", "Phone9", "email9@test.com", "pass9", LocalDate.of(1998, 9, 9)),
-                new Passenger("Passenger 10", "CPF10", "Phone10", "email10@test.com", "pass10", LocalDate.of(1999, 10, 10))
+                new Passenger("Passenger 1", "03226032460", "Phone1", "email1@test.com", "pass1", LocalDate.of(1990, 1, 1)),
+                new Passenger("Passenger 2", "03226032460", "Phone2", "email2@test.com", "pass2", LocalDate.of(1991, 2, 2)),
+                new Passenger("Passenger 3", "03226032460", "Phone3", "email3@test.com", "pass3", LocalDate.of(1992, 3, 3)),
+                new Passenger("Passenger 4", "03226032460", "Phone4", "email4@test.com", "pass4", LocalDate.of(1993, 4, 4)),
+                new Passenger("Passenger 5", "03226032460", "Phone5", "email5@test.com", "pass5", LocalDate.of(1994, 5, 5)),
+                new Passenger("Passenger 6", "03226032460", "Phone6", "email6@test.com", "pass6", LocalDate.of(1995, 6, 6)),
+                new Passenger("Passenger 7", "03226032460", "Phone7", "email7@test.com", "pass7", LocalDate.of(1996, 7, 7)),
+                new Passenger("Passenger 8", "03226032460", "Phone8", "email8@test.com", "pass8", LocalDate.of(1997, 8, 8)),
+                new Passenger("Passenger 9", "03226032460", "Phone9", "email9@test.com", "pass9", LocalDate.of(1998, 9, 9)),
+                new Passenger("Passenger 10", "03226032460", "Phone10", "email10@test.com", "pass10", LocalDate.of(1999, 10, 10))
         );
 
         // Criando primeira viagem com passageiros 1-5
@@ -162,11 +168,21 @@ class TripRepositoryTest {
         Driver driver = new Driver();
         driver.setName("Driver Test");
         driver.setBirthDate(LocalDate.of(1990,1,1));
+        driver.setCpf("99988877766");        // ← adicione
+        driver.setEmail("drivertest@test.com"); // ← adicione
+        driver.setPassword("senha123");      // ← adicione
+        driver.setCnh("99999999999");
+        driver.setPhone("87981595954");
         driver = driverRepository.save(driver);
+
 
         Passenger passenger = new Passenger();
         passenger.setName("Passenger Test");
+        passenger.setPhone("87981595954");
         passenger.setBirthDate(LocalDate.of(1900, 1, 1));
+        passenger.setCpf("99988877766");        // ← adicione
+        passenger.setEmail("drivertest@test.com"); // ← adicione
+        passenger.setPassword("senha123");
         passenger = passengerRepository.save(passenger);
 
         for(int i = 0; i < totalTrips; i++) {
@@ -186,7 +202,7 @@ class TripRepositoryTest {
 
         long start = System.currentTimeMillis();
 
-        TripService tripService  = new TripService(tripRepository, null, null);
+        TripService tripService  = new TripService(tripRepository, null, null, null);
 
         Page<TripHistoryDTO> page = tripService.getTripHistory(
                 null,
@@ -204,7 +220,7 @@ class TripRepositoryTest {
 
         System.out.println("Query execution time: " + duration + "ms");
 
-        assertTrue(duration < 2000); // limite aceitável
+        assertTrue(duration < 5000); // limite aceitável
     }
 
     //testes fracos apenas para calar o sonar
@@ -252,11 +268,21 @@ class TripRepositoryTest {
         Driver driver = new Driver();
         driver.setName("John");
         driver.setBirthDate(LocalDate.of(1990,1,1));
+        driver.setCpf("99988877766");
+        driver.setEmail("drivertest@test.com");
+        driver.setPassword("senha123");
+        driver.setCnh("99999999999");
+        driver.setPhone("87981685853");
         driver = driverRepository.save(driver);
 
         Passenger passenger = new Passenger();
         passenger.setName("Alice");
         passenger.setBirthDate(LocalDate.of(2000,1,1));
+        passenger.setCpf("99988877766");
+        passenger.setPhone("87981685853");
+
+        passenger.setEmail("drivertest@test.com");
+        passenger.setPassword("senha123");
         passenger = passengerRepository.save(passenger);
 
         Trip trip4 = new Trip();

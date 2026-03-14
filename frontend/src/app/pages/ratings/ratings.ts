@@ -25,13 +25,12 @@ export class RatingsComponent implements OnInit {
   filtros = [
     { label: 'Todas', value: 'all' },
     { label: 'Negativas', value: 'negative' },
-    { label: 'Pendentes', value: 'unreviewed' },
+    { label: 'Ocultas', value: 'hidden' },
   ];
 
   // Computed stats
-  totalPositivas = computed(() => this.listaAvaliacoes().filter(r => r.score > 3).length);
+  totalPositivas = computed(() => this.listaAvaliacoes().filter(r => r.score >= 4).length);
   totalNegativas = computed(() => this.listaAvaliacoes().filter(r => r.score <= 3).length);
-  totalPendentes = computed(() => this.listaAvaliacoes().filter(r => !r.reviewed).length);
 
   mediaGeral = computed(() => {
     const lista = this.listaAvaliacoes();
@@ -44,7 +43,7 @@ export class RatingsComponent implements OnInit {
     switch (filtro) {
       case 'all':        return this.listaAvaliacoes().length;
       case 'negative':   return this.totalNegativas();
-      case 'unreviewed': return this.totalPendentes();
+      case 'hidden':     return this.listaAvaliacoes().filter(r => r.status === 'HIDDEN').length;
       default:           return 0;
     }
   }
@@ -56,11 +55,28 @@ export class RatingsComponent implements OnInit {
   carregarAvaliacoes() {
     this.carregando.set(true);
     const termo = this.termoBusca();
-    const status = this.statusFiltro() === 'all' ? undefined : this.statusFiltro();
+    const filterValue = this.statusFiltro();
+    const isStatusBackend = filterValue === 'hidden' ? 'hidden' : undefined;
 
-    this.ratingService.listar(termo, status).subscribe({
-      next: (dados) => {
-        this.listaAvaliacoes.set(dados);
+    this.ratingService.listar(isStatusBackend).subscribe({
+      next: (pagina) => {
+        let filtrados = pagina.content;
+
+        if (filterValue === 'negative') {
+          filtrados = filtrados.filter(r => r.score <= 3);
+        }
+
+        // Front-end local filter logic for search term
+        if (termo) {
+          const t = termo.toLowerCase();
+          filtrados = filtrados.filter(r => 
+            r.passengerName.toLowerCase().includes(t) ||
+            r.driverName.toLowerCase().includes(t) ||
+            r.tripId.toString().includes(t)
+          );
+        }
+
+        this.listaAvaliacoes.set(filtrados);
         this.carregando.set(false);
       },
       error: (err) => {
@@ -86,18 +102,7 @@ export class RatingsComponent implements OnInit {
     this.carregarAvaliacoes();
   }
 
-  marcarComoAnalisado(rating: Rating) {
-    this.ratingService.marcarComoAnalisado(rating.id).subscribe({
-      next: (atualizado) => {
-        const novaLista = this.listaAvaliacoes().map(r =>
-          r.id === atualizado.id ? atualizado : r
-        );
-        this.listaAvaliacoes.set(novaLista);
-        this.toastService.success('Avaliação marcada como analisada');
-      },
-      error: () => this.toastService.error('Erro ao marcar avaliação')
-    });
-  }
+
 
   ocultarComentario(rating: Rating) {
     if (confirm('Tem certeza que deseja ocultar este comentário de outros usuários?')) {

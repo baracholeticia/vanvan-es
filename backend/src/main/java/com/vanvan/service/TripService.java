@@ -14,7 +14,10 @@ import com.vanvan.repository.TripSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -23,9 +26,9 @@ import java.util.UUID;
 public class TripService {
 
     private final TripRepository tripRepository;
-
     private final DriverRepository driverRepository;
     private final PassengerRepository passengerRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public TripDetailsDTO createTrip(CreateTripDTO dto) {
 
@@ -35,10 +38,10 @@ public class TripService {
         Trip trip = new Trip();
 
         var departureDTO = dto.getDeparture();
-        var departure = new Location(departureDTO.getCity(), departureDTO.getStreet() , departureDTO.getReference());
+        var departure = new Location(departureDTO.getCity(), departureDTO.getStreet(), departureDTO.getReference());
 
         var arrivalDTO = dto.getArrival();
-        var arrival = new Location(arrivalDTO.getCity(), arrivalDTO.getStreet() , arrivalDTO.getReference());
+        var arrival = new Location(arrivalDTO.getCity(), arrivalDTO.getStreet(), arrivalDTO.getReference());
 
         trip.setDriver(driver);
         trip.setDeparture(departure);
@@ -52,7 +55,7 @@ public class TripService {
         return TripDetailsDTO.fromEntity(trip);
     }
 
-    //busca historico de viagens com filtros dinamicos
+    // busca historico de viagens com filtros dinamicos
     public Page<TripHistoryDTO> getTripHistory(
             LocalDate startDate, LocalDate endDate,
             UUID driverId,
@@ -61,25 +64,42 @@ public class TripService {
             TripStatus status,
             Pageable pageable
     ) {
-
         return tripRepository.findAll(
-                TripSpecification.filter(startDate, endDate, driverId, departureCity ,arrivalCity, status),
+                TripSpecification.filter(startDate, endDate, driverId, departureCity, arrivalCity, status),
                 pageable
         ).map(this::toHistoryDTO);
     }
 
-    //busca detalhes de uma viagem pelo id
+    // busca detalhes de uma viagem pelo id
     public TripDetailsDTO getTripDetails(Long id) {
-
         Trip trip = tripRepository.findById(id)
                 .orElseThrow(() -> new TripNotFoundException(id.toString()));
 
         return toDetailsDTO(trip);
     }
 
-    //converte entidade para dto simplificado
-    private TripHistoryDTO toHistoryDTO(Trip trip) {
+    // retorna snapshot de todas as viagens para o painel de monitoramento do admin
+    // status é opcional — sem ele retorna todas
+    public Page<TripMonitorDTO> getMonitoringData(TripStatus status, Pageable pageable) {
+        return tripRepository.findAll(
+                TripSpecification.filter(null, null, null, null, null, status),
+                pageable
+        ).map(TripMonitorDTO::fromEntity);
+    }
 
+    // a cada 15 segundos empurra as viagens IN_PROGRESS para os admins conectados via WebSocket
+    @Scheduled(fixedDelay = 15000)
+    public void broadcastActiveTrips() {
+        var activeTrips = tripRepository.findAll(
+                TripSpecification.filter(null, null, null, null, null, TripStatus.IN_PROGRESS),
+                Pageable.unpaged()
+        ).map(TripMonitorDTO::fromEntity).getContent();
+
+        messagingTemplate.convertAndSend("/topic/monitoring", activeTrips);
+    }
+
+    // converte entidade para dto simplificado
+    private TripHistoryDTO toHistoryDTO(Trip trip) {
         String route = trip.getDeparture().getCity() + " -> " + trip.getArrival().getCity();
 
         return new TripHistoryDTO(
@@ -93,9 +113,8 @@ public class TripService {
         );
     }
 
-    //converte entidade para dto detalhado
+    // converte entidade para dto detalhado
     private TripDetailsDTO toDetailsDTO(Trip trip) {
-
         return new TripDetailsDTO(
                 trip.getId(),
                 trip.getDate(),
@@ -103,9 +122,7 @@ public class TripService {
                 trip.getDriver().getName(),
                 trip.getPassengers()
                         .stream()
-                        .map(p -> new PassengerDTO(
-                                        p.getId(),
-                                        p.getName()))
+                        .map(p -> new PassengerDTO(p.getId(), p.getName()))
                         .toList(),
                 trip.getDeparture().getCity(),
                 trip.getArrival().getCity(),

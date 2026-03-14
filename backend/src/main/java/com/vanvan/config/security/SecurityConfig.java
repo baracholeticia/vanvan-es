@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,11 +24,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     //essa config deixa abertos login e register endpoints [por ora],
     // dentre alguns das tools de desenvolvimento, de resto, somente com autenticação
     @Bean
+
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter){
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -50,6 +53,7 @@ public class SecurityConfig {
                                 "/swagger-ui.html"
                         ).permitAll()
                         .requestMatchers("/h2-console/**").permitAll()//caso venha ser usada essa tool
+                        .requestMatchers("/ws/**").permitAll()//websocket
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")//so admin pode acessar
                         .anyRequest().authenticated()
                 ).headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))//para o console

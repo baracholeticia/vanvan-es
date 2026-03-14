@@ -4,7 +4,6 @@ import com.vanvan.enums.RegistrationStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.hibernate.validator.constraints.br.CPF;
 
 public record DriverUpdateDTO(
 
@@ -20,7 +19,7 @@ public record DriverUpdateDTO(
     @Pattern(regexp = "\\d{11}")
     String cnh,
 
-    @CPF
+    @Size(min = 11, max = 11, message = "CPF deve conter 11 dígitos")
     String cpf,
 
     RegistrationStatus registrationStatus

@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <!-- Stats chips row (right-aligned) -->
+    <!-- Stats chips row (right-aligned) -->
       <div class="flex items-center gap-2 rating-badge-enter" style="animation-delay: 0.1s">
         <div class="flex items-center gap-2 bg-success/10 rounded-full px-3 py-1.5 border border-success/20">
           <span class="size-1.5 rounded-full bg-success"></span>
@@ -32,11 +32,6 @@
           <span class="size-1.5 rounded-full bg-[#d45959]"></span>
           <span class="text-[12px] font-bold text-[#d45959]">{{ totalNegativas() }}</span>
           <span class="text-[11px] text-[#d45959]/70">negativas</span>
-        </div>
-        <div class="flex items-center gap-2 bg-accent/10 rounded-full px-3 py-1.5 border border-accent/20">
-          <span class="size-1.5 rounded-full bg-tetiary animate-pulse"></span>
-          <span class="text-[12px] font-bold text-text">{{ totalPendentes() }}</span>
-          <span class="text-[11px] text-subtle-text">pendentes</span>
         </div>
       </div>
     </div>
@@ -165,14 +160,13 @@
         @for (rating of listaAvaliacoes(); track rating.id; let i = $index) {
           <div class="group flex flex-col rounded-[24px] overflow-hidden border transition-all duration-300 hover:shadow-2xl hover:-translate-y-1.5 card-enter"
                [style.animation-delay]="(i * 60) + 'ms'"
-               [class.border-[#d45959]/25]="rating.score <= 3 && !rating.reviewed"
-               [class.border-accent/10]="rating.score > 3 || rating.reviewed">
+               [class.border-[#d45959]/25]="rating.score <= 3"
+               [class.border-accent/10]="rating.score > 3">
 
             <!-- Card top band -->
             <div class="relative flex items-end justify-between px-5 pt-5 pb-4"
-                 [class.bg-dark]="rating.score >= 4 && !rating.reviewed"
-                 [class.bg-secondary]="rating.reviewed"
-                 [class.bg-[#3a1a1a]]="rating.score <= 3 && !rating.reviewed">
+                 [class.bg-dark]="rating.score >= 4"
+                 [class.bg-[#3a1a1a]]="rating.score <= 3">
 
               <!-- Score ring + number -->
               <div class="flex items-end gap-3">
@@ -180,20 +174,18 @@
                 <div class="relative size-[68px] shrink-0">
                   <svg class="size-full -rotate-90" viewBox="0 0 68 68">
                     <circle cx="34" cy="34" r="28" fill="none" stroke="currentColor" stroke-width="4"
-                            [class.text-white/10]="!rating.reviewed"
-                            [class.text-white/20]="rating.reviewed"/>
+                            class="text-white/10" />
                     <circle cx="34" cy="34" r="28" fill="none" stroke-width="4" stroke-linecap="round"
-                            [class.stroke-primary]="rating.score >= 4 && !rating.reviewed"
-                            [class.stroke-[#d45959]]="rating.score <= 3 && !rating.reviewed"
-                            [class.stroke-white/50]="rating.reviewed"
+                            [class.stroke-primary]="rating.score >= 4"
+                            [class.stroke-[#d45959]]="rating.score <= 3"
                             [style.stroke-dasharray]="175.9"
                             [style.stroke-dashoffset]="175.9 - (175.9 * rating.score / 5)"
                             class="score-ring-animate"/>
                   </svg>
                   <div class="absolute inset-0 flex flex-col items-center justify-center">
                     <span class="text-[22px] font-extrabold leading-none"
-                          [class.text-light]="rating.score >= 4 || rating.reviewed"
-                          [class.text-[#d45959]]="rating.score <= 3 && !rating.reviewed">
+                          [class.text-light]="rating.score >= 4"
+                          [class.text-[#d45959]]="rating.score <= 3">
                       {{ rating.score }}
                     </span>
                     <span class="text-[9px] font-bold text-white/30 leading-none">/5</span>
@@ -205,9 +197,8 @@
                   <div class="flex items-center gap-0.5">
                     @for (star of getStarsArray(); track star) {
                       <svg class="size-4 transition-transform duration-200 hover:scale-125"
-                           [class.text-primary]="star <= rating.score && rating.score >= 4 && !rating.reviewed"
-                           [class.text-[#d45959]]="star <= rating.score && rating.score <= 3 && !rating.reviewed"
-                           [class.text-white/50]="star <= rating.score && rating.reviewed"
+                           [class.text-primary]="star <= rating.score && rating.score >= 4"
+                           [class.text-[#d45959]]="star <= rating.score && rating.score <= 3"
                            [class.text-white/15]="star > rating.score"
                            viewBox="0 0 22 20" fill="currentColor">
                         <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
@@ -220,12 +211,12 @@
 
               <!-- Right side: badges -->
               <div class="flex flex-col items-end gap-2 pb-1">
-                @if (rating.reviewed) {
-                  <div class="flex items-center gap-1 bg-success/20 text-success text-[11px] font-bold px-2.5 py-1 rounded-full">
-                    <svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                @if (rating.status === 'HIDDEN') {
+                  <div class="flex items-center gap-1 bg-dark/20 text-white/50 text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/10">
+                    <svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0 1 12 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 0 1 1.563-3.029m5.858.908a3 3 0 1 1 4.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0 1 12 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 0 1-4.132 5.411m0 0L21 21"/>
                     </svg>
-                    Analisado
+                    Oculto
                   </div>
                 } @else if (rating.score <= 3) {
                   <div class="flex items-center gap-1 bg-[#d45959]/20 text-[#d45959] text-[11px] font-bold px-2.5 py-1 rounded-full attention-pulse">
@@ -234,22 +225,17 @@
                     </svg>
                     Atenção
                   </div>
-                } @else {
-                  <div class="flex items-center gap-1 bg-white/10 text-white/50 text-[11px] font-bold px-2.5 py-1 rounded-full">
-                    <div class="size-1.5 rounded-full bg-white/30 animate-pulse"></div>
-                    Pendente
-                  </div>
                 }
                 <span class="text-white/30 text-[11px] font-medium font-mono">#{{ rating.tripId }}</span>
+                <span class="text-white/30 text-[10px]">{{ rating.createdAt | date:'shortDate' }}</span>
               </div>
             </div>
 
             <!-- Score progress bar (animated) -->
             <div class="h-1 w-full bg-black/10">
               <div class="h-full progress-bar-animate transition-none"
-                   [class.bg-primary]="rating.score >= 4 && !rating.reviewed"
-                   [class.bg-[#d45959]]="rating.score <= 3 && !rating.reviewed"
-                   [class.bg-white/30]="rating.reviewed"
+                   [class.bg-primary]="rating.score >= 4"
+                   [class.bg-[#d45959]]="rating.score <= 3"
                    [style.--target-width]="((rating.score / 5) * 100) + '%'">
               </div>
             </div>
@@ -275,7 +261,7 @@
                          style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;"></div>
                   </div>
                   <div class="flex flex-col leading-tight">
-                    <span class="text-bold text-text">{{ rating.clientName }}</span>
+                    <span class="text-bold text-text">{{ rating.passengerName }}</span>
                     <span class="text-[12px] text-subtle-text">Passageiro</span>
                   </div>
                 </div>
@@ -286,7 +272,7 @@
 
               <!-- Comment -->
               <div class="flex-1 relative min-h-[52px]">
-                @if (rating.hidden) {
+                @if (rating.status === 'HIDDEN') {
                   <div class="flex items-center gap-2 px-3 py-2.5 bg-accent/5 rounded-xl border border-dashed border-accent/20">
                     <svg class="size-4 shrink-0 text-subtle-text/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0 1 12 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 0 1 1.563-3.029m5.858.908a3 3 0 1 1 4.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0 1 12 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 0 1-4.132 5.411m0 0L21 21"/>
@@ -306,23 +292,13 @@
                 <span class="text-[11px] text-subtle-text/50 font-medium font-mono">Viagem #{{ rating.tripId }}</span>
 
                 <div class="flex items-center gap-2">
-                  @if (!rating.hidden) {
+                  @if (rating.status === 'VISIBLE') {
                     <button (click)="ocultarComentario(rating)"
                             class="flex items-center gap-1.5 text-[12px] font-bold text-subtle-text border border-accent/25 hover:border-[#d45959]/50 hover:text-[#d45959] hover:bg-[#d45959]/5 px-3.5 py-1.5 rounded-full transition-all duration-200 active:scale-95">
                       <svg class="size-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0 1 12 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 0 1 1.563-3.029m5.858.908a3 3 0 1 1 4.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0 1 12 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 0 1-4.132 5.411m0 0L21 21"/>
                       </svg>
                       Ocultar
-                    </button>
-                  }
-
-                  @if (!rating.reviewed) {
-                    <button (click)="marcarComoAnalisado(rating)"
-                            class="flex items-center gap-1.5 text-[12px] font-bold bg-dark text-light border border-dark px-3.5 py-1.5 rounded-full hover:opacity-80 transition-all duration-200 active:scale-95 group/btn">
-                      <svg class="size-3.5 shrink-0 transition-transform duration-300 group-hover/btn:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                      </svg>
-                      Analisar
                     </button>
                   }
                 </div>
