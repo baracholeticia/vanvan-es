@@ -44,6 +44,10 @@ class TripControllerTest {
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(tripController)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+                .setMessageConverters(
+                        new org.springframework.http.converter.json.GsonHttpMessageConverter(),
+                        new org.springframework.http.converter.StringHttpMessageConverter()
+                )
                 .setControllerAdvice(new com.vanvan.exception.GlobalExceptionHandler())
                 .build();
     }
@@ -66,7 +70,9 @@ class TripControllerTest {
         when(tripService.getTripHistory(any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(new PageImpl<>(List.of()));
 
-        mockMvc.perform(get("/api/trips/history"))
+        mockMvc.perform(get("/api/trips/history")
+                        .param("page", "0")
+                        .param("size", "10"))
                 .andExpect(status().isOk());
     }
 
@@ -93,7 +99,9 @@ class TripControllerTest {
         when(tripService.getMonitoringData(any(), any()))
                 .thenReturn(new PageImpl<>(List.of()));
 
-        mockMvc.perform(get("/api/trips/monitoring"))
+        mockMvc.perform(get("/api/trips/monitoring")
+                        .param("page", "0")
+                        .param("size", "10"))
                 .andExpect(status().isOk());
     }
 }
