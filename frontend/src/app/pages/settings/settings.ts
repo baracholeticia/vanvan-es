@@ -1,11 +1,11 @@
 import { Component, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SettingsService, RateConfig } from '../../services/settings.service';
+import { SettingsService, PricingConfig, DriverOption } from '../../services/settings.service';
+import { TripStatus, TRIP_STATUS_LABEL } from './trip-status.enum';
 
-// Modelos espelhando o Backend (DTOs)
 export interface PassengerDTO {
-  id: string; // UUID
+  id: string;
   name: string;
 }
 
@@ -30,7 +30,7 @@ const MOCK_TRIPS: TripDetailsDTO[] = [
     departureCity: 'Garanhuns',
     arrivalCity: 'Recife',
     totalAmount: 120.00,
-    status: 'CONFIRMED',
+    status: 'COMPLETED',
     passengers: [
       { id: 'uuid-1', name: 'Maria Souza' },
       { id: 'uuid-2', name: 'Pedro Santos' },
@@ -45,7 +45,7 @@ const MOCK_TRIPS: TripDetailsDTO[] = [
     departureCity: 'Recife',
     arrivalCity: 'Caruaru',
     totalAmount: 0.00,
-    status: 'PENDING',
+    status: 'SCHEDULED',
     passengers: []
   },
   {
@@ -70,10 +70,8 @@ const MOCK_TRIPS: TripDetailsDTO[] = [
     departureCity: 'Garanhuns',
     arrivalCity: 'Maceió',
     totalAmount: 40.00,
-    status: 'CANCELED',
-    passengers: [
-      { id: 'uuid-6', name: 'Roberto Carlos' }
-    ]
+    status: 'CANCELLED',
+    passengers: [{ id: 'uuid-6', name: 'Roberto Carlos' }]
   }
 ];
 
@@ -83,137 +81,187 @@ const MOCK_TRIPS: TripDetailsDTO[] = [
   imports: [CommonModule, FormsModule],
   templateUrl: './settings.html'
 })
-
 export class SettingsComponent implements OnInit {
+
   searchQuery = '';
   newOrigin = '';
   newDestination = '';
-  newRateValue: number = 0;
+  distance = 63;
 
+  pricing: PricingConfig = {
+    minimumFare: 0,
+    perKmRate: 0,
+    cancellationFee: 0,
+    commissionRate: 0
+  };
 
-  currentRate = 0.0;
-  distance = 63; // Simulando distância fixa por enquanto
+  readonly statusOptions = Object.values(TripStatus);
+  readonly statusLabel: Record<string, string> = TRIP_STATUS_LABEL;
 
-  // Signal contendo as Viagens da API
+  availableDrivers: DriverOption[] = [];
+  loadingDrivers = false;
+
   private _trips = signal<TripDetailsDTO[]>([]);
 
-  // Variáveis de controle dos modais
+  showAddModal = false;
   showEditModal = false;
   showDeleteModal = false;
-  showPassengersModal = false; // Novo controle do modal de passageiros
-  
-  selectedTrip: any = null;
-  selectedTripPassengers: PassengerDTO[] = []; // Guarda a lista exibida no modal
+  showPassengersModal = false;
+
+  newTripDriverId = '';
+  newTripDate = '';
+  newTripTime = '';
+
+  editTrip: TripDetailsDTO = this.emptyTrip();
+  selectedTrip: TripDetailsDTO | null = null;
+  selectedTripPassengers: PassengerDTO[] = [];
 
   constructor(private settingsService: SettingsService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.carregarDados();
+    this.carregarMotoristas();
   }
 
-  carregarDados() {
-    // ---------------------------------------------------------
-    // MODO DE TESTE: Atribui os dados falsos diretamente
-    this._trips.set(MOCK_TRIPS);
-    // ---------------------------------------------------------
+  private emptyTrip(): TripDetailsDTO {
+    return {
+      date: '', time: '', driverName: '',
+      passengers: [], departureCity: '', arrivalCity: '',
+      totalAmount: 0, status: TripStatus.SCHEDULED
+    };
+  }
 
-    /* QUANDO O BACKEND ESTIVER PRONTO, DESCOMENTE ISTO E APAGUE A LINHA ACIMA:
-    this.settingsService.listarTrechos().subscribe({
-      next: (dados: any) => this._trips.set(dados),
-      error: (err) => console.error('Erro ao carregar viagens', err)
-    });
-    */
+  carregarDados(): void {
+    this._trips.set(MOCK_TRIPS);
 
     this.settingsService.obterTarifaAtual().subscribe({
-      next: (config) => {
-        if (config && config.pricePerKm) {
-          this.currentRate = config.pricePerKm;
-        }
-      },
-      error: (err) => console.error('Erro ao carregar tarifa', err)
+      next: (config) => { this.pricing = config; },
+      error: (err: unknown) => console.error('Erro ao carregar tarifa', err)
     });
   }
 
-  // Filtro de pesquisa atualizado
+  carregarMotoristas(): void {
+    this.loadingDrivers = true;
+    this.settingsService.listarMotoristas().subscribe({
+      next: (page) => {
+        this.availableDrivers = page.content;
+        this.loadingDrivers = false;
+      },
+      error: (err: unknown) => {
+        console.error('Erro ao carregar motoristas', err);
+        this.loadingDrivers = false;
+      }
+    });
+  }
+
   trips = computed(() => {
-    const query = this.searchQuery.toLowerCase();
-    return this._trips().filter(t => 
-      t.departureCity?.toLowerCase().includes(query) || 
-      t.arrivalCity?.toLowerCase().includes(query) ||
-      t.driverName?.toLowerCase().includes(query)
+    const q = this.searchQuery.toLowerCase();
+    return this._trips().filter(t =>
+      t.departureCity?.toLowerCase().includes(q) ||
+      t.arrivalCity?.toLowerCase().includes(q) ||
+      t.driverName?.toLowerCase().includes(q)
     );
   });
 
   get estimatedValue(): number {
-    return this.distance * this.currentRate;
+    return this.distance * this.pricing.perKmRate;
   }
 
-  // --- Modais e Ações da Tabela ---
-
-  addTrip() {
+  openAddModal(): void {
     if (!this.newOrigin || !this.newDestination) {
-      alert('Preencha origem e destino!');
+      alert('Preencha a cidade de origem e destino antes de adicionar uma viagem.');
       return;
     }
-    console.log("Criar viagem de", this.newOrigin, "para", this.newDestination);
-    // Aqui no futuro chamará a API para criar nova viagem
+    this.newTripDriverId = '';
+    this.newTripDate = '';
+    this.newTripTime = '';
+    this.showAddModal = true;
   }
 
-  openEditModal(trip: TripDetailsDTO) {
-    this.selectedTrip = { ...trip }; 
+  confirmAddTrip(): void {
+    if (!this.newTripDriverId || !this.newTripDate || !this.newTripTime) {
+      alert('Preencha todos os campos obrigatórios.');
+      return;
+    }
+    const driver = this.availableDrivers.find(d => d.id === this.newTripDriverId);
+    const novaViagem: TripDetailsDTO = {
+      id: Date.now(),
+      date: this.newTripDate,
+      time: this.newTripTime,
+      driverName: driver?.name ?? '',
+      departureCity: this.newOrigin,
+      arrivalCity: this.newDestination,
+      totalAmount: this.estimatedValue,
+      status: TripStatus.SCHEDULED,
+      passengers: []
+    };
+    this._trips.update(l => [...l, novaViagem]);
+    this.newOrigin = '';
+    this.newDestination = '';
+    this.closeModals();
+  }
+
+  openEditModal(trip: TripDetailsDTO): void {
+    this.editTrip = { ...trip, passengers: [...(trip.passengers ?? [])] };
     this.showEditModal = true;
   }
 
-  openDeleteModal(trip: TripDetailsDTO) {
+  confirmSaveEdit(): void {
+    if (!this.editTrip.departureCity || !this.editTrip.arrivalCity) {
+      alert('Preencha origem e destino.');
+      return;
+    }
+    this._trips.update(l =>
+      l.map(t => t.id === this.editTrip.id ? { ...this.editTrip } : t)
+    );
+    this.closeModals();
+  }
+
+  openDeleteModal(trip: TripDetailsDTO): void {
     this.selectedTrip = trip;
     this.showDeleteModal = true;
   }
 
-  // Nova função para abrir o modal de passageiros
-  openPassengersModal(trip: TripDetailsDTO) {
-    this.selectedTripPassengers = trip.passengers || [];
+  confirmDelete(): void {
+    if (!this.selectedTrip?.id) return;
+    this._trips.update(l => l.filter(t => t.id !== this.selectedTrip!.id));
+    this.closeModals();
+  }
+
+  openPassengersModal(trip: TripDetailsDTO): void {
+    this.selectedTrip = trip;
+    this.selectedTripPassengers = trip.passengers ?? [];
     this.showPassengersModal = true;
   }
 
-  // Fecha qualquer modal que estiver aberto
-  closeModals() {
+  closeModals(): void {
+    this.showAddModal = false;
     this.showEditModal = false;
     this.showDeleteModal = false;
     this.showPassengersModal = false;
     this.selectedTrip = null;
+    this.selectedTripPassengers = [];
   }
 
-  confirmSaveEdit() {
-    // Lógica futura de salvar a edição no backend
-    this.closeModals();
-  }
-
-  confirmDelete() {
-    if (!this.selectedTrip.id) return;
-
-    this.settingsService.excluirTrecho(this.selectedTrip.id).subscribe({
-      next: () => {
-        this._trips.update(list => list.filter(t => t.id !== this.selectedTrip.id));
-        this.closeModals();
-      },
-      error: () => alert('Erro ao excluir a viagem.')
-    });
-  }
-
-  saveRate() {
-    if (this.newRateValue > 0) {
-      const novaConfig: RateConfig = { pricePerKm: this.newRateValue };
-      
-      this.settingsService.atualizarTarifa(novaConfig).subscribe({
-        next: (tarifaSalva) => {
-          this.currentRate = tarifaSalva.pricePerKm;
-          alert(`Nova tarifa de R$${this.currentRate.toFixed(2)} salva com sucesso!`);
-          this.newRateValue = 0;
-        },
-        error: () => alert('Erro ao salvar a nova tarifa no servidor.')
-      });
-    } else {
-      alert('Insira um valor válido para a tarifa.');
+  saveRate(): void {
+    if (
+      this.pricing.perKmRate <= 0 ||
+      this.pricing.minimumFare <= 0 ||
+      this.pricing.cancellationFee <= 0 ||
+      this.pricing.commissionRate <= 0
+    ) {
+      alert('Preencha todos os campos de tarifa com valores válidos.');
+      return;
     }
+    this.settingsService.atualizarTarifa(this.pricing).subscribe({
+      next: (saved) => {
+        this.pricing = saved;
+        alert('Tarifas salvas com sucesso!');
+      },
+      error: (err: unknown) => {
+        console.error('Erro ao salvar tarifa', err);
+        alert('Erro ao salvar as tarifas no servidor.');
+      }
+    });
   }
 }

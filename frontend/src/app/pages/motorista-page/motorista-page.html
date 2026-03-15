@@ -10,6 +10,22 @@
 <!-- Main Container -->
 <div class="flex flex-col items-center relative z-[10] w-full min-h-full gap-2 mt-[20px]">
 
+  <!-- Top bar / Rating -->
+  <div class="w-full flex items-center justify-end">
+    <div class="glass-card rounded-full px-4 py-2.5 flex items-center gap-3 transition-all border border-white/20 mr-2 shadow-sm">
+      <div class="flex items-center gap-1.5">
+        <span class="text-header-3 text-text leading-none">{{ driverRating.averageScore | number:'1.1-1' }}</span>
+        <svg class="size-4 text-primary" viewBox="0 0 22 20" fill="currentColor">
+          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+        </svg>
+      </div>
+      <div class="w-px h-5 bg-subtle-text/30"></div>
+      <div class="flex flex-col items-start leading-[1.1] justify-center">
+        <span class="text-[11px] font-bold text-text">{{ driverRating.totalRatings }}</span>
+        <span class="text-[9px] text-subtle-text uppercase tracking-wider">Avaliações</span>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== MAIN CONTENT: 2-column layout ===== -->
   <div

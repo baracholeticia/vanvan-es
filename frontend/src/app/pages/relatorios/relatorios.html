@@ -160,37 +160,42 @@
       </ng-template>
     </div>
 
-    <!-- ======== KPI: Clientes ======== -->
+    <!-- ======== KPI: Avaliação Média ======== -->
     <div class="bento-clients bg-[#EEF2F6] rounded-[28px] p-5 flex flex-col justify-between gap-2">
       <div class="flex items-center justify-between">
-        <span class="text-subtitle text-text">Clientes</span>
+        <span class="text-subtitle text-text">Sua Avaliação</span>
         <div class="flex items-center gap-2 shrink-0">
-          <ng-container *ngIf="!isLoading; else clientChangeSkel">
-            <span class="text-small font-bold text-success">+{{ kpis.clients.change }}%</span>
+          <ng-container *ngIf="!isLoading; else ratingCountSkel">
+            <span class="text-[11px] font-bold text-subtle-text bg-white px-2 py-0.5 rounded-full">{{ driverRating.totalRatings }} av.</span>
           </ng-container>
-          <ng-template #clientChangeSkel
-            ><app-skeleton width="36px" height="16px" rounded="8px"></app-skeleton
-          ></ng-template>
+          <ng-template #ratingCountSkel>
+            <app-skeleton width="46px" height="18px" rounded="8px"></app-skeleton>
+          </ng-template>
           <button
             class="size-8 rounded-full border border-accent flex items-center justify-center hover:bg-accent/10 active:scale-95 transition-all cursor-pointer"
           >
             <div
               class="size-4 bg-text"
               style="
-                -webkit-mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center /
+                -webkit-mask: url(assets/icons/star.svg) no-repeat center /
                   contain;
-                mask: url(assets/icons/lsicon_open-new-filled.svg) no-repeat center / contain;
+                mask: url(assets/icons/star.svg) no-repeat center / contain;
               "
             ></div>
           </button>
         </div>
       </div>
-      <ng-container *ngIf="!isLoading; else clientValSkel">
-        <span class="text-header-2 text-text leading-none">{{ kpis.clients.value }}</span>
+      <ng-container *ngIf="!isLoading; else ratingValSkel">
+        <div class="flex items-center gap-2">
+           <span class="text-header-2 text-text leading-none">{{ driverRating.averageScore | number:'1.1-1' }}</span>
+           <svg class="size-6 text-primary" viewBox="0 0 22 20" fill="currentColor">
+             <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+           </svg>
+        </div>
       </ng-container>
-      <ng-template #clientValSkel
-        ><app-skeleton width="80px" height="36px" rounded="10px"></app-skeleton
-      ></ng-template>
+      <ng-template #ratingValSkel>
+        <app-skeleton width="80px" height="36px" rounded="10px"></app-skeleton>
+      </ng-template>
     </div>
 
     <!-- ======== Occupancy Gauge ======== -->

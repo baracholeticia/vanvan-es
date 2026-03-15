@@ -38,7 +38,7 @@
               <span class="text-[#112B3C] text-body font-bold">{{ distance }}km</span>
             </div>
           </div>
-          <div (click)="addTrip()" class="cursor-pointer w-[280px] p-3.5 bg-[#F66B0E] hover:brightness-110 transition rounded-lg text-[#EEEEEF] text-[16px] font-google-sans-flex font-bold uppercase text-center tracking-wide shadow-md">
+          <div (click)="openAddModal()" class="cursor-pointer w-[280px] p-3.5 bg-[#F66B0E] hover:brightness-110 transition rounded-lg text-[#EEEEEF] text-[16px] font-google-sans-flex font-bold uppercase text-center tracking-wide shadow-md">
             Adicionar Viagem
           </div>
         </div>
@@ -94,12 +94,12 @@
             <div class="w-32 flex justify-center">
               <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm"
                     [ngClass]="{
-                      'bg-green-100 text-green-700': trip.status === 'CONFIRMED' || trip.status === 'COMPLETED',
-                      'bg-yellow-100 text-yellow-700': trip.status === 'PENDING',
-                      'bg-red-100 text-red-700': trip.status === 'CANCELED',
-                      'bg-gray-200 text-gray-700': !['CONFIRMED', 'COMPLETED', 'PENDING', 'CANCELED'].includes(trip.status)
+                      'bg-green-100 text-green-700':   trip.status === 'COMPLETED',
+                      'bg-blue-100 text-blue-700':     trip.status === 'IN_PROGRESS',
+                      'bg-yellow-100 text-yellow-700': trip.status === 'SCHEDULED',
+                      'bg-red-100 text-red-700':       trip.status === 'CANCELLED'
                     }">
-                {{ trip.status }}
+                {{ statusLabel[trip.status] ?? trip.status }}
               </span>
             </div>
 
@@ -124,34 +124,141 @@
     </div>
   </div>
 
+  <!-- ══════════════ TARIFAS ══════════════ -->
   <div class="flex flex-col w-full gap-3 mt-2.5">
     <div class="text-[#112B3C] text-[36px] font-google-sans-flex font-bold">Tarifas</div>
     <div class="flex flex-col p-6 bg-[#EEEEEF] rounded-3xl gap-4">
+
       <div class="flex justify-between items-center">
-        <span class="text-[#112B3C] text-[22px] font-google-sans-flex font-bold">Valor da tarifa para cada km</span>
+        <span class="text-[#112B3C] text-[22px] font-google-sans-flex font-bold">Configurar tarifas</span>
         <div class="flex items-center gap-2">
-          <span class="text-[#112B3C] text-[20px] font-google-sans-flex font-bold">Valor atual:</span>
+          <span class="text-[#112B3C] text-[20px] font-google-sans-flex font-bold">Tarifa/km atual:</span>
           <img src="assets/icons/dollar-circle.svg" class="w-4 h-4 opacity-70" alt="Valor">
-          <span class="text-[#646464] text-[18px] font-bold">R${{ currentRate | number:'1.2-2' }}</span>
+          <span class="text-[#646464] text-[18px] font-bold">R${{ pricing.perKmRate | number:'1.2-2' }}</span>
         </div>
       </div>
-      <div class="flex p-3 bg-[#FAFAFA] rounded-lg">
-        <input type="number" [(ngModel)]="newRateValue" placeholder="Valor em reais" class="flex-1 border-none bg-transparent outline-none text-[#646464] text-base font-work-sans">
+
+      <!-- 4 campos de tarifa -->
+      <div class="flex gap-4">
+        <div class="flex flex-col flex-1 gap-1">
+          <div class="text-[#112B3C] text-sm font-google-sans-flex font-medium">Tarifa mínima (R$)</div>
+          <div class="flex p-3 bg-[#FAFAFA] rounded-lg">
+            <input type="number" [(ngModel)]="pricing.minimumFare" min="0" step="0.01" placeholder="Ex: 10.00" class="flex-1 border-none bg-transparent outline-none text-[#646464] text-base font-work-sans">
+          </div>
+        </div>
+        <div class="flex flex-col flex-1 gap-1">
+          <div class="text-[#112B3C] text-sm font-google-sans-flex font-medium">Valor por km (R$)</div>
+          <div class="flex p-3 bg-[#FAFAFA] rounded-lg">
+            <input type="number" [(ngModel)]="pricing.perKmRate" min="0" step="0.01" placeholder="Ex: 1.50" class="flex-1 border-none bg-transparent outline-none text-[#646464] text-base font-work-sans">
+          </div>
+        </div>
+        <div class="flex flex-col flex-1 gap-1">
+          <div class="text-[#112B3C] text-sm font-google-sans-flex font-medium">Taxa de cancelamento (R$)</div>
+          <div class="flex p-3 bg-[#FAFAFA] rounded-lg">
+            <input type="number" [(ngModel)]="pricing.cancellationFee" min="0" step="0.01" placeholder="Ex: 2.50" class="flex-1 border-none bg-transparent outline-none text-[#646464] text-base font-work-sans">
+          </div>
+        </div>
+        <div class="flex flex-col flex-1 gap-1">
+          <div class="text-[#112B3C] text-sm font-google-sans-flex font-medium">Comissão (%)</div>
+          <div class="flex p-3 bg-[#FAFAFA] rounded-lg">
+            <input type="number" [(ngModel)]="pricing.commissionRate" min="0" max="100" step="0.1" placeholder="Ex: 15.0" class="flex-1 border-none bg-transparent outline-none text-[#646464] text-base font-work-sans">
+          </div>
+        </div>
       </div>
+
       <div class="flex justify-between items-center">
         <div class="text-[#646464] text-[16px] font-google-sans-flex">
           Valor para 100km:
           <img src="assets/icons/dollar-circle.svg" class="w-4 h-4 opacity-70 inline ml-1" alt="Valor">
-          <strong class="text-[#112B3C]">R${{ currentRate * 100 | number:'1.2-2' }}</strong>
+          <strong class="text-[#112B3C]">R${{ pricing.perKmRate * 100 | number:'1.2-2' }}</strong>
         </div>
         <div (click)="saveRate()" class="cursor-pointer w-[280px] p-3.5 bg-[#F66B0E] hover:brightness-110 transition shadow-md rounded-lg text-[#EEEEEF] text-[16px] font-google-sans-flex font-bold uppercase text-center">
           Salvar
         </div>
       </div>
+
     </div>
   </div>
 </div>
 
+<!-- ══════ MODAL: ADICIONAR VIAGEM ══════ -->
+@if (showAddModal) {
+<div class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-[1000] p-4">
+  <div class="w-full max-w-[800px] p-8 bg-[#FAFAFA] rounded-3xl flex flex-col gap-6 shadow-2xl">
+    <div class="text-[#112B3C] text-[40px] font-google-sans-flex font-bold">Adicionar Viagem</div>
+
+    <div class="flex flex-col w-full gap-5">
+
+      <!-- Origem e Destino readonly -->
+      <div class="flex gap-4">
+        <div class="flex flex-col flex-1 gap-1">
+          <div class="text-[#112B3C] text-sm font-medium">Origem</div>
+          <div class="flex items-center gap-2.5 p-3 bg-[#EEEEEF] rounded-lg opacity-70">
+            <img src="assets/icons/plane-take-off.svg" class="w-5 h-5 opacity-70" alt="Origem">
+            <span class="text-[#646464] text-base font-work-sans font-medium">{{ newOrigin }}</span>
+          </div>
+        </div>
+        <div class="flex flex-col flex-1 gap-1">
+          <div class="text-[#112B3C] text-sm font-medium">Destino</div>
+          <div class="flex items-center gap-2.5 p-3 bg-[#EEEEEF] rounded-lg opacity-70">
+            <img src="assets/icons/plane-land.svg" class="w-5 h-5 opacity-70" alt="Destino">
+            <span class="text-[#646464] text-base font-work-sans font-medium">{{ newDestination }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Motorista -->
+      <div class="flex flex-col gap-1">
+        <div class="text-[#112B3C] text-sm font-medium">Motorista <span class="text-red-500">*</span></div>
+        <div class="flex items-center gap-2.5 p-3 bg-[#EEEEEF] rounded-lg">
+          <img src="assets/icons/user-tag.svg" class="w-5 h-5 opacity-50 shrink-0" alt="Motorista">
+          @if (loadingDrivers) {
+            <span class="text-[#646464] text-base font-work-sans">Carregando motoristas...</span>
+          } @else {
+            <select [(ngModel)]="newTripDriverId" class="flex-1 border-none bg-transparent outline-none text-[#646464] text-base font-work-sans">
+              <option value="" disabled>Selecione o motorista</option>
+              @for (driver of availableDrivers; track driver.id) {
+                <option [value]="driver.id">{{ driver.name }}</option>
+              }
+            </select>
+          }
+        </div>
+      </div>
+
+      <!-- Data e Horário -->
+      <div class="flex gap-4">
+        <div class="flex flex-col flex-1 gap-1">
+          <div class="text-[#112B3C] text-sm font-medium">Data <span class="text-red-500">*</span></div>
+          <div class="p-3 bg-[#EEEEEF] rounded-lg">
+            <input type="date" [(ngModel)]="newTripDate" class="w-full border-none bg-transparent outline-none text-[#646464] text-base font-work-sans">
+          </div>
+        </div>
+        <div class="flex flex-col flex-1 gap-1">
+          <div class="text-[#112B3C] text-sm font-medium">Horário <span class="text-red-500">*</span></div>
+          <div class="p-3 bg-[#EEEEEF] rounded-lg">
+            <input type="time" [(ngModel)]="newTripTime" class="w-full border-none bg-transparent outline-none text-[#646464] text-base font-work-sans">
+          </div>
+        </div>
+      </div>
+
+      <!-- Valor estimado -->
+      <div class="flex gap-1.5 items-center">
+        <span class="text-[#646464] text-body">Valor estimado:</span>
+        <img src="assets/icons/dollar-circle.svg" class="w-4 h-4 opacity-70" alt="Valor">
+        <span class="text-[#112B3C] text-body font-bold">R${{ estimatedValue | number:'1.2-2' }}</span>
+      </div>
+
+    </div>
+
+    <div class="flex justify-end gap-4 mt-4">
+      <div (click)="closeModals()" class="cursor-pointer p-3.5 px-10 bg-[#EEEEEF] hover:bg-gray-200 transition rounded-lg text-[#557D96] font-bold uppercase">Cancelar</div>
+      <div (click)="confirmAddTrip()" class="cursor-pointer p-3.5 px-10 bg-[#F66B0E] hover:brightness-110 transition rounded-lg text-white font-bold uppercase shadow-md">Adicionar</div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ══════ MODAL: EDITAR VIAGEM ══════ -->
 @if (showEditModal) {
 <div class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-[1000] p-4">
   <div class="w-full max-w-[800px] p-8 bg-[#FAFAFA] rounded-3xl flex flex-col gap-6 shadow-2xl">
@@ -160,16 +267,51 @@
       <div class="flex flex-col gap-1">
         <div class="text-[#112B3C] text-sm font-medium">Origem</div>
         <div class="p-3 bg-[#EEEEEF] rounded-lg">
-          <input type="text" [(ngModel)]="selectedTrip.departureCity" class="w-full border-none bg-transparent outline-none text-[#646464] text-base">
+          <input type="text" [(ngModel)]="editTrip.departureCity" class="w-full border-none bg-transparent outline-none text-[#646464] text-base">
         </div>
       </div>
       <div class="flex flex-col gap-1">
         <div class="text-[#112B3C] text-sm font-medium">Destino</div>
         <div class="p-3 bg-[#EEEEEF] rounded-lg">
-          <input type="text" [(ngModel)]="selectedTrip.arrivalCity" class="w-full border-none bg-transparent outline-none text-[#646464] text-base">
+          <input type="text" [(ngModel)]="editTrip.arrivalCity" class="w-full border-none bg-transparent outline-none text-[#646464] text-base">
         </div>
       </div>
+      <div class="flex flex-col gap-1">
+        <div class="text-[#112B3C] text-sm font-medium">Motorista</div>
+        <div class="flex items-center gap-2.5 p-3 bg-[#EEEEEF] rounded-lg">
+          <img src="assets/icons/user-tag.svg" class="w-5 h-5 opacity-50 shrink-0" alt="Motorista">
+          <select [(ngModel)]="editTrip.driverName" class="flex-1 border-none bg-transparent outline-none text-[#646464] text-base font-work-sans">
+            @for (driver of availableDrivers; track driver.id) {
+              <option [value]="driver.name">{{ driver.name }}</option>
+            }
+          </select>
+        </div>
       </div>
+      <div class="flex gap-4">
+        <div class="flex flex-col flex-1 gap-1">
+          <div class="text-[#112B3C] text-sm font-medium">Data</div>
+          <div class="p-3 bg-[#EEEEEF] rounded-lg">
+            <input type="date" [(ngModel)]="editTrip.date" class="w-full border-none bg-transparent outline-none text-[#646464] text-base">
+          </div>
+        </div>
+        <div class="flex flex-col flex-1 gap-1">
+          <div class="text-[#112B3C] text-sm font-medium">Horário</div>
+          <div class="p-3 bg-[#EEEEEF] rounded-lg">
+            <input type="time" [(ngModel)]="editTrip.time" class="w-full border-none bg-transparent outline-none text-[#646464] text-base">
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1">
+        <div class="text-[#112B3C] text-sm font-medium">Status</div>
+        <div class="p-3 bg-[#EEEEEF] rounded-lg">
+          <select [(ngModel)]="editTrip.status" class="w-full border-none bg-transparent outline-none text-[#646464] text-base font-work-sans">
+            @for (s of statusOptions; track s) {
+              <option [value]="s">{{ statusLabel[s] }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
     <div class="flex justify-end gap-4 mt-4">
       <div (click)="closeModals()" class="cursor-pointer p-3.5 px-10 bg-[#EEEEEF] hover:bg-gray-200 transition rounded-lg text-[#557D96] font-bold uppercase">Cancelar</div>
       <div (click)="confirmSaveEdit()" class="cursor-pointer p-3.5 px-10 bg-[#F66B0E] hover:brightness-110 transition rounded-lg text-white font-bold uppercase shadow-md">Salvar</div>
@@ -178,12 +320,13 @@
 </div>
 }
 
+<!-- ══════ MODAL: EXCLUIR VIAGEM ══════ -->
 @if (showDeleteModal) {
 <div class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-[1000] p-4">
   <div class="w-full max-w-[800px] p-8 bg-[#FAFAFA] rounded-3xl flex flex-col gap-6 shadow-2xl">
     <div class="text-[#112B3C] text-[40px] font-google-sans-flex font-bold">Excluir viagem</div>
     <div class="flex flex-col gap-3">
-      <div class="text-[#112B3C] text-[20px] font-bold">Tem certeza que deseja excluir a viagem de {{selectedTrip.departureCity}} para {{selectedTrip.arrivalCity}}?</div>
+      <div class="text-[#112B3C] text-[20px] font-bold">Tem certeza que deseja excluir a viagem de {{ selectedTrip?.departureCity }} para {{ selectedTrip?.arrivalCity }}?</div>
       <div class="self-start p-3 px-6 bg-[#EEEEEF] rounded-xl text-red-500 text-sm font-bold uppercase">Esta ação não poderá ser revertida</div>
     </div>
     <div class="flex justify-end gap-4 mt-4">
@@ -194,6 +337,7 @@
 </div>
 }
 
+<!-- ══════ MODAL: PASSAGEIROS ══════ -->
 @if (showPassengersModal) {
 <div class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-[1000] p-4">
   <div class="w-full max-w-[600px] p-8 bg-[#FAFAFA] rounded-3xl flex flex-col gap-6 shadow-2xl">
@@ -206,7 +350,7 @@
       @for (passenger of selectedTripPassengers; track passenger.id) {
         <div class="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-[#EEEEEF]">
           <div class="w-10 h-10 bg-[#FAFAFA] rounded-full flex justify-center items-center shrink-0">
-             <img src="assets/icons/user-tag.svg" class="w-5 h-5 opacity-50" alt="Avatar">
+            <img src="assets/icons/user-tag.svg" class="w-5 h-5 opacity-50" alt="Avatar">
           </div>
           <div class="flex flex-col">
             <span class="font-bold text-[#112B3C]">{{ passenger.name }}</span>

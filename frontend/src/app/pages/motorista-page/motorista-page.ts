@@ -1,7 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToastService } from '../../components/toast/toast.service';
+import { RatingService } from '../../services/rating.service';
 
 type TripStatus = 'none' | 'scheduled' | 'in_progress' | 'arriving' | 'completed';
 
@@ -12,12 +13,26 @@ type TripStatus = 'none' | 'scheduled' | 'in_progress' | 'arriving' | 'completed
   templateUrl: './motorista-page.html',
   styleUrls: ['./motorista-page.css']
 })
-export class MotoristaPage implements OnDestroy {
+export class MotoristaPage implements OnInit, OnDestroy {
+
+  driverRating = { averageScore: 0, totalRatings: 0 };
 
   constructor(
     private router: Router,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private ratingService: RatingService
   ) {}
+
+  ngOnInit(): void {
+    this.ratingService.getDriverMediaAvaliacao().subscribe({
+      next: (rating) => {
+        this.driverRating = rating;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar notas do motorista:', err);
+      }
+    });
+  }
 
 
   // ===== Trip Status =====

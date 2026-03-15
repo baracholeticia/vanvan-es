@@ -1,9 +1,10 @@
-import { Component, ChangeDetectorRef, afterNextRender, inject } from '@angular/core';
+import { Component, ChangeDetectorRef, afterNextRender, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tag, TagVariant } from '../../components/tags/tags';
 import { Toggle } from '../../components/toggle/toggle';
 import { Skeleton } from '../../components/skeleton/skeleton';
+import { RatingService } from '../../services/rating.service';
 
 export interface RecentTrip {
   date: string;
@@ -39,8 +40,11 @@ export interface RevenueMonth {
   templateUrl: './relatorios.html',
   styleUrl: './relatorios.css',
 })
-export class Relatorios {
+export class Relatorios implements OnInit {
   private cdr = inject(ChangeDetectorRef);
+  private ratingService = inject(RatingService);
+
+  driverRating = { averageScore: 0, totalRatings: 0 };
 
   isLoading = true;
   hoveredBarIndex: number | null = null;
@@ -352,6 +356,17 @@ closeRecentTripsModal() {
         this.cdr.detectChanges();
       }, 1400);
       this.cdr.detectChanges();
+    });
+  }
+
+  ngOnInit() {
+    this.ratingService.getDriverMediaAvaliacao().subscribe({
+      next: (rating) => {
+        this.driverRating = rating;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar notas do motorista:', err);
+      }
     });
   }
 }
