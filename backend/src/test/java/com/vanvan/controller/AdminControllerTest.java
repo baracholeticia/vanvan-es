@@ -13,16 +13,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -39,9 +40,11 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AdminController.class)
-@AutoConfigureMockMvc(addFilters = false) // Desliga a segurança para testes isolados do controller
-@Import(GlobalExceptionHandler.class) // Garante que seus erros 400 sejam capturados
+// 1. Apenas declara o WebMvcTest limpo
+@WebMvcTest(controllers = AdminController.class)
+// 2. Desativa a execução dos filtros de segurança no MockMvc
+@AutoConfigureMockMvc(addFilters = false) 
+@Import(GlobalExceptionHandler.class)
 class AdminControllerTest {
 
     @Autowired
@@ -59,10 +62,8 @@ class AdminControllerTest {
     @MockitoBean
     private VehicleService vehicleService;
 
-    // Mock estático para ser injetado no contexto do Spring
     private static final UserDetails userDetailsMock = mock(UserDetails.class);
 
-    // Configuração limpa e nativa para injetar o mock do AuthenticationPrincipal
     @TestConfiguration
     static class WebConfig implements WebMvcConfigurer {
         @Override
@@ -84,7 +85,6 @@ class AdminControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Reseta o mock antes de cada teste para evitar poluição
         reset(userDetailsMock);
     }
 
