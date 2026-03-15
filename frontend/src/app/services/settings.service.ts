@@ -1,30 +1,44 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface Journey {
-  id?: number; // Use string se o seu backend usar UUID
+  id?: number;
   name: string;
   origin: string;
   destination: string;
 }
 
-export interface RateConfig {
-  id?: number;
-  pricePerKm: number;
+export interface PricingConfig {
+  minimumFare: number;
+  perKmRate: number;
+  cancellationFee: number;
+  commissionRate: number;
+}
+
+export interface DriverOption {
+  id: string;   // UUID
+  name: string;
+}
+
+export interface SpringPage<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  size: number;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService {
-  // Ajuste a URL base se necessário
   private readonly API_URL = `${environment.apiUrl}/api/admin`;
 
   constructor(private http: HttpClient) {}
 
-  // --- Endpoints de Trechos (Journeys) ---
+  // --- Trechos ---
   listarTrechos(): Observable<Journey[]> {
     return this.http.get<Journey[]>(`${this.API_URL}/routes`);
   }
@@ -41,12 +55,18 @@ export class SettingsService {
     return this.http.delete<void>(`${this.API_URL}/routes/${id}`);
   }
 
-  // --- Endpoints de Tarifa (Rate) ---
-  obterTarifaAtual(): Observable<RateConfig> {
-    return this.http.get<RateConfig>(`${this.API_URL}/rates`);
+  listarMotoristas(page = 0, size = 100): Observable<SpringPage<DriverOption>> {
+    const params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
+    return this.http.get<SpringPage<DriverOption>>(`${this.API_URL}/drivers`, { params });
   }
 
-  atualizarTarifa(tarifa: RateConfig): Observable<RateConfig> {
-    return this.http.put<RateConfig>(`${this.API_URL}/rates`, tarifa);
+  obterTarifaAtual(): Observable<PricingConfig> {
+    return this.http.get<PricingConfig>(`${this.API_URL}/settings/pricing`);
+  }
+
+  atualizarTarifa(tarifa: PricingConfig): Observable<PricingConfig> {
+    return this.http.put<PricingConfig>(`${this.API_URL}/settings/pricing`, tarifa);
   }
 }
