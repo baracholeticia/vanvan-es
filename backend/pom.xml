@@ -28,6 +28,9 @@
 	</scm>
 	<properties>
 		<java.version>25</java.version>
+		<sonar.projectKey>ES-2025-2-Vanvan_vanvan-es</sonar.projectKey>
+		<sonar.organization>es-2025-2-vanvan</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<!--dependências-->
 	<!--starter-->
