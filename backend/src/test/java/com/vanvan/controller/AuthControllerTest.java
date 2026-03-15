@@ -1,57 +1,55 @@
 package com.vanvan.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vanvan.config.security.JwtFilter;
 import com.vanvan.config.security.JwtService;
 import com.vanvan.model.Passenger;
+import com.vanvan.repository.UserRepository;
 import com.vanvan.service.UserService;
 import jakarta.validation.Validator;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(
+        controllers = AuthController.class,
+        excludeFilters = @ComponentScan.Filter(
+                type = FilterType.ASSIGNABLE_TYPE,
+                classes = JwtFilter.class
+        )
+)
 class AuthControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
 
-    @Mock private AuthenticationManager authenticationManager;
-    @Mock private UserService userService;
-    @Mock private JwtService jwtService;
-    @Mock private Validator validator;
-
-    @InjectMocks
-    private AuthController authController;
-
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule())
-            .disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-    @BeforeEach
-    void setUp() {
-        authController = new AuthController(
-                authenticationManager, userService, jwtService, objectMapper, validator);
-        mockMvc = MockMvcBuilders.standaloneSetup(authController)
-                .setControllerAdvice(new com.vanvan.exception.GlobalExceptionHandler())
-                .build();
-    }
+    @MockitoBean private AuthenticationManager authenticationManager;
+    @MockitoBean private UserService userService;
+    @MockitoBean private JwtService jwtService;
+    @MockitoBean private UserRepository userRepository;
+    @MockitoBean private Validator validator;
+    @MockitoBean private ObjectMapper objectMapper;
 
     @Test
+    @WithMockUser
     void register_success_returns201() throws Exception {
         String body = """
                 {
@@ -72,11 +70,13 @@ class AuthControllerTest {
 
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                        .content(body)
+                        .with(csrf()))
                 .andExpect(status().isCreated());
     }
 
     @Test
+    @WithMockUser
     void login_success_returns200() throws Exception {
         String body = """
                 {"email": "allice@email.com", "password": "senha123"}
@@ -93,22 +93,25 @@ class AuthControllerTest {
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                        .content(body)
+                        .with(csrf()))
                 .andExpect(status().isOk());
     }
 
     @Test
+    @WithMockUser
     void login_badCredentials_returns401() throws Exception {
         String body = """
                 {"email": "wrong@email.com", "password": "errada"}
                 """;
 
         when(authenticationManager.authenticate(any()))
-                .thenThrow(new org.springframework.security.authentication.BadCredentialsException("bad"));
+                .thenThrow(new BadCredentialsException("bad"));
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                        .content(body)
+                        .with(csrf()))
                 .andExpect(status().isUnauthorized());
     }
 }
