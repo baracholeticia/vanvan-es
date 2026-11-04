@@ -26,6 +26,12 @@ Este projeto consiste no desenvolvimento de uma aplicação web utilizando **Jav
 
 O objetivo é a implementação de um sistema de gerenciamento para a plataforma **VanVan**, um aplicativo que permite aos usuários realizarem viagens intermunicipais por meio de veículos fretados.
 
+## VIDEO DEMO
+Processo no vídeo: Admin aprovando um motorista, motorista ajustando o seu valor de tarifa e criando uma viagem, passageiro comprando passagem na viagem ofertada e avaliando a viagem, admin monitorando a viagem e avaliação
+
+
+https://github.com/user-attachments/assets/d10b8089-aa9c-48ea-adcb-f6f9f381544b
+
 ##  Equipe de Desenvolvimento
 
 <table align="center">
@@ -132,15 +138,6 @@ npm install
 # Inicie o servidor de desenvolvimento
 ng serve
 ```
-
-## Como rodar
-
-Acesse o projeto através dos links abaixo:
-
-🔗 [Frontend](https://vanvan-es.onrender.com/)
-
-🔗 [Backend](https://vanvan-backend.onrender.com/)
-
 ##  Como criar uma conta de Administrador
 
 1. Acesse a página de **Cadastro**
@@ -158,14 +155,6 @@ O frontend estará acessível em: [http://localhost:4200](http://localhost:4200)
 
 
 <img width="4192" height="3060" alt="Frame 322(2)" src="https://github.com/user-attachments/assets/a5591635-eb37-42c2-a71b-78c1de26976d" />
-
-
-
-## VIDEO DEMO
-Processo no vídeo: Admin aprovando um motorista, motorista ajustando o seu valor de tarifa e criando uma viagem, passageiro comprando passagem na viagem ofertada e avaliando a viagem, admin monitorando a viagem e avaliação
-
-
-https://github.com/user-attachments/assets/d10b8089-aa9c-48ea-adcb-f6f9f381544b
 
 
 
