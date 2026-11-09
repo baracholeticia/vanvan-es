@@ -1,10 +1,12 @@
-# VanVan 
+# VanVan 🚐
 
 <div align="center">
   <!-- Substitua o link abaixo pela URL da sua imagem de logo -->
   <img src="frontend/src/assets/logo/LOGO - VANVAN - BLUE.png" alt="Logo VanVan" width="150"/>
   <br>
   <br>
+  
+  <h2><strong>🚀 Aplicação Online: <a href="https://vanvan-es.vercel.app/">vanvan-es.vercel.app</a></strong></h2>
   
   <p>
     Projeto desenvolvido para a disciplina de <b>Engenharia de Software</b> do curso de Ciência da Computação da 
@@ -20,19 +22,27 @@
 
 ---
 
-##  Sobre o projeto
+## 👑 Acesso Rápido: Como criar uma conta de Administrador (Testes)
+
+Para testar as funcionalidades exclusivas de administração direto no link acima, siga os passos:
+
+1. Acesse a página de **Cadastro** na aplicação.
+2. No campo de **email**, utilize um endereço com o domínio "admin", seguindo o formato: `admin@dominio.com` (exemplo: `admin@vanvan.com`).
+3. Preencha os demais campos normalmente.
+4. Clique em **"Cadastrar"**.
+
+> **Nota:** O sistema reconhecerá automaticamente o usuário como administrador com base no domínio do email informado, liberando as permissões especiais.
+
+---
+
+## 📖 Sobre o projeto
 
 Este projeto consiste no desenvolvimento de uma aplicação web utilizando **Java**, **Spring Boot** e **Angular**, como parte da disciplina de Engenharia de Software, ministrada pela professora **Thaís Burity**, na Universidade Federal do Agreste de Pernambuco - UFAPE, durante o semestre de 2025.2.
 
 O objetivo é a implementação de um sistema de gerenciamento para a plataforma **VanVan**, um aplicativo que permite aos usuários realizarem viagens intermunicipais por meio de veículos fretados.
 
-## VIDEO DEMO
-Processo no vídeo: Admin aprovando um motorista, motorista ajustando o seu valor de tarifa e criando uma viagem, passageiro comprando passagem na viagem ofertada e avaliando a viagem, admin monitorando a viagem e avaliação
 
-
-https://github.com/user-attachments/assets/d10b8089-aa9c-48ea-adcb-f6f9f381544b
-
-##  Equipe de Desenvolvimento
+## 💻 Equipe de Desenvolvimento
 
 <table align="center">
   <tr>
@@ -78,6 +88,11 @@ https://github.com/user-attachments/assets/d10b8089-aa9c-48ea-adcb-f6f9f381544b
     </td>
   </tr>
 </table>
+
+## 🎥 VIDEO DEMO
+Processo no vídeo: Admin aprovando um motorista, motorista ajustando o seu valor de tarifa e criando uma viagem, passageiro comprando passagem na viagem ofertada e avaliando a viagem, admin monitorando a viagem e avaliação.
+
+https://github.com/user-attachments/assets/d10b8089-aa9c-48ea-adcb-f6f9f381544b
 
 ##  Tecnologias Utilizadas
 
