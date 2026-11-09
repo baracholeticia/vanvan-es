@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://vanvan-backend.onrender.com'
+  apiUrl: 'https://vanvan-new.onrender.com'
 };
