@@ -70,6 +70,7 @@ interface AngularNodeAppEngineOptions extends AngularAppEngineOptions {
  */
 declare class AngularNodeAppEngine {
     private readonly angularAppEngine;
+    private readonly trustProxyHeaders?;
     /**
      * Creates a new instance of the Angular Node.js server application engine.
      * @param options Options for the Angular Node.js server application engine.
@@ -181,9 +182,16 @@ declare function writeResponseToNodeResponse(source: Response, destination: Serv
  * be used by web platform APIs.
  *
  * @param nodeRequest - The Node.js request object (`IncomingMessage` or `Http2ServerRequest`) to convert.
+ * @param trustProxyHeaders - A boolean or an array of proxy headers to trust when constructing the request URL.
+ *
+ * @remarks
+ * When `trustProxyHeaders` is enabled, headers such as `X-Forwarded-Host` and
+ * `X-Forwarded-Prefix` should ideally be strictly validated at a higher infrastructure
+ * level (e.g., at the reverse proxy or API gateway) before reaching the application.
+ *
  * @returns A Web Standard `Request` object.
  */
-declare function createWebRequestFromNodeRequest(nodeRequest: IncomingMessage | Http2ServerRequest): Request;
+declare function createWebRequestFromNodeRequest(nodeRequest: IncomingMessage | Http2ServerRequest, trustProxyHeaders?: boolean | readonly string[]): Request;
 
 /**
  * Determines whether the provided URL represents the main entry point module.
